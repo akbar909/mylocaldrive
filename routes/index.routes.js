@@ -35,7 +35,7 @@ const validate = (req, res, next) => {
   next();
 };
 
-router.get("/register", (req, res) => res.render("pages/register"));
+router.get("/register", (req, res) => res.render("pages/register", { title: "User Registration" }));
 
 router.post("/register", registerValidationRules(), validate, (req, res) => {
   const { username, email, password } = req.body;
