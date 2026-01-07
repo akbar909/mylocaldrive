@@ -1,0 +1,26 @@
+{
+  "name": "mydrive",
+  "version": "1.0.0",
+  "description": "Generated using **IMEER.ai CLI**",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "ejs-mate": "^4.0.0",
+    "express": "^5.2.1",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.2",
+    "express-validator": "^7.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
