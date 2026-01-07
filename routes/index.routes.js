@@ -43,4 +43,24 @@ router.post("/register", registerValidationRules(), validate, (req, res) => {
   res.status(200).json({ message: "Registration successful!", user: { username, email } });
 });
 
+// Error handling route
+router.get("/error", (req, res) => {
+  res.status(400).render("errors/error", {
+    title: "Error",
+    status: 400,
+    message: "Bad Request",
+    details: "Something went wrong. Please try again."
+  });
+});
+
+// 404 handler
+router.use((req, res) => {
+  res.status(404).render("errors/error", {
+    title: "Page Not Found",
+    status: 404,
+    message: "Page Not Found",
+    details: "The page you are looking for does not exist."
+  });
+});
+
 module.exports = router;
