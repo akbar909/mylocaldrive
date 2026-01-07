@@ -1,0 +1,59 @@
+<% layout('layouts/main') %>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 class="auth-title">Create Account</h2>
+        <p class="auth-subtitle">Sign up to get started with MyDrive</p>
+        
+        <form id="registerForm" class="auth-form" action="/user/register" method="POST">
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="form-input"
+                    placeholder="Enter username"
+                    required
+                >
+                <span class="error-message" id="usernameError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    class="form-input"
+                    placeholder="Enter email"
+                    required
+                >
+                <span class="error-message" id="emailError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="form-input"
+                    placeholder="Enter password"
+                    required
+                >
+                <span class="error-message" id="passwordError"></span>
+            </div>
+
+            <button type="submit" class="btn-primary btn-full">
+                Register
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="/login" class="auth-link">Login here</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="/js/register.js"></script>
