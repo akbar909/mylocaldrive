@@ -1,4 +1,5 @@
 
+// ========== DEPENDENCIES ==========
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -7,8 +8,7 @@ const engine = require('ejs-mate');
 const dotenv = require('dotenv');
 dotenv.config();
 const connectDB = require('./config/db');
-
-// Connect to MongoDB   
+ 
 
 connectDB();
 
