@@ -19,7 +19,8 @@
     "express": "^5.2.1",
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.18.2",
-    "express-validator": "^7.3.1"
+    "express-validator": "^7.3.1",
+    "mongoose": "^9.1.2"
   },
   "devDependencies": {
     "jest": "^30.2.0",
