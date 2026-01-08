@@ -9,7 +9,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const connectDB = require('./config/db');
  
-
+// ========== DATABASE CONNECTION ==========
 connectDB();
 
 app.engine('ejs', engine);
