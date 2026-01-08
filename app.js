@@ -12,6 +12,7 @@ const connectDB = require('./config/db');
 // ========== DATABASE CONNECTION ==========
 connectDB();
 
+// ========== VIEW ENGINE CONFIGURATION ==========
 app.engine('ejs', engine);
 
 app.set('view engine', 'ejs');
