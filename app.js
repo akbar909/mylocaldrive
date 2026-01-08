@@ -26,5 +26,5 @@ app.use(express.urlencoded({extended:true}));
 // ========== ROUTES ==========
 app.use('/user', regRouter);
 
-
+// ========== EXPORT APP ==========
 module.exports = app;
