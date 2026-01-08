@@ -27,3 +27,9 @@ pnpm-debug.log*
 # Build outputs
 dist/
 build/
+
+
+# Logs
+tests/
+scripts/
+coverage/
