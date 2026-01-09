@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Theme toggle functionality
     const themeToggle = document.getElementById('themeToggle');
+    // Retrieve saved theme preference or default to light mode
     const currentTheme = localStorage.getItem('theme') || 'light';
     
     // Set initial theme
