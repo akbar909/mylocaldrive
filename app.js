@@ -17,7 +17,9 @@ connectDB();
 // ========== VIEW ENGINE CONFIGURATION ==========
 app.engine('ejs', engine);
 
+// Set EJS as the view engine for rendering templates
 app.set('view engine', 'ejs');
+// Configure views directory path for template files
 app.set("views", path.join(__dirname, "views"));
 
 // ========== STATIC FILES & MIDDLEWARE ==========
@@ -28,6 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 // ========== ROUTES ==========
+// Mount user-related routes under /user prefix
 app.use('/user', regRouter);
 
 // ========== EXPORT APP ==========
