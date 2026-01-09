@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
+// Define user schema with built-in validation rules
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true   ,
+        unique: true   , // Ensures no duplicate usernames in database
         trim: true,
         maxlength: [30, 'Username cannot exceed 30 characters'],
         lowercase: true,
@@ -15,7 +16,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true    
         , lowercase: true,
-        match: [/.+\@.+\..+/, 'Please fill a valid email address']
+        match: [/.+\@.+\..+/, 'Please fill a valid email address'] // Regex pattern for email validation
         , trim: true
         , maxlength: [100, 'Email cannot exceed 100 characters'],
         minlength: [5, 'Email must be at least 5 characters long']
@@ -24,7 +25,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: [8, 'Password must be at least 8 characters long'],
+        minlength: [8, 'Password must be at least 8 characters long'], // Minimum length for security
         maxlength: [128, 'Password cannot exceed 128 characters'],
         trim: true,
     },
