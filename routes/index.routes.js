@@ -20,6 +20,7 @@ router.post("/register", registerValidationRules(), validate, (req, res) => {
   newUser
     .save()
     .then(() => res.send("User registered successfully"))
+    // Catch and log any database or validation errors
     .catch((err) => {
       console.error("Error registering user:", err);
       res.status(500).send("Server error");
