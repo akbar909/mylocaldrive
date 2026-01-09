@@ -1,18 +1,12 @@
 // Mobile Menu Toggle
 document.addEventListener('DOMContentLoaded', function() {
-    // Theme toggle functionality
     const themeToggle = document.getElementById('themeToggle');
-    // Retrieve saved theme preference or default to light mode
     const currentTheme = localStorage.getItem('theme') || 'light';
-    
-    // Set initial theme
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    
+    document.documentElement.setAttribute('data-theme', currentTheme);    
     if (themeToggle) {
         themeToggle.addEventListener('click', function() {
             const theme = document.documentElement.getAttribute('data-theme');
             const newTheme = theme === 'light' ? 'dark' : 'light';
-            
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
         });
