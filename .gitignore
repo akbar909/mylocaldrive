@@ -11,6 +11,9 @@ pnpm-debug.log*
 .env.local
 .env.*.local
 
+# Auto-commit scripts
+auto-commit.ps1
+
 # IDE
 .vscode/
 .idea/
@@ -33,3 +36,7 @@ build/
 tests/
 scripts/
 coverage/
+
+# Auto-generated scripts
+.auto-commit.ps1
+.node_modules
