@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function validatePassword() {
         const value = password.value;
         
+        // Check if password meets minimum requirements
         if (value === '') {
             showError(password, passwordError, 'Password is required');
             return false;
@@ -72,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
+        // Ensure password contains at least one uppercase letter
         if (!/[A-Z]/.test(value)) {
             showError(password, passwordError, 'Password must contain at least one uppercase letter');
             return false;
@@ -92,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showError(input, errorElement, message) {
+        // Apply error styling to input field
         input.classList.add('input-error');
         input.classList.remove('input-success');
         errorElement.textContent = message;
