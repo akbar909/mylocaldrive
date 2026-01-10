@@ -45,6 +45,18 @@ document.addEventListener('DOMContentLoaded', function() {
         return true;
     }
 
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const isEmailValid = validateEmail();
+            const isPasswordValid = validatePassword();
+
+            if (isEmailValid && isPasswordValid) {
+                form.submit();
+            }
+        });
+    });
+
     function showError(input, errorElement, message) {
         input.classList.add('input-error');
         input.classList.remove('input-success');
