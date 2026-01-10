@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Form elements
     const form = document.getElementById('loginForm');
+
+    if (!form) {
+        return;
+    }
+
     const email = document.getElementById('email');
     const password = document.getElementById('password');
 
