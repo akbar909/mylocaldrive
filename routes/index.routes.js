@@ -19,8 +19,8 @@ router.get("/register", (req, res) =>
 router.post("/register", registerValidationRules(), validate, (req, res) => {
   const { username, email, password } = req.body;
   // Hash password with bcrypt using 10 salt rounds for security
-  const hasPassword= bcrypt.hashSync(password, 10);
-  const newUser = new User({ username, email, password: hasPassword });
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  const newUser = new User({ username, email, password: hashedPassword });
   // Persist user data to MongoDB database
   newUser
     .save()
