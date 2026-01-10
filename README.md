@@ -10,6 +10,7 @@ A modern, responsive web application built with Express.js and EJS featuring use
 - **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
 - **Client-Side Validation**: Real-time validation feedback as users type
 - **Server-Side Validation**: Secure validation using express-validator
+- **Login & Registration**: Auth flows with matching client/server validation
 - **Mobile-Friendly Navigation**: Hamburger menu for small screens
 - **Professional Layout**: Header, footer, and main content areas
 
