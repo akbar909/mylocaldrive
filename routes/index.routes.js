@@ -1,11 +1,16 @@
 const express = require("express");
 const {
   registerValidationRules,
+  loginValidationRules,
   validate,
 } = require("../middleware/validation");
 const router = express.Router({ mergeParams: true });
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
+
+router.get("/login", (req, res) =>
+  res.render("pages/login", { title: "User Login" })
+);
 
 router.get("/register", (req, res) =>
   res.render("pages/register", { title: "User Registration" })
