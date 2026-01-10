@@ -16,19 +16,19 @@ router.get("/register", (req, res) =>
   res.render("pages/register", { title: "User Registration" })
 );
 
-router.post("/register", registerValidationRules(), validate, (req, res) => {
+router.post("/register", registerValidationRules(), validate, async (req, res) => {
   const { username, email, password } = req.body;
   // Hash password with bcrypt using 10 salt rounds for security
   const hashedPassword = bcrypt.hashSync(password, 10);
   const newUser = new User({ username, email, password: hashedPassword });
   // Persist user data to MongoDB database
-  newUser
-    .save()
-    .then(() => res.send("User registered successfully"))
-    .catch((err) => {
-      console.error("Error registering user:", err);
-      res.status(500).send("Server error");
-    });
+  try {
+    await newUser.save();
+    return res.send("User registered successfully");
+  } catch (err) {
+    console.error("Error registering user:", err);
+    return res.status(500).send("Server error");
+  }
 });
 
 router.post("/login", loginValidationRules(), validate, async (req, res) => {
