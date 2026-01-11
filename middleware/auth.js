@@ -1,13 +1,12 @@
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = process.env.JWT_SECRET || "dev-change-me"; // Set a real secret in production
+const JWT_SECRET = process.env.JWT_SECRET || "dev-change-me"; 
 
 function signToken(userId) {
   return jwt.sign({ sub: userId }, JWT_SECRET, { expiresIn: "1h" });
 }
 
 function requireAuth(req, res, next) {
-  // Check cookie first, then Bearer token in header
   const token = req.cookies.token || (req.headers.authorization && req.headers.authorization.split(" ")[1]);
   
   if (!token) {
