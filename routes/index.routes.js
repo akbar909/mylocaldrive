@@ -7,7 +7,7 @@ const {
 const router = express.Router({ mergeParams: true });
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
-
+// Route to render registration page and handle registration logic
 router.get("/register", (req, res) =>
   res.render("pages/register", { title: "User Registration" })
 );
