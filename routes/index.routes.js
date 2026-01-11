@@ -7,6 +7,7 @@ const {
 const router = express.Router({ mergeParams: true });
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 // Route to render registration page and handle registration logic
 router.get("/register", (req, res) =>
   res.render("pages/register", { title: "User Registration" })
@@ -42,7 +43,7 @@ router.post("/login", loginValidationRules(), validate, async (req, res) => {
         title: "Login Error",
         status: 400,
         message: "Invalid credentials",
-        errors: [{ msg: "Invalid username or password" }],
+        errors: [{ msg: "Invalid username" }],
       });
     }
 
@@ -50,10 +51,10 @@ router.post("/login", loginValidationRules(), validate, async (req, res) => {
 
     if (!passwordMatch) {
       return res.status(400).render("errors/error", {
-        title: "Login Error",
+        title: " Login Error",
         status: 400,
         message: "Invalid credentials",
-        errors: [{ msg: "Invalid username or password" }],
+        errors: [{ msg: "Invalid Password" }],
       });
     }
 
