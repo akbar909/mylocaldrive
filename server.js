@@ -1,8 +1,15 @@
 
 // Import configured Express application
 const app = require('./app');
+const connectDB = require('./config/db');
 const PORT = process.env.PORT || 3000;
-// Start server and listen for incoming connections
-app.listen(PORT, () =>
-  console.log(`🚀 IMEER.ai Server running on http://localhost:${PORT}`)
-);
+
+// Connect to database then start server
+const startServer = async () => {
+  await connectDB();
+  app.listen(PORT, () =>
+    console.log(`🚀 IMEER.ai Server running on http://localhost:${PORT}`)
+  );
+};
+
+startServer();
