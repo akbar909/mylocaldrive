@@ -4,27 +4,27 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    const { validateEmail, validatePasswordLength } = window.validators;
+    const { validateUsername, validatePasswordLength } = window.validators;
 
-    const email = document.getElementById('email');
+    const username = document.getElementById('username');
     const password = document.getElementById('password');
 
-    const emailError = document.getElementById('emailError');
+    const usernameError = document.getElementById('usernameError');
     const passwordError = document.getElementById('passwordError');
 
-    const handleEmail = () => validateEmail(email, emailError);
+    const handleUsername = () => validateUsername(username, usernameError);
     const handlePassword = () => validatePasswordLength(password, passwordError);
 
-    email.addEventListener('input', handleEmail);
+    username.addEventListener('input', handleUsername);
     password.addEventListener('input', handlePassword);
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        const isEmailValid = handleEmail();
+        const isUsernameValid = handleUsername();
         const isPasswordValid = handlePassword();
 
-        if (isEmailValid && isPasswordValid) {
+        if (isUsernameValid && isPasswordValid) {
             form.submit();
         }
     });

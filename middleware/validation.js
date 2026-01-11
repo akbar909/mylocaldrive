@@ -26,10 +26,12 @@ const registerValidationRules = () => {
 
 const loginValidationRules = () => {
   return [
-    body("email")
+    body("username")
       .trim()
-      .notEmpty().withMessage("Email is required")
-      .isEmail().withMessage("Please enter a valid email address"),
+      .notEmpty().withMessage("Username is required")
+      .isLength({ min: 3 }).withMessage("Username must be at least 3 characters")
+      .isLength({ max: 20 }).withMessage("Username must be less than 20 characters")
+      .matches(/^[a-zA-Z0-9_]+$/).withMessage("Username can only contain letters, numbers, and underscores"),
 
     body("password")
       .notEmpty().withMessage("Password is required")

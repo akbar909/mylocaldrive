@@ -8,10 +8,6 @@ const router = express.Router({ mergeParams: true });
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 
-router.get("/login", (req, res) =>
-  res.render("pages/login", { title: "User Login" })
-);
-
 router.get("/register", (req, res) =>
   res.render("pages/register", { title: "User Registration" })
 );
@@ -31,18 +27,22 @@ router.post("/register", registerValidationRules(), validate, async (req, res) =
   }
 });
 
+router.get("/login", (req, res) =>
+  res.render("pages/login", { title: "User Login" })
+);
+
 router.post("/login", loginValidationRules(), validate, async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ username });
 
     if (!existingUser) {
       return res.status(400).render("errors/error", {
         title: "Login Error",
         status: 400,
         message: "Invalid credentials",
-        errors: [{ msg: "Invalid email or password" }],
+        errors: [{ msg: "Invalid username or password" }],
       });
     }
 
@@ -53,7 +53,7 @@ router.post("/login", loginValidationRules(), validate, async (req, res) => {
         title: "Login Error",
         status: 400,
         message: "Invalid credentials",
-        errors: [{ msg: "Invalid email or password" }],
+        errors: [{ msg: "Invalid username or password" }],
       });
     }
 
