@@ -7,7 +7,8 @@ const {
 const router = express.Router({ mergeParams: true });
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const { signToken, requireAuth } = require("../middleware/auth");
+
 // Route to render registration page and handle registration logic
 router.get("/register", (req, res) =>
   res.render("pages/register", { title: "User Registration" })
@@ -21,7 +22,9 @@ router.post("/register", registerValidationRules(), validate, async (req, res) =
   // Persist user data to MongoDB database
   try {
     await newUser.save();
-    return res.send("User registered successfully");
+    const token = signToken(newUser._id);
+    res.cookie("token", token, { httpOnly: true, secure: false, sameSite: "strict" });
+    return res.status(201).json({ message: "User registered successfully", token });
   } catch (err) {
     console.error("Error registering user:", err);
     return res.status(500).send("Server error");
@@ -43,7 +46,7 @@ router.post("/login", loginValidationRules(), validate, async (req, res) => {
         title: "Login Error",
         status: 400,
         message: "Invalid credentials",
-        errors: [{ msg: "Invalid username" }],
+        errors: [{ msg: "Invalid password or username" }],
       });
     }
 
@@ -54,13 +57,28 @@ router.post("/login", loginValidationRules(), validate, async (req, res) => {
         title: " Login Error",
         status: 400,
         message: "Invalid credentials",
-        errors: [{ msg: "Invalid Password" }],
+        errors: [{ msg: "Invalid Password or username" }],
       });
     }
 
-    return res.send("Login successful");
+    const token = signToken(existingUser._id);
+    res.cookie("token", token, { httpOnly: true, secure: false, sameSite: "strict" });
+    return res.json({ message: "Login successful", token });
   } catch (err) {
     console.error("Error logging in:", err);
+    return res.status(500).send("Server error");
+  }
+});
+
+router.get("/me", requireAuth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.json({ user });
+  } catch (err) {
+    console.error("Error fetching profile:", err);
     return res.status(500).send("Server error");
   }
 });
