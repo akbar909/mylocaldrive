@@ -1,184 +1,53 @@
-<div class="error-container">
-  <div class="error-card">
-    <div class="error-icon">⚠️</div>
-    <h1 class="error-title"><%= status || 500 %></h1>
-    <h2 class="error-message"><%= message || 'Something went wrong' %></h2>
-    
-    <% if (errors && errors.length > 0) { %>
-      <div class="validation-errors">
-        <h3>Validation Errors:</h3>
-        <ul>
-          <% errors.forEach(error => { %>
-            <li class="error-item">
-              <strong><%= error.param %>:</strong> <%= error.msg %>
-            </li>
-          <% }); %>
-        </ul>
-      </div>
-    <% } %>
+<% layout('layouts/main') %>
 
-    <% if (details) { %>
-      <div class="error-details">
-        <p><%= details %></p>
+<section class="error-section">
+  <div class="container error-grid">
+    <div class="error-visual">
+      <div class="error-badge">
+        <span class="error-code"><%= status || 500 %></span>
+        <span class="dot"></span>
       </div>
-    <% } %>
+      <h2>System hiccup detected</h2>
+      <p>We hit a snag while handling your request. We track errors automatically to keep things stable.</p>
+    </div>
 
-    <div class="error-actions">
-      <a href="/" class="btn btn-primary">Go Home</a>
-      <a href="javascript:history.back()" class="btn btn-outline">Go Back</a>
+    <div class="error-content">
+      <p class="eyebrow">Error details</p>
+      <h1><%= message || 'Something went wrong' %></h1>
+      <p class="muted">If this keeps happening, try again in a moment or return to the dashboard.</p>
+
+      <% if (errors && errors.length > 0) { %>
+        <div class="error-list">
+          <h3>Validation</h3>
+          <ul>
+            <% errors.forEach(error => { %>
+              <li>
+                <strong><%= error.param || 'Field' %></strong>
+                <span><%= error.msg %></span>
+              </li>
+            <% }); %>
+          </ul>
+        </div>
+      <% } %>
+
+      <% if (details) { %>
+        <div class="error-hint">
+          <p><%= details %></p>
+        </div>
+      <% } %>
+
+      <div class="error-actions">
+        <a href="/" class="btn btn-primary">Go to Home</a>
+        <a href="javascript:history.back()" class="btn btn-outline">Try Previous Page</a>
+      </div>
+
+      <div class="support-note">
+        <span class="status-dot"></span>
+        <div>
+          <strong>Need help?</strong>
+          <p>Contact support with the time and action that caused this issue.</p>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-
-<style>
-  .error-container {
-    min-height: calc(100vh - 80px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  }
-
-  [data-theme="dark"] .error-container {
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-  }
-
-  .error-card {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 3rem 2rem;
-    max-width: 500px;
-    width: 100%;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    text-align: center;
-    animation: slideUp 0.5s ease;
-  }
-
-  [data-theme="dark"] .error-card {
-    background: var(--bg-dark);
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .error-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    animation: bounce 2s infinite;
-  }
-
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  .error-title {
-    font-size: 3rem;
-    color: var(--primary-color);
-    margin: 0.5rem 0;
-    font-weight: 700;
-  }
-
-  .error-message {
-    font-size: 1.5rem;
-    color: var(--text-dark);
-    margin: 1rem 0;
-    font-weight: 500;
-  }
-
-  [data-theme="dark"] .error-message {
-    color: var(--text-light);
-  }
-
-  .validation-errors {
-    background: #fee2e2;
-    border-left: 4px solid #dc2626;
-    padding: 1.5rem;
-    border-radius: 8px;
-    text-align: left;
-    margin: 1.5rem 0;
-  }
-
-  [data-theme="dark"] .validation-errors {
-    background: #7f1d1d;
-    border-left-color: #fca5a5;
-  }
-
-  .validation-errors h3 {
-    margin-top: 0;
-    color: #7f1d1d;
-    font-size: 1rem;
-  }
-
-  [data-theme="dark"] .validation-errors h3 {
-    color: #fca5a5;
-  }
-
-  .validation-errors ul {
-    list-style: none;
-    padding: 0;
-    margin: 0.5rem 0 0 0;
-  }
-
-  .error-item {
-    font-size: 0.9rem;
-    margin: 0.5rem 0;
-    color: #991b1b;
-  }
-
-  [data-theme="dark"] .error-item {
-    color: #fecaca;
-  }
-
-  .error-details {
-    background: #eff6ff;
-    padding: 1rem;
-    border-radius: 8px;
-    margin: 1.5rem 0;
-    font-size: 0.9rem;
-    color: #1e40af;
-  }
-
-  [data-theme="dark"] .error-details {
-    background: #0c2d57;
-    color: #93c5fd;
-  }
-
-  .error-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-    justify-content: center;
-  }
-
-  @media (max-width: 480px) {
-    .error-card {
-      padding: 2rem 1.5rem;
-    }
-
-    .error-title {
-      font-size: 2rem;
-    }
-
-    .error-message {
-      font-size: 1.2rem;
-    }
-
-    .error-actions {
-      flex-direction: column;
-    }
-
-    .error-actions .btn {
-      width: 100%;
-    }
-  }
-</style>
+</section>
