@@ -1026,12 +1026,39 @@ main {
 
 .feature-band {
     padding: 3rem 0 4rem;
-    background: linear-gradient(180deg, rgba(99,102,241,0.08), rgba(99,102,241,0.02));
+    position: relative;
+    overflow: hidden;
     border-top: 1px solid rgba(99,102,241,0.08);
 }
 
+.feature-band::before,
+.feature-band::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+}
+
+.feature-band::before {
+    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.08));
+}
+
+.feature-band::after {
+    background: radial-gradient(circle at 20% 20%, rgba(99,102,241,0.2), transparent 35%),
+                radial-gradient(circle at 80% 0%, rgba(236,72,153,0.18), transparent 30%);
+    opacity: 0.8;
+}
+
+[data-theme="dark"] .feature-band::before {
+    background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(56,189,248,0.08));
+}
+
+[data-theme="dark"] .feature-band::after {
+    background: radial-gradient(circle at 20% 20%, rgba(99,102,241,0.25), transparent 35%),
+                radial-gradient(circle at 80% 0%, rgba(56,189,248,0.18), transparent 30%);
+}
+
 [data-theme="dark"] .feature-band {
-    background: linear-gradient(180deg, rgba(99,102,241,0.12), rgba(0,0,0,0.4));
     border-color: rgba(255,255,255,0.08);
 }
 
