@@ -39,6 +39,10 @@ body {
     background: var(--white);
 }
 
+main {
+    background: var(--bg-light);
+}
+
 /* Header Styles */
 .header {
     background: var(--white);
@@ -56,6 +60,9 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
+}
+
+.navbar .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -842,10 +849,6 @@ body {
 }
 
 /* Home Page */
-main {
-    background: var(--bg-light);
-}
-
 .hero {
     position: relative;
     padding: 5rem 0 4rem;
@@ -885,8 +888,6 @@ main {
     gap: 2.5rem;
     align-items: center;
 }
-
-.hero-copy h1 {
     font-size: clamp(2.25rem, 3vw, 3rem);
     line-height: 1.1;
     margin: 1rem 0;
