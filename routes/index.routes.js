@@ -14,7 +14,7 @@ router.get("/register", (req, res) =>
   res.render("pages/register", { title: "User Registration" })
 );
 
-router.post("/register", registerValidationRules(), validate, async (req, res) => {
+router.post("/register", registerValidationRules(), validate, async (req, res, next) => {
   const { username, email, password } = req.body;
   // Hash password with bcrypt using 10 salt rounds for security
   const hashedPassword = bcrypt.hashSync(password, 10);
@@ -27,7 +27,7 @@ router.post("/register", registerValidationRules(), validate, async (req, res) =
     return res.status(201).json({ message: "User registered successfully", token });
   } catch (err) {
     console.error("Error registering user:", err);
-    return res.status(500).send("Server error");
+    return next(err);
   }
 });
 
@@ -35,7 +35,7 @@ router.get("/login", (req, res) =>
   res.render("pages/login", { title: "User Login" })
 );
 
-router.post("/login", loginValidationRules(), validate, async (req, res) => {
+router.post("/login", loginValidationRules(), validate, async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
@@ -66,11 +66,11 @@ router.post("/login", loginValidationRules(), validate, async (req, res) => {
     return res.json({ message: "Login successful", token });
   } catch (err) {
     console.error("Error logging in:", err);
-    return res.status(500).send("Server error");
+    return next(err);
   }
 });
 
-router.get("/me", requireAuth, async (req, res) => {
+router.get("/me", requireAuth, async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     if (!user) {
@@ -79,7 +79,7 @@ router.get("/me", requireAuth, async (req, res) => {
     return res.json({ user });
   } catch (err) {
     console.error("Error fetching profile:", err);
-    return res.status(500).send("Server error");
+    return next(err);
   }
 });
 
