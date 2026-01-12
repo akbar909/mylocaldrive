@@ -1026,12 +1026,12 @@ main {
 
 .feature-band {
     padding: 3rem 0 4rem;
-    background: var(--white);
+    background: linear-gradient(180deg, rgba(99,102,241,0.08), rgba(99,102,241,0.02));
     border-top: 1px solid rgba(99,102,241,0.08);
 }
 
 [data-theme="dark"] .feature-band {
-    background: var(--white);
+    background: linear-gradient(180deg, rgba(99,102,241,0.12), rgba(0,0,0,0.4));
     border-color: rgba(255,255,255,0.08);
 }
 
