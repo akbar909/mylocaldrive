@@ -12,6 +12,7 @@
         width: 100%;
         margin: 0;
         padding: 0;
+        overflow: hidden;
       }
       body {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
@@ -19,11 +20,25 @@
       [data-theme="dark"] body {
         background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
       }
+      main {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: inherit;
+      }
+      .error-section {
+        height: auto;
+        width: 100%;
+      }
     </style>
   </head>
 
   <body>
-  <main style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center; margin: 0; padding: 0;">
+  <main>
 
 <section class="error-section">
   <div class="container error-grid">
