@@ -1,15 +1,29 @@
 <!doctype html>
-<html>
+<html style="height: 100%;">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
     <title><%= title || 'My Drive' %></title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2'><path d='M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z'/><polyline points='13 2 13 9 20 9'/></svg>">
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+      html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
+      }
+      [data-theme="dark"] body {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+      }
+    </style>
   </head>
 
   <body>
-  <main style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+  <main style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center; margin: 0; padding: 0;">
 
 <section class="error-section">
   <div class="container error-grid">
