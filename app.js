@@ -27,8 +27,9 @@ app.use('/user', regRouter);
 
 // ========== 404 HANDLER ==========
 app.use((req, res, next) => {
-  const error = new Error('Page Not Found');
+  const error = new Error('The page you are looking for does not exist.');
   error.status = 404;
+  error.title = 'Page Not Found';
   next(error);
 });
 
