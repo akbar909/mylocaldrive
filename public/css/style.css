@@ -389,10 +389,6 @@ main {
     font-weight: 400;
 }
 
-[data-theme="dark"] .footer-description {
-    color: var(--text-light);
-}
-
 .social-links {
     display: flex;
     gap: 1rem;
@@ -410,11 +406,6 @@ main {
     transition: all 0.3s ease;
 }
 
-[data-theme="dark"] .social-links a {
-    background: #374151;
-    color: var(--text-dark);
-}
-
 .social-links a:hover {
     background: var(--primary-color);
     transform: translateY(-3px);
@@ -426,10 +417,6 @@ main {
     margin-bottom: 1.5rem;
     color: var(--text-dark);
     letter-spacing: -0.025em;
-}
-
-[data-theme="dark"] .footer-title {
-    color: var(--text-dark);
 }
 
 .footer-links {
@@ -447,10 +434,6 @@ main {
     font-weight: 500;
 }
 
-[data-theme="dark"] .footer-links a {
-    color: var(--text-light);
-}
-
 .footer-links a:hover {
     color: var(--primary-color);
 }
@@ -461,10 +444,6 @@ main {
     margin-bottom: 1rem;
     line-height: 1.7;
     font-weight: 400;
-}
-
-[data-theme="dark"] .newsletter-text {
-    color: var(--text-light);
 }
 
 .newsletter-form {
@@ -484,16 +463,10 @@ main {
 }
 
 [data-theme="dark"] .newsletter-input {
-    background: var(--white);
     border-color: #374151;
-    color: var(--text-dark);
 }
 
 .newsletter-input::placeholder {
-    color: var(--text-light);
-}
-
-[data-theme="dark"] .newsletter-input::placeholder {
     color: var(--text-light);
 }
 
@@ -540,10 +513,6 @@ main {
     font-size: 0.875rem;
 }
 
-[data-theme="dark"] .footer-bottom p {
-    color: #94a3b8;
-}
-
 .footer-bottom-links {
     display: flex;
     gap: 1rem;
@@ -557,20 +526,12 @@ main {
     transition: color 0.3s ease;
 }
 
-[data-theme="dark"] .footer-bottom-links a {
-    color: #94a3b8;
-}
-
 .footer-bottom-links a:hover {
     color: var(--primary-color);
 }
 
 .footer-bottom-links span {
     color: var(--text-light);
-}
-
-[data-theme="dark"] .footer-bottom-links span {
-    color: #64748b;
 }
 
 /* Footer Responsive */
@@ -747,10 +708,6 @@ main {
 
 [data-theme="dark"] .form-input {
     border-color: #374151;
-}
-
-[data-theme="dark"] .form-input::placeholder {
-    color: #6b7280;
 }
 
 .form-input:focus {
