@@ -26,30 +26,34 @@ app.get('/', (req, res) => {
 app.use('/user', regRouter);
 
 // ========== 404 HANDLER ==========
-app.use((req, res) => {
-  res.status(404).render('errors/error', {
-    title: 'Page Not Found',
-    status: 404,
-    message: 'The page you are looking for does not exist.',
-  });
+app.use((req, res, next) => {
+  const error = new Error('Page Not Found');
+  error.status = 404;
+  next(error);
 });
 
 // ========== ERROR HANDLER ==========
 app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err);
   const status = err.status || 500;
   const message = err.message || 'Internal server error';
+  
+  console.error(`[${status}] ${message}`, err);
 
-  if (req.accepts('json') && !req.accepts('html')) {
-    return res.status(status).json({ status, message });
+  try {
+    return res.status(status).render('errors/error', {
+      title: err.title || 'Something went wrong',
+      status,
+      message,
+      details: err.details,
+    });
+  } catch (renderErr) {
+    // Fallback if rendering fails
+    return res.status(status).json({ 
+      status, 
+      message,
+      details: err.details 
+    });
   }
-
-  return res.status(status).render('errors/error', {
-    title: 'Something went wrong',
-    status,
-    message,
-    details: err.details,
-  });
 });
 
 // ========== EXPORT APP ==========
