@@ -26,12 +26,72 @@
         align-items: center;
         justify-content: center;
         margin: 0 !important;
-        padding: 0 !important;
+        padding: 1rem !important;
         background: transparent;
+        overflow-y: auto;
       }
       .error-section {
-        padding: 2rem;
+        padding: 1rem;
         width: 100%;
+        max-width: 1200px;
+      }
+      .container {
+        padding: 0 1rem;
+      }
+      .error-grid {
+        gap: 1.5rem;
+      }
+      .error-visual, .error-content {
+        padding: 1rem;
+      }
+      .error-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+      .btn {
+        flex: 1;
+        min-width: 140px;
+        text-align: center;
+      }
+      @media (max-width: 768px) {
+        main {
+          padding: 0.5rem !important;
+        }
+        .error-section {
+          padding: 0.5rem;
+        }
+        .error-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+        .error-visual h2 {
+          font-size: 1.25rem;
+        }
+        .error-content h1 {
+          font-size: 1.5rem;
+        }
+        .error-actions {
+          flex-direction: column;
+        }
+        .btn {
+          width: 100%;
+          min-width: auto;
+        }
+      }
+      @media (max-width: 480px) {
+        .error-visual, .error-content {
+          padding: 0.75rem;
+        }
+        .error-badge {
+          font-size: 0.9rem;
+        }
+        .error-content h1 {
+          font-size: 1.25rem;
+        }
+        .error-visual h2 {
+          font-size: 1.1rem;
+        }
       }
     </style>
   </head>
