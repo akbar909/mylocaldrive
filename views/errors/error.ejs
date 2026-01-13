@@ -16,7 +16,7 @@
       <h1><%= message || 'Something went wrong' %></h1>
       <p class="muted">If this keeps happening, try again in a moment or return to the dashboard.</p>
 
-      <% if (errors && errors.length > 0) { %>
+      <% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
         <div class="error-list">
           <h3>Validation</h3>
           <ul>
@@ -30,7 +30,7 @@
         </div>
       <% } %>
 
-      <% if (details) { %>
+      <% if (typeof details !== 'undefined' && details) { %>
         <div class="error-hint">
           <p><%= details %></p>
         </div>
