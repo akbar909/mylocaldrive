@@ -11,7 +11,7 @@ const { signToken, requireAuth } = require("../middleware/auth");
 
 // Route to render registration page and handle registration logic
 router.get("/register", (req, res) =>
-  res.render("pages/register", { title: "User Registration" })
+  res.render("pages/register", { title: "User Registration", currentPage: "register" })
 );
 
 router.post("/register", registerValidationRules(), validate, async (req, res, next) => {
@@ -32,7 +32,7 @@ router.post("/register", registerValidationRules(), validate, async (req, res, n
 });
 
 router.get("/login", (req, res) =>
-  res.render("pages/login", { title: "User Login" })
+  res.render("pages/login", { title: "User Login", currentPage: "login" })
 );
 
 router.post("/login", loginValidationRules(), validate, async (req, res, next) => {
