@@ -21,7 +21,6 @@ router.post("/register", registerValidationRules(), validate, async (req, res, n
     await newUser.save();
     return res.redirect(303, "/login");
   } catch (err) {
-    // Handle duplicate username/email nicely for the user
     if (err.code === 11000) {
       const duplicateField = Object.keys(err.keyValue || {})[0] || "username";
       return res.status(409).render("errors/error", {
