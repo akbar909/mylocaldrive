@@ -1,3 +1,31 @@
+/* ============================================
+   TABLE OF CONTENTS
+   ============================================
+   1. Reset & Variables
+   2. Base Styles
+   3. Utility Classes
+   4. Layout Components
+      - Container
+      - Header & Navigation
+      - Footer
+   5. UI Components
+      - Buttons
+      - Cards & Panels
+      - Forms
+      - Theme Toggle
+   6. Page Sections
+      - Hero
+      - Features
+      - Stats
+      - Auth Pages
+      - Error Page
+   7. Responsive Design
+   ============================================ */
+
+/* ============================================
+   1. RESET & VARIABLES
+   ============================================ */
+
 * {
     margin: 0;
     padding: 0;
@@ -27,6 +55,10 @@
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
 }
+
+/* ============================================
+   2. BASE STYLES
+   ============================================ */
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -334,7 +366,10 @@ main {
     }
 }
 
-/* Footer Styles */
+/* ============================================
+   FOOTER
+   ============================================ */
+
 .footer {
     background: var(--white);
     color: var(--text-dark);
@@ -594,7 +629,10 @@ main {
     }
 }
 
-/* Theme Toggle Button */
+/* ============================================
+   5. UI COMPONENTS - Theme Toggle
+   ============================================ */
+
 .theme-toggle {
     position: fixed;
     top: 1rem;
@@ -643,7 +681,10 @@ main {
     display: none;
 }
 
-/* Authentication Pages Styles */
+/* ============================================
+   AUTH PAGES
+   ============================================ */
+
 .auth-container {
     min-height: calc(100vh - 80px);
     display: flex;
@@ -738,31 +779,6 @@ main {
     margin-top: -0.25rem;
 }
 
-.btn-primary {
-    background: var(--primary-color);
-    color: var(--white);
-    padding: 0.875rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-}
-
-.btn-primary:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
-}
-
 .btn-full {
     width: 100%;
     margin-top: 0.5rem;
@@ -807,7 +823,10 @@ main {
     }
 }
 
-/* Home Page */
+/* ============================================
+   6. PAGE SECTIONS - Home/Hero
+   ============================================ */
+
 .hero {
     position: relative;
     padding: 5rem 0 4rem;
@@ -944,11 +963,6 @@ main {
     gap: 1.25rem;
 }
 
-.stat h3 {
-    margin: 0.35rem 0;
-    color: var(--text-dark);
-}
-
 .stat p {
     color: var(--text-light);
     font-size: 0.95rem;
@@ -1043,6 +1057,8 @@ main {
     border-color: rgba(255,255,255,0.08);
 }
 
+/* Features Section */
+
 .icon-badge {
     width: 42px;
     height: 42px;
@@ -1056,11 +1072,6 @@ main {
 
 [data-theme="dark"] .icon-badge {
     background: rgba(129,140,248,0.12);
-}
-
-.feature h3 {
-    margin-bottom: 0.4rem;
-    color: var(--text-dark);
 }
 
 .feature p {
@@ -1146,28 +1157,6 @@ main {
     color: var(--primary-color);
     font-weight: 700;
     margin: 0;
-}
-
-.error-list {
-    background: rgba(220, 38, 38, 0.08);
-    border: 1px solid rgba(220, 38, 38, 0.2);
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1rem;
-}
-
-.error-list h3 {
-    margin: 0 0 0.6rem;
-    font-size: 1rem;
-    color: #b91c1c;
-}
-
-.error-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 0.5rem;
 }
 
 .error-list li {
@@ -1270,10 +1259,17 @@ main {
     border-color: rgba(99, 102, 241, 0.2);
 }
 
-.panel h3 {
-    margin-bottom: 0.65rem;
+h3, .h3 {
+    margin-bottom: 0.5rem;
     font-size: 1rem;
     font-weight: 700;
+    color: var(--text-dark);
+}
+
+.panel h3,
+.feature h3,
+.stat h3 {
+    margin-bottom: 0.5rem;
 }
 
 .panel-danger h3,
@@ -1281,6 +1277,7 @@ main {
     color: var(--primary-color);
 }
 
+/* Error Page Section */
 .error-page {
     min-height: 100vh;
     max-height: 100vh;
