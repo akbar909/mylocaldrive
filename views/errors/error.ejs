@@ -2,163 +2,62 @@
 <html style="height: 100%;">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title || 'My Drive' %></title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2'><path d='M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z'/><polyline points='13 2 13 9 20 9'/></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2'><path d='M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z'/><polyline points='13 2 13 9 20 9'/></svg>'>
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      html, body {
-        height: 100vh;
-        width: 100vw;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: var(--bg-light) !important;
-        overflow-x: hidden;
-      }
-      main {
-        min-height: 100vh;
-        width: 100vw;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: var(--bg-light) !important;
-        overflow-y: auto;
-      }
-      .error-section {
-        padding: 0 !important;
-        width: 100%;
-        max-width: 100%;
-        margin: 0;
-        background: transparent !important;
-      }
-      .container {
-        padding: 2rem !important;
-        margin: 0 auto;
-        max-width: 1200px;
-        width: 100%;
-      }
-      .error-grid {
-        gap: 1.5rem;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        align-items: center;
-        justify-items: center;
-      }
-      .error-visual, .error-content {
-        padding: 1rem;
-      }
-      .error-actions {
-        display: flex;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-      }
-      .btn {
-        flex: 1;
-        min-width: 140px;
-        text-align: center;
-      }
-      @media (max-width: 768px) {
-        .error-section {
-          padding: 0.5rem;
-        }
-        .error-grid {
-          grid-template-columns: 1fr;
-          gap: 1rem;
-        }
-        .error-visual h2 {
-          font-size: 1.25rem;
-        }
-        .error-content h1 {
-          font-size: 1.5rem;
-        }
-        .error-actions {
-          flex-direction: column;
-        }
-        .btn {
-          width: 100%;
-          min-width: auto;
-        }
-      }
-      @media (max-width: 480px) {
-        .error-visual, .error-content {
-          padding: 0.75rem;
-        }
-        .error-badge {
-          font-size: 0.9rem;
-        }
-        .error-content h1 {
-          font-size: 1.25rem;
-        }
-        .error-visual h2 {
-          font-size: 1.1rem;
-        }
-      }
-    </style>
   </head>
 
   <body>
-  <main>
-
-<section class="error-section">
-  <div class="container error-grid">
-    <div class="error-visual">
-      <div class="error-badge">
-        <span class="error-code"><%= status || 500 %></span>
-        <span class="dot"></span>
-      </div>
-      <h2>System hiccup detected</h2>
-      <p>We hit a snag while handling your request. We track errors automatically to keep things stable.</p>
-    </div>
-
-    <div class="error-content">
-      <p class="eyebrow">Error details</p>
-      <h1><%= message || 'Something went wrong' %></h1>
-      <p class="muted">If this keeps happening, try again in a moment or return to the dashboard.</p>
-
-      <% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
-        <div class="error-list">
-          <h3>Validation</h3>
-          <ul>
-            <% errors.forEach(error => { %>
-              <li>
-                <strong><%= error.param || 'Field' %></strong>
-                <span><%= error.msg %></span>
-              </li>
-            <% }); %>
-          </ul>
+    <main>
+      <div class="grid-overlay"></div>
+      <section class="error-card">
+        <div class="error-header">
+          <div class="badge">
+            <span class="dot"></span>
+            <span>Status <%= status || 500 %></span>
+          </div>
+          <span class="error-subtitle">We caught this issue before it spread.</span>
         </div>
-      <% } %>
 
-      <% if (typeof details !== 'undefined' && details) { %>
-        <div class="error-hint">
-          <p><%= details %></p>
+        <h1 class="error-title"><%= message || 'Something went wrong' %></h1>
+        <p class="error-subtitle">Your request hit a wall. We logged the details so we can fix it fast.</p>
+
+        <div class="error-body">
+          <div class="error-highlight">
+            <h3>What happened</h3>
+            <p><%= details || 'An unexpected error occurred while processing your request.' %></p>
+          </div>
+
+          <% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
+            <div class="error-list">
+              <h3>Validation</h3>
+              <ul>
+                <% errors.forEach(error => { %>
+                  <li>
+                    <strong><%= error.param || 'Field' %></strong>
+                    <span><%= error.msg %></span>
+                  </li>
+                <% }); %>
+              </ul>
+            </div>
+          <% } %>
         </div>
-      <% } %>
 
-      <div class="error-actions">
-        <a href="/" class="btn btn-primary">Go to Home</a>
-        <a href="javascript:history.back()" class="btn btn-outline">Try Previous Page</a>
-      </div>
-
-      <div class="support-note">
-        <span class="status-dot"></span>
-        <div>
-          <strong>Need help?</strong>
-          <p>Contact support with the time and action that caused this issue.</p>
+        <div class="error-actions">
+          <a href="/" class="btn btn-primary">Go Home</a>
+          <a href="javascript:history.back()" class="btn btn-outline">Try Previous Page</a>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-  </main>
-  <script src="/js/main.js"></script>
-</body>
+        <div class="support-note">
+          <span class="status-dot"></span>
+          <div>
+            <strong>Need help?</strong>
+            <p>Tell support what you were doing right before this happened.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="/js/main.js"></script>
+  </body>
 </html>
