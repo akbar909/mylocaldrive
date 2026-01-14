@@ -1216,9 +1216,16 @@ main {
 
 /* Error Page Styles */
 .error-page {
-    min-height: 85vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%);
+}
+
+[data-theme="dark"] .error-page {
+    background: linear-gradient(135deg, #1f1d2e 0%, #2a1f2d 100%);
 }
 
 .error-container {
@@ -1228,39 +1235,82 @@ main {
 
 .error-card {
     background: var(--white);
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    padding: 2rem;
+    border: 2px solid #fecaca;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(239, 68, 68, 0.15);
+    padding: 2.5rem;
+    position: relative;
+    text-align: center;
+}
+
+[data-theme="dark"] .error-card {
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.error-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: errorPulse 2s ease-in-out infinite;
+}
+
+.error-icon svg {
+    width: 48px;
+    height: 48px;
+    color: white;
+    stroke-width: 2.5;
+}
+
+@keyframes errorPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
 }
 
 .error-card .eyebrow {
-    color: var(--text-light);
-    font-weight: 600;
+    color: #dc2626;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .error-card h1 {
-    margin: 0.25rem 0 0.5rem;
+    margin: 0.5rem 0 0.75rem;
     color: var(--text-dark);
+    font-size: 2rem;
+    font-weight: 800;
 }
 
-.error-card > p {
+.error-subtitle {
     color: var(--text-light);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
 }
 
 .error-details {
-    border: 1px solid #e5e7eb;
+    border: 1px solid #fed7d7;
     border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background: var(--bg-light);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    background: #fef2f2;
+    text-align: left;
+}
+
+[data-theme="dark"] .error-details {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.2);
 }
 
 .error-details h3 {
-    margin-bottom: 0.5rem;
-    color: var(--text-dark);
+    margin-bottom: 0.65rem;
+    color: #dc2626;
     font-size: 1rem;
+    font-weight: 700;
 }
 
 .error-details p {
@@ -1268,16 +1318,24 @@ main {
 }
 
 .error-list {
-    border: 1px solid #e5e7eb;
+    border: 1px solid #fecaca;
     border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 1rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    background: #fff5f5;
+    text-align: left;
+}
+
+[data-theme="dark"] .error-list {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.2);
 }
 
 .error-list h3 {
-    margin-bottom: 0.5rem;
-    color: var(--text-dark);
+    margin-bottom: 0.75rem;
+    color: #dc2626;
     font-size: 1rem;
+    font-weight: 700;
 }
 
 .error-list ul {
@@ -1292,7 +1350,8 @@ main {
 }
 
 .error-list strong {
-    color: var(--primary-color);
+    color: #ef4444;
+    font-weight: 700;
 }
 
 .error-list span {
@@ -1301,7 +1360,9 @@ main {
 
 .error-actions {
     display: flex;
-    gap: 0.75rem;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
 }
 
 @media (max-width: 600px) {
