@@ -1217,11 +1217,13 @@ main {
 /* Error Page Styles */
 .error-page {
     min-height: 100vh;
+    max-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 0;
+    padding: 1rem;
     background: linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%);
+    overflow: hidden;
 }
 
 [data-theme="dark"] .error-page {
@@ -1238,7 +1240,7 @@ main {
     border: 2px solid #fecaca;
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(239, 68, 68, 0.15);
-    padding: 2.5rem;
+    padding: 1.75rem 2rem;
     position: relative;
     text-align: center;
 }
@@ -1248,9 +1250,9 @@ main {
 }
 
 .error-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 1.5rem;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1rem;
     background: linear-gradient(135deg, #ef4444, #dc2626);
     border-radius: 50%;
     display: flex;
@@ -1260,8 +1262,8 @@ main {
 }
 
 .error-icon svg {
-    width: 48px;
-    height: 48px;
+    width: 38px;
+    height: 38px;
     color: white;
     stroke-width: 2.5;
 }
@@ -1280,23 +1282,23 @@ main {
 }
 
 .error-card h1 {
-    margin: 0.5rem 0 0.75rem;
+    margin: 0.4rem 0 0.6rem;
     color: var(--text-dark);
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 800;
 }
 
 .error-subtitle {
     color: var(--text-light);
-    margin-bottom: 1.5rem;
-    font-size: 1.05rem;
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
 }
 
 .error-details {
     border: 1px solid #fed7d7;
     border-radius: 12px;
-    padding: 1.25rem;
-    margin-bottom: 1.25rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
     background: #fef2f2;
     text-align: left;
 }
@@ -1320,8 +1322,8 @@ main {
 .error-list {
     border: 1px solid #fecaca;
     border-radius: 12px;
-    padding: 1.25rem;
-    margin-bottom: 1.25rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
     background: #fff5f5;
     text-align: left;
 }
@@ -1362,7 +1364,7 @@ main {
     display: flex;
     gap: 1rem;
     justify-content: center;
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
 }
 
 @media (max-width: 600px) {
