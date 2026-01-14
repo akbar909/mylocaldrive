@@ -9,33 +9,33 @@
   </head>
 
   <body>
-    <main style="min-height: 85vh; display: flex; align-items: center;">
-      <div class="container" style="width: 100%; max-width: 720px;">
-        <section style="background: var(--white); border: 1px solid #e5e7eb; border-radius: 16px; box-shadow: var(--shadow); padding: 2rem;">
-          <p class="eyebrow" style="color: var(--text-light); font-weight: 600;">Status <%= status || 500 %></p>
-          <h1 style="margin: 0.25rem 0 0.5rem; color: var(--text-dark);"> <%= message || 'Something went wrong' %> </h1>
-          <p style="color: var(--text-light); margin-bottom: 1rem;">We hit a problem while handling your request.</p>
+    <main class="error-page">
+      <div class="container error-container">
+        <section class="error-card">
+          <p class="eyebrow">Status <%= status || 500 %></p>
+          <h1><%= message || 'Something went wrong' %></h1>
+          <p>We hit a problem while handling your request.</p>
 
-          <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; background: var(--bg-light);">
-            <h3 style="margin-bottom: 0.5rem; color: var(--text-dark); font-size: 1rem;">Details</h3>
-            <p style="color: var(--text-light);"><%= details || 'An unexpected error occurred. Please try again.' %></p>
+          <div class="error-details">
+            <h3>Details</h3>
+            <p><%= details || 'An unexpected error occurred. Please try again.' %></p>
           </div>
 
           <% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
-            <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
-              <h3 style="margin-bottom: 0.5rem; color: var(--text-dark); font-size: 1rem;">Validation</h3>
-              <ul style="list-style: none; padding-left: 0; display: grid; gap: 0.4rem;">
+            <div class="error-list">
+              <h3>Validation</h3>
+              <ul>
                 <% errors.forEach(error => { %>
-                  <li style="color: var(--text-light);">
-                    <strong style="color: var(--primary-color);"><%= error.param || 'Field' %></strong>
-                    <span style="margin-left: 0.35rem;"><%= error.msg %></span>
+                  <li>
+                    <strong><%= error.param || 'Field' %></strong>
+                    <span><%= error.msg %></span>
                   </li>
                 <% }); %>
               </ul>
             </div>
           <% } %>
 
-          <div class="error-actions" style="display: flex; gap: 0.75rem;">
+          <div class="error-actions">
             <a href="/" class="btn btn-primary">Go Home</a>
             <a href="javascript:history.back()" class="btn btn-outline">Try Previous Page</a>
           </div>
