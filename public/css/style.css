@@ -847,6 +847,8 @@ main {
     gap: 2.5rem;
     align-items: center;
 }
+
+.hero-copy h1 {
     font-size: clamp(2.25rem, 3vw, 3rem);
     line-height: 1.1;
     margin: 1rem 0;
