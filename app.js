@@ -30,6 +30,7 @@ app.use((req, res, next) => {
   const error = new Error('The page you are looking for does not exist.');
   error.status = 404;
   error.title = 'Page Not Found';
+  error.details = 'The requested URL was not found on this server.';
   next(error);
 });
 
@@ -37,9 +38,6 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   const status = err.status || 500;
   const message = err.message || 'Internal server error';
-  
-  console.error(`[${status}] ${message}`, err);
-
   try {
     return res.status(status).render('errors/error', {
       title: err.title || 'Something went wrong',

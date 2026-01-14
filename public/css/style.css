@@ -1215,6 +1215,72 @@ main {
 }
 
 /* Error Page Styles */
+.card {
+    background: var(--white);
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
+
+.card-danger {
+    border: 1px solid #e5e7eb;
+    box-shadow: var(--shadow);
+}
+
+[data-theme="dark"] .card-danger {
+    border-color: #374151;
+}
+
+.heading-lg {
+    margin: 0.35rem 0 0.6rem;
+    color: var(--text-dark);
+    font-size: 1.75rem;
+    font-weight: 800;
+}
+
+[data-theme="dark"] .heading-lg {
+    color: var(--text-dark);
+}
+
+.text-muted {
+    color: var(--text-light);
+}
+
+.panel {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem;
+    background: var(--bg-light);
+    text-align: left;
+}
+
+.panel-soft-danger {
+    background: var(--bg-light);
+    border-color: #e5e7eb;
+}
+
+.panel-danger {
+    background: var(--bg-light);
+    border-color: #e5e7eb;
+}
+
+[data-theme="dark"] .panel-soft-danger,
+[data-theme="dark"] .panel-danger {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.2);
+}
+
+.panel h3 {
+    margin-bottom: 0.65rem;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.panel-danger h3,
+.panel-soft-danger h3 {
+    color: var(--primary-color);
+}
+
 .error-page {
     min-height: 100vh;
     max-height: 100vh;
@@ -1222,12 +1288,12 @@ main {
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background: linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%);
+    background: var(--bg-light);
     overflow: hidden;
 }
 
 [data-theme="dark"] .error-page {
-    background: linear-gradient(135deg, #1f1d2e 0%, #2a1f2d 100%);
+    background: var(--bg-light);
 }
 
 .error-container {
@@ -1236,17 +1302,9 @@ main {
 }
 
 .error-card {
-    background: var(--white);
-    border: 2px solid #fecaca;
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(239, 68, 68, 0.15);
     padding: 1.75rem 2rem;
     position: relative;
     text-align: center;
-}
-
-[data-theme="dark"] .error-card {
-    border-color: rgba(239, 68, 68, 0.3);
 }
 
 .error-icon {
@@ -1274,7 +1332,7 @@ main {
 }
 
 .error-card .eyebrow {
-    color: #dc2626;
+    color: var(--primary-color);
     font-weight: 700;
     font-size: 0.95rem;
     text-transform: uppercase;
@@ -1282,10 +1340,7 @@ main {
 }
 
 .error-card h1 {
-    margin: 0.4rem 0 0.6rem;
-    color: var(--text-dark);
-    font-size: 1.75rem;
-    font-weight: 800;
+    margin: 0;
 }
 
 .error-subtitle {
@@ -1294,48 +1349,9 @@ main {
     font-size: 1rem;
 }
 
-.error-details {
-    border: 1px solid #fed7d7;
-    border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background: #fef2f2;
-    text-align: left;
-}
-
-[data-theme="dark"] .error-details {
-    background: rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.2);
-}
-
-.error-details h3 {
-    margin-bottom: 0.65rem;
-    color: #dc2626;
-    font-size: 1rem;
-    font-weight: 700;
-}
-
-.error-details p {
-    color: var(--text-light);
-}
-
-.error-list {
-    border: 1px solid #fecaca;
-    border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background: #fff5f5;
-    text-align: left;
-}
-
-[data-theme="dark"] .error-list {
-    background: rgba(239, 68, 68, 0.08);
-    border-color: rgba(239, 68, 68, 0.2);
-}
-
 .error-list h3 {
     margin-bottom: 0.75rem;
-    color: #dc2626;
+    color: var(--primary-color);
     font-size: 1rem;
     font-weight: 700;
 }
@@ -1352,7 +1368,7 @@ main {
 }
 
 .error-list strong {
-    color: #ef4444;
+    color: var(--primary-color);
     font-weight: 700;
 }
 

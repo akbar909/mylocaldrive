@@ -11,7 +11,7 @@
   <body>
     <main class="error-page">
       <div class="container error-container">
-        <section class="error-card">
+        <section class="card card-danger error-card">
           <div class="error-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
@@ -20,16 +20,16 @@
             </svg>
           </div>
           <p class="eyebrow">Error <%= status || 500 %></p>
-          <h1><%= message || 'Something went wrong' %></h1>
-          <p class="error-subtitle">We hit a problem while handling your request.</p>
+          <h1 class="heading-lg"><%= message || 'Something went wrong' %></h1>
+          <p class="error-subtitle text-muted">We hit a problem while handling your request.</p>
 
-          <div class="error-details">
+          <div class="error-details panel panel-soft-danger">
             <h3>Details</h3>
             <p><%= typeof details !== 'undefined' ? details : 'An unexpected error occurred. Please try again.' %></p>
           </div>
 
           <% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
-            <div class="error-list">
+            <div class="error-list panel panel-danger">
               <h3>Validation</h3>
               <ul>
                 <% errors.forEach(error => { %>
