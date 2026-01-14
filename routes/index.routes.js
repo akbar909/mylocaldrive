@@ -9,7 +9,6 @@ const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const { signToken, requireAuth } = require("../middleware/auth");
 
-// Route to render registration page and handle registration logic
 router.get("/register", (req, res) =>
   res.render("pages/register", { title: "User Registration", currentPage: "register" })
 );
