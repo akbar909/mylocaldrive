@@ -46,7 +46,6 @@ app.use((err, req, res, next) => {
       details: err.details,
     });
   } catch (renderErr) {
-    // Fallback if rendering fails
     return res.status(status).json({ 
       status, 
       message,
