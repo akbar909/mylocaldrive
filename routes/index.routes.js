@@ -22,9 +22,7 @@ router.post("/register", registerValidationRules(), validate, async (req, res, n
   // Persist user data to MongoDB database
   try {
     await newUser.save();
-    const token = signToken(newUser._id);
-    res.cookie("token", token, { httpOnly: true, secure: false, sameSite: "strict" });
-    return res.status(201).json({ message: "User registered successfully", token });
+    return res.redirect(303, "/login");
   } catch (err) {
     console.error("Error registering user:", err);
     return next(err);
