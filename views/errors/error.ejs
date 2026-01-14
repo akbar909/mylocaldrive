@@ -18,7 +18,7 @@
 
           <div class="error-details">
             <h3>Details</h3>
-            <p><%= details || 'An unexpected error occurred. Please try again.' %></p>
+            <p><%= typeof details !== 'undefined' ? details : 'An unexpected error occurred. Please try again.' %></p>
           </div>
 
           <% if (typeof errors !== 'undefined' && errors && errors.length > 0) { %>
