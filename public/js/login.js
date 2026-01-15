@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize login form with client-side validation
     const form = document.getElementById('loginForm');
     if (!form || !window.validators) {
         return;
