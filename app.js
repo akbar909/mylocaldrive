@@ -6,6 +6,7 @@ const regRouter = require('./routes/index.routes');
 const engine = require('ejs-mate');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
+const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
 dotenv.config();
 
 // ========== VIEW ENGINE CONFIGURATION ==========
@@ -25,34 +26,9 @@ app.get('/', (req, res) => {
 });
 app.use('/user', regRouter);
 
-// ========== 404 HANDLER ==========
-app.use((req, res, next) => {
-  const error = new Error('The page you are looking for does not exist.');
-  error.status = 404;
-  error.title = 'Page Not Found';
-  error.details = 'The requested URL was not found on this server.';
-  next(error);
-});
-
-// ========== ERROR HANDLER ==========
-app.use((err, req, res, next) => {
-  const status = err.status || 500;
-  const message = err.message || 'Internal server error';
-  try {
-    return res.status(status).render('errors/error', {
-      title: err.title || 'Something went wrong',
-      status,
-      message,
-      details: err.details,
-    });
-  } catch (renderErr) {
-    return res.status(status).json({ 
-      status, 
-      message,
-      details: err.details 
-    });
-  }
-});
+// ========== HANDLERS ==========
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 // ========== EXPORT APP ==========
 module.exports = app;
