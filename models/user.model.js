@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 // Define user schema with built-in validation rules
+// Stores user information with email and username uniqueness constraints
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
