@@ -1,4 +1,5 @@
 // ========== DEPENDENCIES ==========
+// Random comment 1: Main application dependencies
 const express = require('express');
 const path = require('path');
 const app = express();
