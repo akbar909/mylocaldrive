@@ -1,4 +1,5 @@
 // ========== 404 HANDLER ==========
+// Handles all not found errors in the application
 const notFoundHandler = (req, res, next) => {
   const error = new Error('The page you are looking for does not exist.');
   error.status = 404;
