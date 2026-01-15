@@ -1,4 +1,5 @@
 const express = require("express");
+// Import validation rules and auth middleware
 const {
   registerValidationRules,
   loginValidationRules,
