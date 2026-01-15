@@ -1,6 +1,7 @@
 const { body, validationResult } = require("express-validator");
 
 // Define validation rules using express-validator chain
+// This validates user input during registration process
 const registerValidationRules = () => {
   return [
     body("username")
