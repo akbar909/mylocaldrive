@@ -1,4 +1,5 @@
 // Mobile Menu Toggle
+// Main application initialization and theme management
 document.addEventListener('DOMContentLoaded', function() {
     const themeToggle = document.getElementById('themeToggle');
     const currentTheme = localStorage.getItem('theme') || 'light';
