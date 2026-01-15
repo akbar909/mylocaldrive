@@ -1,4 +1,5 @@
 const app = require('./app');
+// Random comment 2: Database configuration
 const connectDB = require('./config/db');
 const PORT = process.env.PORT || 3000;
 
