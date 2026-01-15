@@ -1,4 +1,5 @@
 (function() {
+    // Client-side form validation utilities
     function showError(input, errorElement, message) {
         input.classList.add('input-error');
         input.classList.remove('input-success');
