@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Setup registration form with comprehensive validation
     const form = document.getElementById('registerForm');
     if (!form || !window.validators) {
         return;
