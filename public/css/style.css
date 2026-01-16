@@ -602,6 +602,21 @@ main {
     width: 100%;
 }
 
+.auth-form .btn-primary {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.auth-form .btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
 .auth-footer {
     margin-top: 2rem;
     text-align: center;
