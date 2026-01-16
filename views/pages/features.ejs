@@ -35,7 +35,7 @@
 				</svg>
 			</div>
 			<h3>File Upload & Storage</h3>
-			<p>Upload single or multiple files with ease. Each file is securely stored with 1 GB storage limit per user.</p>
+			<p>Upload single or multiple files with ease. Each account gets 500 MB personal space with platform-wide safeguards.</p>
 		</div>
 		
 		<div class="feature" style="border-left: 4px solid #06b6d4;">
@@ -95,9 +95,11 @@
 </section>
 
 <section style="padding: 3rem 0; background: var(--bg-light);">
-	<div class="container" style="text-align: center;">
-		<h2 style="margin-bottom: 1rem;">Ready to secure your files?</h2>
-		<p style="color: var(--text-light); margin-bottom: 2rem;">Create your account today and get started with 1 GB of free storage.</p>
-		<a href="/user/register" class="btn btn-primary">Create Account Now</a>
-	</div>
+	<% if (typeof isLoggedIn === 'undefined' || !isLoggedIn) { %>
+		<div class="container" style="text-align: center;">
+			<h2 style="margin-bottom: 1rem;">Ready to secure your files?</h2>
+			<p style="color: var(--text-light); margin-bottom: 2rem;">Create your account today and start with 500 MB personal storage.</p>
+			<a href="/user/register" class="btn btn-primary">Create Account Now</a>
+		</div>
+	<% } %>
 </section>

@@ -28,23 +28,23 @@
 		<div class="hero-panel">
 			<div class="panel-header">
 				<span class="status-dot"></span>
-				<span>Workspace status</span>
+				<span>Platform status</span>
 			</div>
 			<div class="panel-body">
 				<div class="stat">
-					<p>Storage used</p>
-					<h3>32% of 1 TB</h3>
-					<div class="progress"><span style="width: 32%"></span></div>
+					<p>Active users</p>
+					<h3 id="totalUsers">Loading...</h3>
+					<div class="chip">Trust us daily</div>
 				</div>
 				<div class="stat">
-					<p>Active sessions</p>
-					<h3>4 devices</h3>
-					<div class="chip">Desktop · Mobile · Tablet</div>
+					<p>Total storage</p>
+					<h3 id="totalStorage">Loading...</h3>
+					<div class="chip">Secure cloud</div>
 				</div>
 				<div class="stat">
-					<p>Last sync</p>
-					<h3>2 minutes ago</h3>
-					<div class="chip">Auto-sync is on</div>
+					<p>Uptime</p>
+					<h3 id="uptime">99.9%</h3>
+					<div class="chip">Always available</div>
 				</div>
 			</div>
 		</div>
@@ -89,3 +89,21 @@
 		</div>
 	</div>
 </section>
+
+<script>
+	// Fetch and display real platform stats
+	async function loadStats() {
+		try {
+			const response = await fetch('/api/stats');
+			const data = await response.json();
+			
+			document.getElementById('totalUsers').textContent = data.totalUsers + '+';
+			document.getElementById('totalStorage').textContent = data.totalStorage;
+		} catch (error) {
+			console.error('Error loading stats:', error);
+		}
+	}
+	
+	// Load stats when page loads
+	loadStats();
+</script>
