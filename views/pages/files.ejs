@@ -1,0 +1,130 @@
+<%- layout('layouts/main') %>
+
+<section style="min-height: calc(100vh - 100px); padding: 3rem 1rem;">
+	<div style="max-width: 1200px; margin: 0 auto;">
+		<!-- Header -->
+		<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+			<div>
+				<a href="/dashboard" style="color: var(--primary-color); text-decoration: none; font-size: 0.875rem;">← Back to Dashboard</a>
+				<h1 style="font-size: 2.5rem; margin: 1rem 0 0.5rem 0;">My Files</h1>
+				<p style="color: var(--text-light);">Upload, manage, and share your files securely</p>
+			</div>
+			<a href="#upload" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">⬆️ Upload Files</a>
+		</div>
+
+		<!-- Storage Status -->
+		<div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 2rem;">
+			<div style="margin-bottom: 1rem;">
+				<div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+					<span style="color: var(--text-light); font-size: 0.875rem;">Storage Usage</span>
+					<span style="color: var(--text-dark); font-weight: 500;">0 MB / 1 GB</span>
+				</div>
+				<div style="background: rgba(0,0,0,0.2); height: 8px; border-radius: 4px; overflow: hidden;">
+					<div style="background: linear-gradient(90deg, var(--primary-color), #06b6d4); height: 100%; width: 0%;"></div>
+				</div>
+			</div>
+			<p style="color: var(--text-light); font-size: 0.875rem; margin: 0;">Maximum file size: 1 GB per file</p>
+		</div>
+
+		<!-- Upload Section -->
+		<div id="upload" style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 2rem;">
+			<h3 style="margin-top: 0; margin-bottom: 1.5rem;">Upload Files</h3>
+			
+			<form style="border: 2px dashed var(--primary-color); border-radius: 8px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease;" 
+			      onmouseover="this.style.background='rgba(129, 140, 248, 0.05)'" 
+			      onmouseout="this.style.background='transparent'">
+				<input type="file" id="fileInput" multiple accept="*/*" style="display: none;">
+				<div style="font-size: 2rem; margin-bottom: 1rem;">📤</div>
+				<p style="margin: 0; color: var(--text-dark); font-weight: 500;">Click to upload or drag and drop</p>
+				<p style="margin: 0.5rem 0 0 0; color: var(--text-light); font-size: 0.875rem;">Supports single and multiple files (Max 1 GB each)</p>
+				<button type="button" onclick="document.getElementById('fileInput').click()" class="btn btn-primary" style="margin-top: 1rem;">Select Files</button>
+			</form>
+
+			<div id="uploadedFiles" style="margin-top: 1.5rem; display: none;">
+				<p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 1rem;">Files ready to upload:</p>
+				<div id="fileList" style="background: rgba(0,0,0,0.1); padding: 1rem; border-radius: 8px; max-height: 200px; overflow-y: auto;"></div>
+				<button type="submit" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Upload Selected Files</button>
+			</div>
+		</form>
+		</div>
+
+		<!-- Files List -->
+		<div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow);">
+			<h3 style="margin-top: 0; margin-bottom: 1.5rem;">Your Files</h3>
+
+			<!-- Empty State -->
+			<div id="emptyState" style="text-align: center; padding: 2rem; color: var(--text-light);">
+				<p style="font-size: 2rem;">📂</p>
+				<p>No files uploaded yet. <a href="#upload" style="color: var(--primary-color); text-decoration: none;">Start by uploading your first file</a></p>
+			</div>
+
+			<!-- Files Table -->
+			<div id="filesContainer" style="display: none;">
+				<table style="width: 100%; border-collapse: collapse;">
+					<thead>
+						<tr style="border-bottom: 2px solid rgba(255,255,255,0.1);">
+							<th style="text-align: left; padding: 1rem 0.5rem; color: var(--text-light); font-weight: 500;">File Name</th>
+							<th style="text-align: left; padding: 1rem 0.5rem; color: var(--text-light); font-weight: 500;">Size</th>
+							<th style="text-align: left; padding: 1rem 0.5rem; color: var(--text-light); font-weight: 500;">Uploaded</th>
+							<th style="text-align: right; padding: 1rem 0.5rem; color: var(--text-light); font-weight: 500;">Actions</th>
+						</tr>
+					</thead>
+					<tbody id="filesList">
+						<!-- Files will be populated here -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	table tbody tr {
+		border-bottom: 1px solid rgba(255,255,255,0.05);
+		transition: background 0.2s ease;
+	}
+	table tbody tr:hover {
+		background: rgba(129, 140, 248, 0.05);
+	}
+	table tbody td {
+		padding: 1rem 0.5rem;
+		color: var(--text-dark);
+	}
+	.file-action-btn {
+		background: none;
+		border: none;
+		color: var(--primary-color);
+		cursor: pointer;
+		font-size: 0.875rem;
+		text-decoration: underline;
+		margin-right: 1rem;
+		padding: 0;
+	}
+	.file-action-btn:hover {
+		color: #06b6d4;
+	}
+</style>
+
+<script>
+	const fileInput = document.getElementById('fileInput');
+	const uploadedFiles = document.getElementById('uploadedFiles');
+	const fileList = document.getElementById('fileList');
+
+	fileInput.addEventListener('change', function() {
+		if (fileInput.files.length > 0) {
+			uploadedFiles.style.display = 'block';
+			fileList.innerHTML = '';
+			
+			Array.from(fileInput.files).forEach(file => {
+				const fileSize = (file.size / 1024 / 1024).toFixed(2);
+				const item = document.createElement('div');
+				item.style.cssText = 'padding: 0.5rem; color: var(--text-dark); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.1);';
+				item.innerHTML = `
+					<span>${file.name}</span>
+					<span style="color: var(--text-light); font-size: 0.875rem;">${fileSize} MB</span>
+				`;
+				fileList.appendChild(item);
+			});
+		}
+	});
+</script>

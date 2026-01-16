@@ -1,0 +1,74 @@
+<%- layout('layouts/main') %>
+
+<section style="min-height: calc(100vh - 100px); padding: 3rem 1rem;">
+	<div style="max-width: 600px; margin: 0 auto;">
+		<!-- Header -->
+		<div style="margin-bottom: 2rem;">
+			<a href="/dashboard" style="color: var(--primary-color); text-decoration: none; font-size: 0.875rem;">← Back to Dashboard</a>
+			<h1 style="font-size: 2.5rem; margin: 1rem 0 0.5rem 0;">Profile Settings</h1>
+			<p style="color: var(--text-light);">Manage your account and personal information</p>
+		</div>
+
+		<!-- Profile Card -->
+		<div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 2rem;">
+			<div style="text-align: center; margin-bottom: 2rem;">
+				<div style="width: 80px; height: 80px; background: var(--primary-color); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+					👤
+				</div>
+				<p style="margin: 0; color: var(--text-light); font-size: 0.875rem;">User ID: <span style="color: var(--text-dark);">user_123</span></p>
+			</div>
+
+			<!-- Profile Info -->
+			<div style="margin-bottom: 1.5rem;">
+				<label style="display: block; color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Full Name</label>
+				<div style="background: rgba(255,255,255,0.05); padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem;">
+					<p style="margin: 0; color: var(--text-dark);">John Doe</p>
+				</div>
+				<a href="/profile/edit-name" class="btn btn-primary" style="font-size: 0.875rem;">Edit Name</a>
+			</div>
+
+			<div style="margin-bottom: 1.5rem;">
+				<label style="display: block; color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Email</label>
+				<div style="background: rgba(255,255,255,0.05); padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem;">
+					<p style="margin: 0; color: var(--text-dark);">john@example.com</p>
+				</div>
+			</div>
+
+			<div style="margin-bottom: 1.5rem;">
+				<label style="display: block; color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Account Created</label>
+				<div style="background: rgba(255,255,255,0.05); padding: 0.75rem; border-radius: 8px;">
+					<p style="margin: 0; color: var(--text-dark);">January 16, 2026</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Account Actions -->
+		<div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 2rem;">
+			<h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--text-dark);">Account Actions</h3>
+			
+			<div style="margin-bottom: 1rem;">
+				<a href="/profile/change-password" class="btn" style="display: block; text-align: center; background: var(--primary-color); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; border: none; cursor: pointer;">
+					🔒 Change Password
+				</a>
+			</div>
+
+			<div style="margin-bottom: 1rem;">
+				<a href="/profile/security" class="btn" style="display: block; text-align: center; background: #06b6d4; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; border: none; cursor: pointer;">
+					🛡️ Security Settings
+				</a>
+			</div>
+		</div>
+
+		<!-- Danger Zone -->
+		<div style="background: rgba(239, 68, 68, 0.1); padding: 2rem; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3);">
+			<h3 style="margin-top: 0; margin-bottom: 1rem; color: #ef4444;">Danger Zone</h3>
+			<p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 1.5rem;">These actions cannot be undone. Please proceed with caution.</p>
+			
+			<div style="margin-bottom: 1rem;">
+				<button onclick="if(confirm('Are you sure? This will delete all your files and account data.')) { alert('Delete account functionality coming soon'); }" class="btn" style="display: block; width: 100%; text-align: center; background: #ef4444; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; border: none; cursor: pointer; font-size: 0.875rem;">
+					🗑️ Delete Account Permanently
+				</button>
+			</div>
+		</div>
+	</div>
+</section>

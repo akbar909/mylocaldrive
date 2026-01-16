@@ -1,0 +1,51 @@
+<%- layout('layouts/main') %>
+
+<section style="min-height: calc(100vh - 100px); padding: 3rem 1rem;">
+	<div style="max-width: 1200px; margin: 0 auto;">
+		<!-- Hero Section -->
+		<div style="margin-bottom: 3rem;">
+			<h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Welcome back! 👋</h1>
+			<p style="color: var(--text-light); font-size: 1.1rem;">Manage your files, profile, and storage all in one place.</p>
+		</div>
+
+		<!-- Quick Stats -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+			<div style="background: var(--white); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid var(--primary-color);">
+				<p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Total Files</p>
+				<h2 style="font-size: 2rem; margin: 0;">0</h2>
+			</div>
+			<div style="background: var(--white); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid #a78bfa;">
+				<p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Storage Used</p>
+				<h2 style="font-size: 2rem; margin: 0;">0 MB</h2>
+			</div>
+			<div style="background: var(--white); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid #06b6d4;">
+				<p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Storage Limit</p>
+				<h2 style="font-size: 2rem; margin: 0;">1 GB</h2>
+			</div>
+		</div>
+
+		<!-- Quick Actions -->
+		<div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 3rem;">
+			<h3 style="margin-top: 0; margin-bottom: 1.5rem;">Quick Actions</h3>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+				<a href="/files" class="btn btn-primary" style="text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+					📁 My Files
+				</a>
+				<a href="/profile" class="btn btn-primary" style="text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+					👤 My Profile
+				</a>
+				<a href="/files#upload" class="btn btn-primary" style="text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
+					⬆️ Upload File
+				</a>
+			</div>
+		</div>
+
+		<!-- Recent Files -->
+		<div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow);">
+			<h3 style="margin-top: 0; margin-bottom: 1.5rem;">Recent Files</h3>
+			<div style="text-align: center; padding: 2rem; color: var(--text-light);">
+				<p>No files yet. <a href="/files" style="color: var(--primary-color); text-decoration: none;">Upload your first file →</a></p>
+			</div>
+		</div>
+	</div>
+</section>
