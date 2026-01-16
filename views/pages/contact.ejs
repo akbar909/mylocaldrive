@@ -1,11 +1,11 @@
 <% layout('layouts/main') %>
 
-<section class="hero">
+<section class="hero" style="background: linear-gradient(135deg, var(--primary-color) 0%, #818cf8 100%); color: var(--white); padding: 4rem 0;">
 	<div class="container">
 		<div class="hero-copy" style="text-align: center; max-width: 800px; margin: 0 auto;">
-			<div class="pill">Contact Us</div>
-			<h1>Get in Touch</h1>
-			<p>
+			<div class="pill" style="background: rgba(255,255,255,0.2); color: var(--white); border-color: rgba(255,255,255,0.3);">Contact</div>
+			<h1 style="color: var(--white); font-size: 2.5rem; margin: 1.5rem 0;">Get in Touch</h1>
+			<p style="color: rgba(255,255,255,0.9); font-size: 1.1rem;">
 				Have questions or feedback? We'd love to hear from you. Reach out to our team anytime.
 			</p>
 		</div>
@@ -14,62 +14,62 @@
 
 <section style="padding: 4rem 0;">
 	<div class="container">
-		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; margin-bottom: 4rem;">
-			<div style="text-align: center; padding: 2rem;">
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
+			<div style="text-align: center; padding: 2rem; background: var(--white); border-radius: 12px; box-shadow: var(--shadow);">
 				<div style="font-size: 2.5rem; margin-bottom: 1rem;">📧</div>
-				<h3>Email Us</h3>
-				<p style="color: var(--gray-600);">support@imeer.ai</p>
-				<p style="color: var(--gray-600);">info@imeer.ai</p>
+				<h3 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 0.75rem;">Email Us</h3>
+				<p style="color: var(--text-light); margin-bottom: 0.5rem;">support@imeer.ai</p>
+				<p style="color: var(--text-light);">info@imeer.ai</p>
 			</div>
 			
-			<div style="text-align: center; padding: 2rem;">
+			<div style="text-align: center; padding: 2rem; background: var(--white); border-radius: 12px; box-shadow: var(--shadow);">
 				<div style="font-size: 2.5rem; margin-bottom: 1rem;">💬</div>
-				<h3>Live Chat</h3>
-				<p style="color: var(--gray-600);">Available 24/7</p>
-				<p style="color: var(--gray-600);">Instant support</p>
+				<h3 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 0.75rem;">Live Chat</h3>
+				<p style="color: var(--text-light); margin-bottom: 0.5rem;">Available 24/7</p>
+				<p style="color: var(--text-light);">Instant support</p>
 			</div>
 			
-			<div style="text-align: center; padding: 2rem;">
+			<div style="text-align: center; padding: 2rem; background: var(--white); border-radius: 12px; box-shadow: var(--shadow);">
 				<div style="font-size: 2.5rem; margin-bottom: 1rem;">🌐</div>
-				<h3>Social Media</h3>
-				<p style="color: var(--gray-600);">Follow us on</p>
-				<p style="color: var(--gray-600);">Twitter, Facebook, LinkedIn</p>
+				<h3 style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 0.75rem;">Social Media</h3>
+				<p style="color: var(--text-light); margin-bottom: 0.5rem;">Follow us on</p>
+				<p style="color: var(--text-light);">Twitter, Facebook, LinkedIn</p>
 			</div>
 		</div>
 
-		<div style="max-width: 600px; margin: 0 auto; background: var(--gray-50); padding: 3rem; border-radius: 12px;">
-			<h2 style="text-align: center; margin-bottom: 2rem;">Send Us a Message</h2>
+		<div style="max-width: 600px; margin: 0 auto; background: var(--white); padding: 3rem; border-radius: 12px; box-shadow: var(--shadow);">
+			<h2 style="text-align: center; margin-bottom: 2rem; color: var(--text-dark);">Send Us a Message</h2>
 			<form style="display: flex; flex-direction: column; gap: 1.5rem;">
 				<div>
-					<label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Name</label>
-					<input type="text" placeholder="Your name" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;">
+					<label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark);">Name</label>
+					<input type="text" placeholder="Your name" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; color: var(--text-dark); background: var(--white);">
 				</div>
 				
 				<div>
-					<label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email</label>
-					<input type="email" placeholder="your.email@example.com" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;">
+					<label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark);">Email</label>
+					<input type="email" placeholder="your.email@example.com" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; color: var(--text-dark); background: var(--white);">
 				</div>
 				
 				<div>
-					<label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Subject</label>
-					<input type="text" placeholder="How can we help?" required style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem;">
+					<label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark);">Subject</label>
+					<input type="text" placeholder="How can we help?" required style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; color: var(--text-dark); background: var(--white);">
 				</div>
 				
 				<div>
-					<label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message</label>
-					<textarea placeholder="Tell us more..." required rows="5" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 1rem; resize: vertical;"></textarea>
+					<label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark);">Message</label>
+					<textarea placeholder="Tell us more..." required rows="5" style="width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; color: var(--text-dark); background: var(--white); resize: vertical;"></textarea>
 				</div>
 				
-				<button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+				<button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-weight: 600; cursor: pointer;">Send Message</button>
 			</form>
 		</div>
 	</div>
 </section>
 
-<section style="padding: 3rem 0; background: var(--gray-50); text-align: center;">
+<section style="padding: 3rem 0; background: linear-gradient(135deg, var(--primary-color) 0%, #818cf8 100%); color: var(--white); text-align: center;">
 	<div class="container">
-		<h3 style="margin-bottom: 1rem;">Need Immediate Help?</h3>
-		<p style="color: var(--gray-600); margin-bottom: 1.5rem;">Check out our help center for instant answers to common questions.</p>
-		<a href="/help" class="btn btn-outline">Visit Help Center</a>
+		<h3 style="margin-bottom: 1rem; font-size: 1.5rem;">Need Immediate Help?</h3>
+		<p style="color: rgba(255,255,255,0.9); margin-bottom: 1.5rem;">Check out our help center for instant answers to common questions.</p>
+		<a href="/help" class="btn btn-outline" style="border: 2px solid var(--white); color: var(--white); padding: 0.875rem 2rem;">Visit Help Center</a>
 	</div>
 </section>

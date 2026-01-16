@@ -1,11 +1,11 @@
 <% layout('layouts/main') %>
 
-<section class="hero">
+<section class="hero" style="background: linear-gradient(135deg, var(--primary-color) 0%, #818cf8 100%); color: var(--white); padding: 4rem 0;">
 	<div class="container">
 		<div class="hero-copy" style="text-align: center; max-width: 800px; margin: 0 auto;">
-			<div class="pill">About Us</div>
-			<h1>Building the Future of Cloud Storage</h1>
-			<p>
+			<div class="pill" style="background: rgba(255,255,255,0.2); color: var(--white); border-color: rgba(255,255,255,0.3);">About Us</div>
+			<h1 style="color: var(--white); font-size: 2.5rem; margin: 1.5rem 0;">Building the Future of Cloud Storage</h1>
+			<p style="color: rgba(255,255,255,0.9); font-size: 1.1rem;">
 				IMEER.ai is dedicated to providing secure, efficient, and user-friendly cloud storage solutions. 
 				Our mission is to make file management seamless and accessible for everyone.
 			</p>
@@ -15,34 +15,34 @@
 
 <section class="features-section" style="padding: 4rem 0;">
 	<div class="container">
-		<div class="features-grid">
-			<div class="feature-item">
-				<h3>Our Mission</h3>
-				<p>To empower individuals and teams with reliable cloud storage that prioritizes security, speed, and simplicity.</p>
+		<div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem;">
+			<div class="feature-item" style="padding: 2.5rem; background: var(--white); border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid var(--primary-color);">
+				<h3 style="font-size: 1.3rem; color: var(--text-dark); margin-bottom: 1rem;">Our Mission</h3>
+				<p style="color: var(--text-light); line-height: 1.8;">To empower individuals and teams with reliable cloud storage that prioritizes security, speed, and simplicity.</p>
 			</div>
-			<div class="feature-item">
-				<h3>Our Vision</h3>
-				<p>Creating a world where data is always accessible, secure, and easy to manage from anywhere, on any device.</p>
+			<div class="feature-item" style="padding: 2.5rem; background: var(--white); border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid #818cf8;">
+				<h3 style="font-size: 1.3rem; color: var(--text-dark); margin-bottom: 1rem;">Our Vision</h3>
+				<p style="color: var(--text-light); line-height: 1.8;">Creating a world where data is always accessible, secure, and easy to manage from anywhere, on any device.</p>
 			</div>
-			<div class="feature-item">
-				<h3>Our Values</h3>
-				<p>Privacy-first approach, user-centric design, continuous innovation, and unwavering commitment to security.</p>
+			<div class="feature-item" style="padding: 2.5rem; background: var(--white); border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid #a5b4fc;">
+				<h3 style="font-size: 1.3rem; color: var(--text-dark); margin-bottom: 1rem;">Our Values</h3>
+				<p style="color: var(--text-light); line-height: 1.8;">Privacy-first approach, user-centric design, continuous innovation, and unwavering commitment to security.</p>
 			</div>
 		</div>
 	</div>
 </section>
 
-<section style="padding: 4rem 0; background: var(--gray-50);">
+<section style="padding: 4rem 0; background: linear-gradient(135deg, var(--primary-color) 0%, #818cf8 100%); color: var(--white);">
 	<div class="container">
 		<div style="text-align: center; max-width: 600px; margin: 0 auto;">
-			<h2 style="margin-bottom: 1.5rem;">Why Choose IMEER.ai?</h2>
-			<p style="font-size: 1.1rem; color: var(--gray-600);">
+			<h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--white);">Why Choose IMEER.ai?</h2>
+			<p style="font-size: 1.1rem; color: rgba(255,255,255,0.9); margin-bottom: 2.5rem;">
 				We combine cutting-edge technology with intuitive design to deliver a cloud storage experience 
 				that's both powerful and easy to use. Your data security is our top priority.
 			</p>
-			<div class="hero-actions" style="margin-top: 2rem;">
-				<a href="/user/register" class="btn btn-primary">Get Started</a>
-				<a href="/contact" class="btn btn-outline">Contact Us</a>
+			<div class="hero-actions" style="display: flex; gap: 1rem; justify-content: center;">
+				<a href="/user/register" class="btn btn-primary" style="background: var(--white); color: var(--primary-color); font-weight: 600;">Get Started</a>
+				<a href="/contact" class="btn btn-outline" style="border: 2px solid var(--white); color: var(--white);">Contact Us</a>
 			</div>
 		</div>
 	</div>
