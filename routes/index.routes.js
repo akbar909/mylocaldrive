@@ -23,17 +23,17 @@ router.get('/contact', (req, res) => {
 
 // Dashboard route (after login)
 router.get('/dashboard', (req, res) => {
-  res.render('pages/dashboard', { title: "Dashboard - IMEER.ai" });
+  res.render('pages/dashboard', { title: "Dashboard - IMEER.ai", isLoggedIn: true });
 });
 
 // Profile page route
 router.get('/profile', (req, res) => {
-  res.render('pages/profile', { title: "Profile - IMEER.ai" });
+  res.render('pages/profile', { title: "Profile - IMEER.ai", isLoggedIn: true });
 });
 
 // Edit profile name route
 router.get('/profile/edit-name', (req, res) => {
-  res.render('pages/edit-name', { title: "Edit Profile - IMEER.ai" });
+  res.render('pages/edit-name', { title: "Edit Profile - IMEER.ai", isLoggedIn: true });
 });
 
 // Post edit profile name
@@ -44,7 +44,7 @@ router.post('/profile/edit-name', (req, res) => {
 
 // Change password route
 router.get('/profile/change-password', (req, res) => {
-  res.render('pages/change-password', { title: "Change Password - IMEER.ai" });
+  res.render('pages/change-password', { title: "Change Password - IMEER.ai", isLoggedIn: true });
 });
 
 // Post change password
@@ -55,12 +55,12 @@ router.post('/profile/change-password', (req, res) => {
 
 // Security settings route
 router.get('/profile/security', (req, res) => {
-  res.render('pages/profile', { title: "Security Settings - IMEER.ai" });
+  res.render('pages/profile', { title: "Security Settings - IMEER.ai", isLoggedIn: true });
 });
 
 // Files management route
 router.get('/files', (req, res) => {
-  res.render('pages/files', { title: "My Files - IMEER.ai" });
+  res.render('pages/files', { title: "My Files - IMEER.ai", isLoggedIn: true });
 });
 
 // Upload files route
