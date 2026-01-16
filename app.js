@@ -1,9 +1,9 @@
 // ========== DEPENDENCIES ==========
-// Random comment 1: Main application dependencies
 const express = require('express');
 const path = require('path');
 const app = express();
-const regRouter = require('./routes/index.routes');
+const regRouter = require('./routes/user.routes');
+
 const engine = require('ejs-mate');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
