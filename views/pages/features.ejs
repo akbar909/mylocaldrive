@@ -1,85 +1,123 @@
 <% layout('layouts/main') %>
 
-<section class="hero" style="background: linear-gradient(135deg, var(--primary-color) 0%, #818cf8 100%); color: var(--white); padding: 4rem 0;">
+<section class="hero">
 	<div class="container">
-		<div class="hero-copy" style="text-align: center; max-width: 800px; margin: 0 auto;">
-			<div class="pill" style="background: rgba(255,255,255,0.2); color: var(--white); border-color: rgba(255,255,255,0.3);">Features</div>
-			<h1 style="color: var(--white); font-size: 2.5rem; margin: 1.5rem 0;">Everything You Need in Cloud Storage</h1>
-			<p style="color: rgba(255,255,255,0.9); font-size: 1.1rem;">
+		<div class="hero-copy">
+			<div class="pill">Features</div>
+			<h1>Everything You Need in Cloud Storage</h1>
+			<p>
 				Discover powerful features designed to make your file management effortless and secure.
 			</p>
 		</div>
 	</div>
 </section>
 
-<section class="features-section" style="padding: 4rem 0;">
-	<div class="container">
-		<div class="features-grid">
-			<div class="feature-item">
-				<div style="font-size: 2rem; margin-bottom: 1rem;">🔒</div>
-				<h3>End-to-End Encryption</h3>
-				<p>Your files are encrypted both in transit and at rest, ensuring maximum security and privacy.</p>
+<section class="feature-band">
+	<div class="container feature-grid">
+		<div class="feature">
+			<div class="icon-badge">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+				</svg>
 			</div>
-			
-			<div class="feature-item">
-				<div style="font-size: 2rem; margin-bottom: 1rem;">🚀</div>
-				<h3>Lightning Fast</h3>
-				<p>Upload and download your files at blazing speeds with our optimized infrastructure.</p>
+			<h3>End-to-End Encryption</h3>
+			<p>Your files are encrypted both in transit and at rest, ensuring maximum security and privacy.</p>
+		</div>
+		
+		<div class="feature">
+			<div class="icon-badge">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+					<polyline points="13 2 13 9 20 9"></polyline>
+				</svg>
 			</div>
-			
-			<div class="feature-item">
-				<div style="font-size: 2rem; margin-bottom: 1rem;">📱</div>
-				<h3>Multi-Device Sync</h3>
-				<p>Access your files seamlessly across desktop, mobile, and tablet devices.</p>
+			<h3>Lightning Fast</h3>
+			<p>Upload and download your files at blazing speeds with our optimized infrastructure.</p>
+		</div>
+		
+		<div class="feature">
+			<div class="icon-badge">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="12" cy="12" r="10"></circle>
+					<path d="M2 12h20"></path>
+					<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"></path>
+					<path d="M12 2a15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0 4 10"></path>
+				</svg>
 			</div>
-			
-			<div class="feature-item">
-				<div style="font-size: 2rem; margin-bottom: 1rem;">👥</div>
-				<h3>Easy Sharing</h3>
-				<p>Share files and folders with anyone securely with customizable permissions.</p>
+			<h3>Multi-Device Sync</h3>
+			<p>Access your files seamlessly across desktop, mobile, and tablet devices.</p>
+		</div>
+		
+		<div class="feature">
+			<div class="icon-badge">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+					<polyline points="17 8 12 3 7 8"></polyline>
+					<line x1="12" y1="3" x2="12" y2="15"></line>
+				</svg>
 			</div>
-			
-			<div class="feature-item">
-				<div style="font-size: 2rem; margin-bottom: 1rem;">💾</div>
-				<h3>Generous Storage</h3>
-				<p>Start with ample free storage and upgrade as your needs grow.</p>
+			<h3>Easy Sharing</h3>
+			<p>Share files and folders with anyone securely with customizable permissions.</p>
+		</div>
+		
+		<div class="feature">
+			<div class="icon-badge">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M4 4h16v16H4z"></path>
+					<path d="M4 9h16"></path>
+					<path d="M9 20V9"></path>
+				</svg>
 			</div>
-			
-			<div class="feature-item">
-				<div style="font-size: 2rem; margin-bottom: 1rem;">🔄</div>
-				<h3>Auto Backup</h3>
-				<p>Never lose your data with automatic backup and version history.</p>
+			<h3>Generous Storage</h3>
+			<p>Start with ample free storage and upgrade as your needs grow.</p>
+		</div>
+		
+		<div class="feature">
+			<div class="icon-badge">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+					<path d="M21 3v5h-5"></path>
+					<path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+					<path d="M3 21v-5h5"></path>
+				</svg>
 			</div>
-			
-			<div class="feature-item">
-				<div style="font-size: 2rem; margin-bottom: 1rem;">🎨</div>
-				<h3>File Preview</h3>
-				<p>Preview documents, images, and videos without downloading them.</p>
+			<h3>Auto Backup</h3>
+			<p>Never lose your data with automatic backup and version history.</p>
+		</div>
+		
+		<div class="feature">
+			<div class="icon-badge">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+				</svg>
 			</div>
-			
-			<div class="feature-item">
-				<div style="font-size: 2rem; margin-bottom: 1rem;">🔍</div>
-				<h3>Smart Search</h3>
-				<p>Find your files instantly with powerful search and filtering options.</p>
+			<h3>File Preview</h3>
+			<p>Preview documents, images, and videos without downloading them.</p>
+		</div>
+		
+		<div class="feature">
+			<div class="icon-badge">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<circle cx="11" cy="11" r="8"></circle>
+					<path d="m21 21-4.35-4.35"></path>
+				</svg>
 			</div>
-			
-			<div class="feature-item">
-				<div style="font-size: 2rem; margin-bottom: 1rem;">⚡</div>
-				<h3>Real-time Collaboration</h3>
-				<p>Work together with your team in real-time with seamless collaboration tools.</p>
-			</div>
+			<h3>Smart Search</h3>
+			<p>Find your files instantly with powerful search and filtering options.</p>
 		</div>
 	</div>
 </section>
 
-<section style="padding: 4rem 0; background: linear-gradient(135deg, var(--primary-color) 0%, #818cf8 100%); color: var(--white);">
+<section class="hero">
 	<div class="container">
-		<div style="text-align: center; max-width: 600px; margin: 0 auto;">
-			<h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--white);">Ready to Experience the Difference?</h2>
-			<p style="font-size: 1.1rem; color: rgba(255,255,255,0.9); margin-bottom: 2rem;">
+		<div class="hero-copy" style="text-align: center; max-width: 600px; margin: 0 auto;">
+			<h1>Ready to Experience the Difference?</h1>
+			<p>
 				Join thousands of users who trust IMEER.ai for their cloud storage needs.
 			</p>
-			<a href="/user/register" class="btn btn-primary" style="background: var(--white); color: var(--primary-color); font-weight: 600; padding: 1rem 2.5rem;">Start Free Today</a>
+			<div class="hero-actions">
+				<a href="/user/register" class="btn btn-primary">Start Free Today</a>
+			</div>
 		</div>
 	</div>
 </section>
