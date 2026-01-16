@@ -5,7 +5,7 @@
 const getFiles = (req, res) => {
   // TODO: Fetch user files from database
   // TODO: Calculate storage usage
-  res.render('pages/files');
+  res.render('pages/files', { title: "My Files - IMEER.ai", isLoggedIn: true });
 };
 
 // Upload single file

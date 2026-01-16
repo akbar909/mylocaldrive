@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
+const dashboardController = require('../controllers/dashboard.controller');
+const profileController = require('../controllers/profile.controller');
+const fileController = require('../controllers/file.controller');
 
 // Home page route
 router.get('/', (req, res) => {
@@ -22,71 +25,22 @@ router.get('/contact', (req, res) => {
 });
 
 // Dashboard route (after login)
-router.get('/dashboard', (req, res) => {
-  res.render('pages/dashboard', { title: "Dashboard - IMEER.ai", isLoggedIn: true });
-});
+router.get('/dashboard', dashboardController.getDashboard);
 
-// Profile page route
-router.get('/profile', (req, res) => {
-  res.render('pages/profile', { title: "Profile - IMEER.ai", isLoggedIn: true });
-});
+// Profile page routes
+router.get('/profile', profileController.getProfile);
+router.get('/profile/edit-name', profileController.getEditProfileName);
+router.post('/profile/edit-name', profileController.updateProfileName);
+router.get('/profile/change-password', profileController.getChangePassword);
+router.post('/profile/change-password', profileController.changePassword);
+router.get('/profile/security', profileController.getSecuritySettings);
 
-// Edit profile name route
-router.get('/profile/edit-name', (req, res) => {
-  res.render('pages/edit-name', { title: "Edit Profile - IMEER.ai", isLoggedIn: true });
-});
-
-// Post edit profile name
-router.post('/profile/edit-name', (req, res) => {
-  // Backend functionality to be added
-  res.redirect('/profile');
-});
-
-// Change password route
-router.get('/profile/change-password', (req, res) => {
-  res.render('pages/change-password', { title: "Change Password - IMEER.ai", isLoggedIn: true });
-});
-
-// Post change password
-router.post('/profile/change-password', (req, res) => {
-  // Backend functionality to be added
-  res.redirect('/profile');
-});
-
-// Security settings route
-router.get('/profile/security', (req, res) => {
-  res.render('pages/profile', { title: "Security Settings - IMEER.ai", isLoggedIn: true });
-});
-
-// Files management route
-router.get('/files', (req, res) => {
-  res.render('pages/files', { title: "My Files - IMEER.ai", isLoggedIn: true });
-});
-
-// Upload files route
-router.post('/files/upload', (req, res) => {
-  // Backend file upload functionality to be added
-  res.redirect('/files');
-});
-
-// View file route
-router.get('/files/:fileId', (req, res) => {
-  // Backend file download functionality to be added
-});
-
-// Delete file route
-router.delete('/files/:fileId', (req, res) => {
-  // Backend file delete functionality to be added
-});
-
-// Edit file name route
-router.put('/files/:fileId/rename', (req, res) => {
-  // Backend file rename functionality to be added
-});
-
-// Share file route
-router.post('/files/:fileId/share', (req, res) => {
-  // Backend file share functionality to be added
-});
+// Files management routes
+router.get('/files', fileController.getFiles);
+router.post('/files/upload', fileController.uploadSingleFile);
+router.get('/files/:fileId', fileController.downloadFile);
+router.delete('/files/:fileId', fileController.deleteFile);
+router.put('/files/:fileId/rename', fileController.renameFile);
+router.post('/files/:fileId/share', fileController.shareFile);
 
 module.exports = router;
