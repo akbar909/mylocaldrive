@@ -5,6 +5,12 @@
         <h2 class="auth-title">Welcome Back</h2>
         <p class="auth-subtitle">Sign in to continue to MyDrive</p>
 
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <p style="color: #ef4444; margin: 0; font-size: 0.95rem;"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> <%= error %></p>
+            </div>
+        <% } %>
+
         <form id="loginForm" class="auth-form" action="/user/login" method="POST">
             <div class="form-group">
                 <label for="username" class="form-label">Username</label>

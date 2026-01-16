@@ -5,6 +5,12 @@
         <h2 class="auth-title">Create Account</h2>
         <p class="auth-subtitle">Sign up to get started with MyDrive</p>
         
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <p style="color: #ef4444; margin: 0; font-size: 0.95rem;"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> <%= error %></p>
+            </div>
+        <% } %>
+        
         <form id="registerForm" class="auth-form" action="/user/register" method="POST">
             <div class="form-group">
                 <label for="username" class="form-label">Username</label>
@@ -19,16 +25,20 @@
                 <span class="error-message" id="usernameError"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" style="position: relative;">
                 <label for="email" class="form-label">Email Address</label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    class="form-input"
-                    placeholder="Enter email"
-                    required
-                >
+                <div style="position: relative; display: flex; align-items: center;">
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input"
+                        placeholder="Enter email"
+                        required
+                        style="flex: 1; padding-right: 2.5rem;"
+                    >
+                    <span id="emailCheckIcon" style="position: absolute; right: 0.75rem; font-size: 1.2rem; display: none;"></span>
+                </div>
                 <span class="error-message" id="emailError"></span>
             </div>
 
