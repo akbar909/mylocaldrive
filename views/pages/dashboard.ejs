@@ -5,50 +5,272 @@
 		<!-- Hero Section -->
 		<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;">
 			<div>
-				<h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Welcome back! 👋</h1>
+				<h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Welcome back, <% if (user && user.firstName) { %><%= user.firstName %><% } else { %><%= user.username %><% } %>! <i class="fas fa-star" style="color: var(--primary-color);"></i></h1>
+
+		<!-- Confirm Modal -->
+		<div id="confirmModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1100; align-items: center; justify-content: center;">
+			<div style="background: #111827; padding: 1.75rem; border-radius: 12px; max-width: 420px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.55);">
+				<h3 style="margin: 0 0 0.75rem 0; color: var(--text-dark);">Please Confirm</h3>
+				<p id="confirmMessage" style="margin: 0 0 1.25rem 0; color: var(--text-light); line-height: 1.5;"></p>
+				<div style="display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap;">
+					<button id="confirmCancel" class="btn" style="padding: 0.7rem 1.4rem; background: var(--gray-700); border: none; color: white; border-radius: 8px; cursor: pointer;">Cancel</button>
+					<button id="confirmOk" class="btn btn-primary" style="padding: 0.7rem 1.4rem;">Yes, proceed</button>
+				</div>
+			</div>
+		</div>
 				<p style="color: var(--text-light); font-size: 1.1rem;">Manage your files, profile, and storage all in one place.</p>
 			</div>
-			<button onclick="location.reload()" class="btn btn-primary" style="padding: 0.75rem 1.5rem; white-space: nowrap;">🔄 Refresh</button>
+			<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+				<button onclick="window.location.href='/profile'" class="btn" style="padding: 0.75rem 1.5rem; white-space: nowrap; background: #a78bfa; border: none; color: white; border-radius: 8px; cursor: pointer;"><i class="fas fa-user-circle"></i> Profile</button>
+				<button onclick="openUploadModal()" class="btn" style="padding: 0.75rem 1.5rem; white-space: nowrap; background: #06b6d4; border: none; color: white; border-radius: 8px; cursor: pointer;"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
+				<button onclick="location.reload()" class="btn btn-primary" style="padding: 0.75rem 1.5rem; white-space: nowrap;"><i class="fas fa-sync-alt"></i> Refresh</button>
+			</div>
 		</div>
 
 		<!-- Quick Stats -->
-		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
-			<div style="background: var(--white); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid var(--primary-color);">
-				<p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Total Files</p>
-				<h2 style="font-size: 2rem; margin: 0;">0</h2>
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+			<div style="background: var(--white); padding: 1.75rem; border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid var(--primary-color);">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start;">
+					<div>
+						<p style="color: var(--text-light); font-size: 0.8rem; margin: 0 0 0.75rem 0; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;"><i class="fas fa-file" aria-hidden="true"></i> Files</p>
+						<h2 style="font-size: 2.2rem; margin: 0; font-weight: 700; color: var(--primary-color);"><%= fileCount || 0 %></h2>
+					</div>
+					<div style="background: rgba(129, 140, 248, 0.1); padding: 0.75rem; border-radius: 8px;">
+						<i class="fas fa-folder-open" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+					</div>
+				</div>
 			</div>
-			<div style="background: var(--white); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid #a78bfa;">
-				<p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Storage Used</p>
-				<h2 style="font-size: 2rem; margin: 0;">0 MB</h2>
-			</div>
-			<div style="background: var(--white); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid #06b6d4;">
-				<p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Storage Limit</p>
-				<h2 style="font-size: 2rem; margin: 0;">1 GB</h2>
-			</div>
-		</div>
 
-		<!-- Quick Actions -->
-		<div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 3rem;">
-			<h3 style="margin-top: 0; margin-bottom: 1.5rem;">Quick Actions</h3>
-			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
-				<a href="/files" class="btn btn-primary" style="text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
-					📁 My Files
-				</a>
-				<a href="/profile" class="btn btn-primary" style="text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
-					👤 My Profile
-				</a>
-				<a href="/files#upload" class="btn btn-primary" style="text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;">
-					⬆️ Upload File
-				</a>
+			<div style="background: var(--white); padding: 1.75rem; border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid #a78bfa;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start;">
+					<div>
+						<p style="color: var(--text-light); font-size: 0.8rem; margin: 0 0 0.75rem 0; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;"><i class="fas fa-chart-pie" aria-hidden="true"></i> Used</p>
+						<h2 style="font-size: 2.2rem; margin: 0; font-weight: 700; color: #a78bfa;"><%= storageUsed || 0 %></h2>
+						<p style="font-size: 0.75rem; color: var(--text-light); margin: 0.5rem 0 0 0;">of 500 MB</p>
+					</div>
+					<div style="background: rgba(167, 139, 250, 0.1); padding: 0.75rem; border-radius: 8px;">
+						<i class="fas fa-database" style="font-size: 1.5rem; color: #a78bfa;"></i>
+					</div>
+				</div>
+			</div>
+
+			<div style="background: var(--white); padding: 1.75rem; border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid #06b6d4;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start;">
+					<div>
+						<p style="color: var(--text-light); font-size: 0.8rem; margin: 0 0 0.75rem 0; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;"><i class="fas fa-tachometer-alt" aria-hidden="true"></i> Remaining</p>
+						<h2 style="font-size: 2.2rem; margin: 0; font-weight: 700; color: #06b6d4;">
+							<% 
+								const used = parseFloat(storageUsed) || 0;
+								const remaining = (500 - (used * (storageUnit === 'GB' ? 1024 : 1))).toFixed(2);
+							%>
+							<%= Math.max(0, remaining) %>
+						</h2>
+						<p style="font-size: 0.75rem; color: var(--text-light); margin: 0.5rem 0 0 0;">MB available</p>
+					</div>
+					<div style="background: rgba(6, 182, 212, 0.1); padding: 0.75rem; border-radius: 8px;">
+						<i class="fas fa-hdd" style="font-size: 1.5rem; color: #06b6d4;"></i>
+					</div>
+				</div>
 			</div>
 		</div>
 
 		<!-- Recent Files -->
 		<div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow);">
-			<h3 style="margin-top: 0; margin-bottom: 1.5rem;">Recent Files</h3>
-			<div style="text-align: center; padding: 2rem; color: var(--text-light);">
-				<p>No files yet. <a href="/files" style="color: var(--primary-color); text-decoration: none;">Upload your first file →</a></p>
+			<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+				<h3 style="margin: 0;">Recent Files</h3>
+				<a href="/files" style="color: var(--primary-color); text-decoration: none; font-size: 0.9rem;"><i class="fas fa-folder-open"></i> View All Files</a>
+			</div>
+			<% if (files && files.length > 0) { %>
+				<div style="overflow-x: auto;">
+					<table style="width: 100%; border-collapse: collapse;">
+						<thead>
+							<tr style="border-bottom: 2px solid var(--gray-200);">
+								<th style="text-align: left; padding: 1rem; color: var(--text-light); width: 50px;">#</th>
+								<th style="text-align: left; padding: 1rem; color: var(--text-light);">File Name</th>
+								<th style="text-align: left; padding: 1rem; color: var(--text-light);">Size</th>
+								<th style="text-align: left; padding: 1rem; color: var(--text-light);">Uploaded</th>
+								<th style="text-align: center; padding: 1rem; color: var(--text-light);">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% files.forEach((file, idx) => { %>
+								<tr style="border-bottom: 1px solid var(--gray-100);">
+									<td style="padding: 1rem; color: var(--text-dark); font-weight: 600;"><%= idx + 1 %></td>
+									<td style="padding: 1rem; color: var(--text-dark);">
+										<i class="fas fa-file-alt" aria-hidden="true"></i> <%= file.originalName %>
+									</td>
+									<td style="padding: 1rem; color: var(--text-dark);">
+										<% 
+											let size = file.fileSize;
+											let sizeStr = '';
+											if (size < 1024) sizeStr = size + ' B';
+											else if (size < 1024 * 1024) sizeStr = (size / 1024).toFixed(2) + ' KB';
+											else if (size < 1024 * 1024 * 1024) sizeStr = (size / (1024 * 1024)).toFixed(2) + ' MB';
+											else sizeStr = (size / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+										%>
+										<%= sizeStr %>
+									</td>
+									<td style="padding: 1rem; color: var(--text-dark);">
+										<%= new Date(file.uploadedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
+									</td>
+									<td style="padding: 1rem; text-align: center;">
+										<a href="/files/<%= file._id %>/view" target="_blank" style="color: #06b6d4; text-decoration: none; margin: 0 0.5rem;" title="View"><i class="fas fa-eye"></i></a>
+										<a href="/files/<%= file._id %>" style="color: var(--primary-color); text-decoration: none; margin: 0 0.5rem;" title="Download"><i class="fas fa-download"></i></a>
+										<button onclick="deleteFileFromDashboard('<%= file._id %>')" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1rem; margin: 0 0.5rem;" title="Delete"><i class="fas fa-trash"></i></button>
+										<button onclick="showRenameModal('<%= file._id %>', '<%= file.originalName %>')" style="background: none; border: none; color: #f59e0b; cursor: pointer; font-size: 1rem; margin: 0 0.5rem;" title="Rename"><i class="fas fa-edit"></i></button>
+										<button onclick="showShareModal('<%= file._id %>')" style="background: none; border: none; color: #10b981; cursor: pointer; font-size: 1rem; margin: 0 0.5rem;" title="Share"><i class="fas fa-share-alt"></i></button>
+									</td>
+								</tr>
+							<% }); %>
+						</tbody>
+					</table>
+				</div>
+				<div style="margin-top: 1.5rem; text-align: center;">
+					<a href="/files" class="btn btn-primary" style="display: inline-block; padding: 0.75rem 1.5rem;"><i class="fas fa-folder-open" aria-hidden="true"></i> View All Files</a>
+				</div>
+			<% } else { %>
+				<div style="text-align: center; padding: 2rem; color: var(--text-light);">
+					<p>No files yet. <a href="/files" style="color: var(--primary-color); text-decoration: none;">Upload your first file →</a></p>
+				</div>
+			<% } %>
+		</div>
+
+		<!-- Shared with you -->
+		<div style="background: var(--white); padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); margin-top: 2rem;">
+			<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+				<h3 style="margin: 0;">Shared With You</h3>
+			</div>
+			<% const sharedList = Array.isArray(typeof sharedFiles !== 'undefined' ? sharedFiles : []) ? (typeof sharedFiles !== 'undefined' ? sharedFiles : []) : []; %>
+			<% if (sharedList.length > 0) { %>
+				<div style="overflow-x: auto;">
+					<table style="width: 100%; border-collapse: collapse;">
+						<thead>
+							<tr style="border-bottom: 2px solid var(--gray-200);">
+								<th style="text-align: left; padding: 1rem; color: var(--text-light); width: 50px;">#</th>
+								<th style="text-align: left; padding: 1rem; color: var(--text-light);">File Name</th>
+								<th style="text-align: left; padding: 1rem; color: var(--text-light);">Owner</th>
+								<th style="text-align: left; padding: 1rem; color: var(--text-light);">Uploaded</th>
+								<th style="text-align: center; padding: 1rem; color: var(--text-light);">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% sharedList.forEach((file, idx) => { %>
+								<tr style="border-bottom: 1px solid var(--gray-100);">
+									<td style="padding: 1rem; color: var(--text-dark); font-weight: 600;"><%= idx + 1 %></td>
+									<td style="padding: 1rem; color: var(--text-dark);">
+										<i class="fas fa-file-alt" aria-hidden="true"></i> <%= file.originalName %>
+									</td>
+									<td style="padding: 1rem; color: var(--text-dark);">
+										<%= file.userId?.firstName || file.userId?.lastName ? `${file.userId.firstName || ''} ${file.userId.lastName || ''}`.trim() : (file.userId?.username || 'Owner') %>
+									</td>
+									<td style="padding: 1rem; color: var(--text-dark);">
+										<%= new Date(file.uploadedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
+									</td>
+									<td style="padding: 1rem; text-align: center;">
+										<a href="/files/<%= file._id %>/view" target="_blank" style="color: #06b6d4; text-decoration: none; margin: 0 0.5rem;" title="View"><i class="fas fa-eye"></i></a>
+										<a href="/files/<%= file._id %>" style="color: var(--primary-color); text-decoration: none; margin: 0 0.5rem;" title="Download"><i class="fas fa-download"></i></a>
+									</td>
+								</tr>
+							<% }); %>
+						</tbody>
+					</table>
+				</div>
+			<% } else { %>
+				<div style="text-align: center; padding: 2rem; color: var(--text-light);">
+					<p>No shared files yet.</p>
+				</div>
+			<% } %>
+		</div>
+
+	</div>
+</section>
+
+<!-- Rename Modal -->
+<div id="renameModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1001; align-items: center; justify-content: center;">
+			<div style="background: #111827; padding: 2rem; border-radius: 12px; max-width: 400px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+				<h2 style="margin-top: 0; margin-bottom: 1.5rem;"><i class="fas fa-edit"></i> Rename File</h2>
+				<input type="hidden" id="renameFileId">
+				<input type="text" id="newFileName" placeholder="New file name" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-600); border-radius: 8px; background: #1f2937; color: white; box-sizing: border-box; margin-bottom: 1.5rem;">
+				<div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap;">
+					<button onclick="document.getElementById('renameModal').style.display='none'" class="btn" style="padding: 0.75rem 1.5rem; background: var(--gray-700); border: none; color: white; border-radius: 8px; cursor: pointer;">Cancel</button>
+					<button onclick="confirmRename()" class="btn btn-primary" style="padding: 0.75rem 1.5rem;"><i class="fas fa-check"></i> Rename</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Share Modal -->
+		<div id="shareModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1001; align-items: center; justify-content: center;">
+			<div style="background: #111827; padding: 2rem; border-radius: 12px; max-width: 480px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+				<h2 style="margin-top: 0; margin-bottom: 1.5rem;"><i class="fas fa-share-alt"></i> Share File</h2>
+				<input type="hidden" id="shareFileId">
+				
+				<!-- Share with Username -->
+				<div style="margin-bottom: 1.5rem;">
+					<label style="display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.5rem; text-transform: uppercase; font-weight: 600;">Share with User</label>
+					<input type="text" id="shareUsername" placeholder="Enter username" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-600); border-radius: 8px; background: #1f2937; color: white; box-sizing: border-box;">
+				</div>
+
+				<!-- Share Link Section -->
+				<div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(129, 140, 248, 0.05); border-radius: 8px; border: 1px solid rgba(129, 140, 248, 0.2);">
+					<label style="display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.75rem; text-transform: uppercase; font-weight: 600;"><i class="fas fa-link" aria-hidden="true"></i> Share Link</label>
+					<div style="display: flex; gap: 0.5rem;">
+						<input type="text" id="shareLink" placeholder="Share link will appear here" readonly style="flex: 1; padding: 0.75rem; border: 1px solid var(--gray-600); border-radius: 6px; background: #0f172a; color: var(--text-light); font-size: 0.85rem; word-break: break-all;">
+						<button onclick="copyShareLink()" id="copyLinkBtn" style="padding: 0.75rem 1rem; background: #06b6d4; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-copy"></i> Copy</button>
+					</div>
+					<p style="margin: 0.75rem 0 0 0; font-size: 0.8rem; color: var(--text-light);">Anyone with this link can view the file</p>
+				</div>
+
+				<!-- Buttons -->
+				<div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap;">
+					<button onclick="document.getElementById('shareModal').style.display='none'" class="btn" style="padding: 0.75rem 1.5rem; background: var(--gray-700); border: none; color: white; border-radius: 8px; cursor: pointer;">Cancel</button>
+					<button onclick="confirmShare()" class="btn btn-primary" style="padding: 0.75rem 1.5rem;"><i class="fas fa-paper-plane"></i> Share</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Upload Modal -->
+		<div id="uploadModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; height: 100vh;">
+			<div style="background: #111827; padding: 2rem; border-radius: 12px; max-width: 650px; width: 90%; max-height: 85vh; box-shadow: 0 10px 40px rgba(0,0,0,0.5); overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(129, 140, 248, 0.5) transparent; display: flex; flex-direction: column;">
+				<!-- Modal Header -->
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+					<h2 style="margin: 0; font-size: 1.6rem; display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-cloud-upload-alt" aria-hidden="true"></i> Upload Files & Folders</h2>
+					<button onclick="closeUploadModal()" style="background: none; border: none; color: var(--text-light); font-size: 1.25rem; cursor: pointer;" aria-label="Close upload modal"><i class="fas fa-times"></i></button>
+				</div>
+
+				<!-- Drag & Drop Area -->
+				<div id="dropZone" style="border: 2px dashed var(--primary-color); border-radius: 10px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; margin-bottom: 1.25rem; background: rgba(129, 140, 248, 0.07);">
+					<div style="font-size: 2.25rem; margin-bottom: 0.5rem;"><i class="fas fa-cloud-upload-alt"></i></div>
+					<p style="margin: 0 0 0.35rem 0; color: var(--text-dark); font-weight: 600;">Drag files or folders here</p>
+				<p style="margin: 0; color: var(--text-light); font-size: 0.85rem; margin-bottom: 1rem;">Max 10 items | 500 MB per file</p>
+				<input type="file" id="fileInput" multiple style="display: none;">
+					<div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+						<button type="button" onclick="document.getElementById('fileInput').click()" style="padding: 0.8rem 1.6rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;"><i class="fas fa-folder-plus" aria-hidden="true"></i> Select Files or Folders</button>
+					</div>
+				</div>
+
+				<!-- File List -->
+				<div id="fileListContainer" style="display: none; margin-bottom: 1rem;">
+					<p style="color: var(--text-light); font-size: 0.9rem; margin-bottom: 0.35rem;">Selected items:</p>
+			<div id="fileList" style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 10px; max-height: 150px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(129, 140, 248, 0.5) transparent;"></div>
+				<div id="progressContainer" style="display: none; margin-bottom: 1rem;">
+					<div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem; align-items: center;">
+						<span id="uploadStatus" style="color: var(--text-light); font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem;"><i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Uploading...</span>
+						<span id="progressPercent" style="color: var(--text-light); font-size: 0.9rem;">0%</span>
+					</div>
+					<div style="background: rgba(255,255,255,0.06); height: 8px; border-radius: 4px; overflow: hidden;">
+						<div id="progressBar" style="background: linear-gradient(90deg, var(--primary-color), #06b6d4); height: 100%; width: 0%; transition: width 0.3s ease;"></div>
+					</div>
+				</div>
+
+				<!-- Modal Buttons -->
+				<div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap; margin-top: 1rem;">
+					<button id="cancelUploadBtn" class="btn" style="padding: 0.75rem 1.5rem; background: #6b7280; border: 1px solid #4b5563; color: white; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.background='#5a6370'" onmouseout="this.style.background='#6b7280'">Cancel</button>
+					<button id="uploadBtn" onclick="uploadFiles()" class="btn btn-primary" style="padding: 0.75rem 1.5rem; display: none;"><i class="fas fa-upload"></i> Upload</button>
+				</div>
 			</div>
 		</div>
 	</div>
+	
+	<script src="/js/dashboard-upload.js"></script>
+	<script src="/js/dashboard-file-ops.js"></script>
 </section>
