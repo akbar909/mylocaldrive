@@ -1,0 +1,97 @@
+const mongoose = require('mongoose');
+
+const FileSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+      index: true
+    },
+    fileName: {
+      type: String,
+      required: true
+    },
+    originalName: {
+      type: String,
+      required: true
+    },
+    mimeType: {
+      type: String,
+      required: true
+    },
+    fileSize: {
+      type: Number,
+      required: true // in bytes
+    },
+    filePath: {
+      type: String,
+      required: false,
+      default: null
+    },
+    r2Key: {
+      type: String,
+      required: false,
+      default: null,
+      index: true
+    },
+    bucket: {
+      type: String
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+      index: true
+    },
+    deletedAt: {
+      type: Date
+    },
+    deletedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    uploadedAt: {
+      type: Date,
+      default: Date.now,
+      index: true
+    },
+    isShared: {
+      type: Boolean,
+      default: false
+    },
+    sharedWith: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    ],
+    shareCode: {
+      type: String,
+      unique: true,
+      sparse: true,
+      index: true
+    },
+    shareCodeCreatedAt: {
+      type: Date
+    }
+  },
+  { timestamps: true }
+);
+
+// Delete all files when user is deleted
+FileSchema.post('findByIdAndDelete', async function(result) {
+  if (result) {
+    await this.model('File').deleteMany({ userId: result._id });
+  }
+});
+
+// Pre-delete hook for cascade delete
+FileSchema.pre('deleteMany', async function() {
+  const query = this.getFilter();
+  if (query.userId) {
+    const files = await this.model.find({ userId: query.userId });
+    // Files array contains docs to be deleted
+  }
+});
+
+module.exports = mongoose.model('File', FileSchema);
