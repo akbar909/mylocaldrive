@@ -435,3 +435,47 @@
 		});
 	}
 })();
+
+// File Details Modal
+window.showFileDetails = (fileId, fileName, fileSize, uploadDate) => {
+	const modal = document.getElementById('fileDetailsModal');
+	const fileNameEl = document.getElementById('detailFileName');
+	const fileSizeEl = document.getElementById('detailFileSize');
+	const uploadDateEl = document.getElementById('detailUploadDate');
+	const tagsEl = document.getElementById('detailTags');
+
+	if (fileNameEl) fileNameEl.textContent = fileName;
+	
+	if (fileSizeEl) {
+		let sizeStr = '';
+		if (fileSize < 1024) sizeStr = fileSize + ' B';
+		else if (fileSize < 1024 * 1024) sizeStr = (fileSize / 1024).toFixed(2) + ' KB';
+		else if (fileSize < 1024 * 1024 * 1024) sizeStr = (fileSize / (1024 * 1024)).toFixed(2) + ' MB';
+		else sizeStr = (fileSize / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+		fileSizeEl.textContent = sizeStr;
+	}
+	
+	if (uploadDateEl) {
+		const date = new Date(uploadDate);
+		uploadDateEl.textContent = date.toLocaleDateString('en-US', { 
+			year: 'numeric', 
+			month: 'long', 
+			day: 'numeric', 
+			hour: '2-digit', 
+			minute: '2-digit' 
+		});
+	}
+	
+	if (tagsEl) {
+		tagsEl.innerHTML = '<span style="color: var(--text-light); font-size: 0.875rem;">No tags added yet</span>';
+	}
+	
+	if (modal) modal.style.display = 'flex';
+};
+
+// Sorting Handler
+window.handleSort = (sortValue) => {
+	const currentPage = new URLSearchParams(window.location.search).get('page') || '1';
+	window.location.href = `/files?sort=${sortValue}&page=1`;
+};
+

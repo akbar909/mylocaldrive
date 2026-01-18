@@ -46,14 +46,30 @@ const storageReady = () => Boolean(BUCKET && process.env.R2_ENDPOINT && process.
 
 async function getFiles(req, res, next) {
 	try {
-		const [files, trashedFiles, user] = await Promise.all([
-			File.find({ userId: req.user.id, isDeleted: false }).sort({ uploadedAt: -1 }),
+		const { sort = 'date', page = 1, limit = 10 } = req.query;
+		const pageNum = Math.max(1, parseInt(page) || 1);
+		const pageLimit = Math.min(50, Math.max(5, parseInt(limit) || 10));
+		const skip = (pageNum - 1) * pageLimit;
+
+		// Build sort object based on query parameter
+		let sortObj = { uploadedAt: -1 }; // default: newest first
+		if (sort === 'name') sortObj = { originalName: 1 };
+		else if (sort === 'size') sortObj = { fileSize: -1 };
+		else if (sort === 'oldest') sortObj = { uploadedAt: 1 };
+
+		const [files, trashedFiles, user, totalFiles] = await Promise.all([
+			File.find({ userId: req.user.id, isDeleted: false })
+				.sort(sortObj)
+				.skip(skip)
+				.limit(pageLimit),
 			File.find({ userId: req.user.id, isDeleted: true }).sort({ deletedAt: -1 }),
-			User.findById(req.user.id).select('-password')
+			User.findById(req.user.id).select('-password'),
+			File.countDocuments({ userId: req.user.id, isDeleted: false })
 		]);
 
 		const totalSize = files.reduce((sum, file) => sum + file.fileSize, 0);
 		const { storageUsed, storageUnit } = formatStorage(totalSize);
+		const totalPages = Math.ceil(totalFiles / pageLimit);
 
 		res.render('pages/files', {
 			title: 'My Files',
@@ -63,7 +79,16 @@ async function getFiles(req, res, next) {
 			storageUnit,
 			storageBytes: totalSize,
 			fileCount: files.length,
-			user
+			user,
+			pagination: {
+				currentPage: pageNum,
+				totalPages,
+				totalFiles,
+				pageLimit,
+				hasNextPage: pageNum < totalPages,
+				hasPrevPage: pageNum > 1
+			},
+			currentSort: sort
 		});
 	} catch (err) {
 		console.error('Error fetching files:', err);
@@ -187,10 +212,6 @@ async function downloadFile(req, res, next) {
 		}
 	} catch (err) {
 		console.error('Error downloading file:', err);
-		next(err);
-	}
-}
-
 		next(err);
 	}
 }

@@ -74,6 +74,11 @@ const FileSchema = new mongoose.Schema(
     },
     shareCodeCreatedAt: {
       type: Date
+    },
+    tags: {
+      type: [String],
+      default: [],
+      index: true
     }
   },
   { timestamps: true }
