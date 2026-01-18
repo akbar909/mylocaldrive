@@ -17,6 +17,9 @@ coverage/
 dist/
 build/
 
+# User file uploads
+uploads/
+
 # OS / Editor junk
 .DS_Store
 Thumbs.db
