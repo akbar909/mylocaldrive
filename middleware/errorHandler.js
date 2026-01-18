@@ -11,21 +11,42 @@ const notFoundHandler = (req, res, next) => {
 // ========== ERROR HANDLER ==========
 const errorHandler = (err, req, res, next) => {
   const status = err.status || 500;
-  const message = err.message || 'Internal server error';
+  
+  // Sanitize error message - don't leak sensitive info in production
+  let message = err.message || 'An error occurred';
+  let details = err.details || null;
+  
+  // In production, don't reveal technical details
+  if (process.env.NODE_ENV === 'production' && status === 500) {
+    message = 'Internal Server Error';
+    details = 'An unexpected error occurred. Our team has been notified.';
+    // Log actual error for debugging
+    console.error('Server Error:', {
+      timestamp: new Date().toISOString(),
+      status,
+      message: err.message,
+      stack: err.stack,
+      path: req.path,
+      method: req.method
+    });
+  }
+  
   try {
     return res.status(status).render('errors/error', {
-      title: err.title || 'Something went wrong',
+      title: err.title || (status === 500 ? 'Server Error' : 'Error'),
       status,
       message,
-      details: err.details,
+      details,
     });
   } catch (renderErr) {
+    // Fallback JSON response
     return res.status(status).json({ 
       status, 
-      message,
-      details: err.details 
+      message: process.env.NODE_ENV === 'production' && status === 500 ? 'Internal Server Error' : message,
+      ...(process.env.NODE_ENV !== 'production' && { details })
     });
   }
 };
 
 module.exports = { notFoundHandler, errorHandler };
+

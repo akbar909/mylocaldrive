@@ -84,6 +84,12 @@ const FileSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Create composite indexes for common queries
+FileSchema.index({ userId: 1, isDeleted: 1 }); // For finding user files
+FileSchema.index({ userId: 1, uploadedAt: -1 }); // For sorting user files by date
+FileSchema.index({ userId: 1, isDeleted: 1, uploadedAt: -1 }); // For paginated queries
+FileSchema.index({ shareCode: 1, isDeleted: 1 }); // For public share access
+
 // Delete all files when user is deleted
 FileSchema.post('findByIdAndDelete', async function(result) {
   if (result) {

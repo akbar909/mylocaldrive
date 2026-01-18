@@ -26,16 +26,19 @@ const getDashboard = async (req, res, next) => {
     // Fetch user's files for recent files section (top 10)
     const files = await File.find({ userId: req.user.id, isDeleted: false })
       .sort({ uploadedAt: -1 })
-      .limit(10);
+      .limit(10)
+      .lean();
 
     // Fetch files shared with the user
     const sharedFiles = await File.find({ sharedWith: req.user.id, isDeleted: false })
       .sort({ uploadedAt: -1 })
       .limit(10)
-      .populate('userId', 'username firstName lastName');
+      .populate('userId', 'username firstName lastName')
+      .lean();
     
     // Calculate storage stats
-    const allFiles = await File.find({ userId: req.user.id, isDeleted: false });
+    const allFiles = await File.find({ userId: req.user.id, isDeleted: false })
+      .lean();
     const totalSize = allFiles.reduce((sum, file) => sum + file.fileSize, 0);
     const { storageUsed, storageUnit } = formatStorage(totalSize);
 

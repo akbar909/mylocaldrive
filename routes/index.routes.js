@@ -6,6 +6,7 @@ const fileController = require('../controllers/file.controller');
 const contactController = require('../controllers/contact.controller');
 const statsController = require('../controllers/stats.controller');
 const { requireAuth } = require('../middleware/auth');
+const { uploadLimiter, apiLimiter } = require('../middleware/rateLimiter');
 const upload = require('../config/multer');
 
 // Home page route
@@ -47,7 +48,7 @@ router.post('/profile/delete-account', requireAuth, profileController.deleteAcco
 
 // Files management routes
 router.get('/files', requireAuth, fileController.getFiles);
-router.post('/files/upload', requireAuth, upload.array('files', 10), fileController.uploadMultipleFiles);
+router.post('/files/upload', requireAuth, uploadLimiter, upload.array('files', 10), fileController.uploadMultipleFiles);
 router.get('/files/:fileId', requireAuth, fileController.downloadFile);
 router.delete('/files/:fileId', requireAuth, fileController.deleteFile);
 router.post('/files/:fileId/restore', requireAuth, fileController.restoreFile);
@@ -57,7 +58,7 @@ router.post('/files/:fileId/share', requireAuth, fileController.shareFile);
 router.post('/files/:fileId/generate-share-link', requireAuth, fileController.generateShareLink);
 
 // Stats API route
-router.get('/api/stats', statsController.getPlatformStats);
+router.get('/api/stats', apiLimiter, statsController.getPlatformStats);
 
 // Public share link route
 router.get('/share/:shareCode', fileController.accessSharedFile);

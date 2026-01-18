@@ -61,8 +61,11 @@ async function getFiles(req, res, next) {
 			File.find({ userId: req.user.id, isDeleted: false })
 				.sort(sortObj)
 				.skip(skip)
-				.limit(pageLimit),
-			File.find({ userId: req.user.id, isDeleted: true }).sort({ deletedAt: -1 }),
+				.limit(pageLimit)
+				.lean(),
+			File.find({ userId: req.user.id, isDeleted: true })
+				.sort({ deletedAt: -1 })
+				.lean(),
 			User.findById(req.user.id).select('-password'),
 			File.countDocuments({ userId: req.user.id, isDeleted: false })
 		]);

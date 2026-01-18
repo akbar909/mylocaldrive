@@ -6,6 +6,10 @@ dotenv.config();
 const express = require('express');
 const path = require('path');
 const app = express();
+const helmet = require('helmet');
+const compression = require('compression');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 const regRouter = require('./routes/user.routes');
 const indexRouter = require('./routes/index.routes');
 const engine = require('ejs-mate');
@@ -17,12 +21,55 @@ app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 app.set("views", path.join(__dirname, "views"));
 
+// ========== SECURITY MIDDLEWARE ==========
+// Helmet: Set security HTTP headers
+app.use(helmet({
+	contentSecurityPolicy: {
+		directives: {
+			defaultSrc: ["'self'"],
+			scriptSrc: ["'self'", "'unsafe-inline'", 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com'],
+			styleSrc: ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com', 'cdn.jsdelivr.net'],
+			fontSrc: ["'self'", 'cdnjs.cloudflare.com'],
+			imgSrc: ["'self'", 'data:', 'https:'],
+			connectSrc: ["'self'"]
+		}
+	},
+	hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
+	frameguard: { action: 'deny' },
+	referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
+}));
+
+// Compression: Enable gzip compression
+app.use(compression());
+
+// Data Sanitization: Against NoSQL injection
+app.use(mongoSanitize());
+
+// Data Sanitization: Against XSS
+app.use(xss());
+
 // ========== STATIC FILES & MIDDLEWARE ==========
-app.use(express.static(path.join(__dirname, "public")));
-app.use('/uploads', express.static(path.join(__dirname, "uploads")));
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.static(path.join(__dirname, "public"), { maxAge: '1d' }));
+app.use('/uploads', express.static(path.join(__dirname, "uploads"), { maxAge: '7d' }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
+
+// ========== CACHING MIDDLEWARE ==========
+// Set cache headers for different content types
+app.use((req, res, next) => {
+	// No cache for dynamic content (pages, APIs)
+	if (req.path.includes('/api') || req.path.includes('/files') || req.path.includes('/dashboard') || req.path.includes('/profile')) {
+		res.set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
+		res.set('Pragma', 'no-cache');
+		res.set('Expires', '0');
+	}
+	// Cache static assets for 1 day
+	else if (req.path.includes('/css') || req.path.includes('/js') || req.path.includes('/public')) {
+		res.set('Cache-Control', 'public, max-age=86400'); // 1 day
+	}
+	next();
+});
 
 // ========== AUTH STATUS MIDDLEWARE ==========
 // Check if user is logged in and pass to all views
