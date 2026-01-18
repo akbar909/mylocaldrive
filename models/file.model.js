@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// File model schema for storing file metadata and tracking file operations
 const FileSchema = new mongoose.Schema(
   {
     userId: {
