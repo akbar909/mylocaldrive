@@ -34,7 +34,7 @@ npm run dev
 
 The application will run on `http://localhost:3000`
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ├── app.js                 # Express application setup
