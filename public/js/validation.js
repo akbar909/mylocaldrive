@@ -1,5 +1,7 @@
 (function() {
-    // Client-side form validation utilities
+    // Client-side form validation utilities for registration and login forms
+    
+    // Display error message and apply error styling to input field
     function showError(input, errorElement, message) {
         input.classList.add('input-error');
         input.classList.remove('input-success');
