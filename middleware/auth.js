@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET || "dev-change-me"; 
 
 function signToken(userId) {
-  return jwt.sign({ sub: userId }, JWT_SECRET, { expiresIn: "1h" });
+  return jwt.sign({ sub: userId }, JWT_SECRET, { expiresIn: "30d" });
 }
 
 function requireAuth(req, res, next) {

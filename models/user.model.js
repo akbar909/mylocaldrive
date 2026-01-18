@@ -29,9 +29,26 @@ const userSchema = new mongoose.Schema({
         maxlength: [128, 'Password cannot exceed 128 characters'],
         trim: true,
     },
+    firstName: {
+        type: String,
+        default: ''
+    },
+    lastName: {
+        type: String,
+        default: ''
+    },
     createdAt: {
         type: Date,
         default: Date.now
     }
 });
+
+// Cascade delete - delete all files when user is deleted
+userSchema.post('findByIdAndDelete', async function(doc) {
+    if (doc) {
+        const File = require('./file.model');
+        await File.deleteMany({ userId: doc._id });
+    }
+});
+
 module.exports = mongoose.model('User', userSchema);

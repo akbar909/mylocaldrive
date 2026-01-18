@@ -44,12 +44,10 @@ const loginValidationRules = () => {
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).render("errors/error", {
-      title: "Validation Error",
-      status: 400,
-      message: "Validation Error",
-      errors: errors.array()
-    });
+    const errorMessages = errors.array().map(err => err.msg).join(', ');
+    const isLoginPage = req.path.includes('login');
+    const redirectUrl = isLoginPage ? '/user/login' : '/user/register';
+    return res.redirect(`${redirectUrl}?error=${encodeURIComponent(errorMessages)}`);
   }
   next();
 };
