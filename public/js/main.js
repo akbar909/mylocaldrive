@@ -1,5 +1,4 @@
-// Mobile Menu Toggle
-// Main application initialization
+// Main application initialization and mobile menu handler
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu functionality
     const mobileMenuToggle = document.getElementById('mobileMenuToggle');
