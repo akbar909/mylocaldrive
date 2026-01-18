@@ -1,8 +1,8 @@
-// Stats Controller - Real platform statistics
+// Stats Controller - Real platform statistics endpoint
 const User = require('../models/user.model');
 const File = require('../models/file.model');
 
-// Get platform stats
+// Get platform stats - returns aggregated user, file, and storage metrics
 const getPlatformStats = async (req, res, next) => {
   try {
     // Get total users
