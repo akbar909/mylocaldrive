@@ -1,4 +1,4 @@
-// Contact Form Handler
+// Contact Form Handler - Handles form submission to Web3Forms API
 document.addEventListener('DOMContentLoaded', function() {
 	const form = document.getElementById('contactForm');
 	if (!form) return;
