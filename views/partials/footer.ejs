@@ -9,7 +9,7 @@
                         <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
                         <polyline points="13 2 13 9 20 9"></polyline>
                     </svg>
-                    <span>MyDrive</span>
+                    <span>IMEER.ai</span>
                 </div>
                 <p class="footer-description">
                     Secure cloud storage solution for all your files. Store, share, and access your data anywhere, anytime.
@@ -46,25 +46,47 @@
             <div class="footer-column">
                 <h3 class="footer-title">Quick Links</h3>
                 <ul class="footer-links">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/features">Features</a></li>
-                    <li><a href="/contact">Contact</a></li>
+                    <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
+                        <li><a href="/dashboard">Dashboard</a></li>
+                        <li><a href="/files">My Files</a></li>
+                        <li><a href="/profile">Profile</a></li>
+                    <% } else { %>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/features">Features</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    <% } %>
                 </ul>
             </div>
+
+            <!-- Info Pages (for logged in users) or Support (for guests) -->
+            <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
+                <div class="footer-column">
+                    <h3 class="footer-title">Information</h3>
+                    <ul class="footer-links">
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/features">Features</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+            <% } %>
 
             <!-- Support -->
             <div class="footer-column">
                 <h3 class="footer-title">Support</h3>
                 <ul class="footer-links">
-                    <li><a href="/user/register">Sign Up</a></li>
-                    <li><a href="/user/login">Sign In</a></li>
+                    <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
+                        <li><a href="/user/logout">Logout</a></li>
+                    <% } else { %>
+                        <li><a href="/user/register">Sign Up</a></li>
+                        <li><a href="/user/login">Sign In</a></li>
+                    <% } %>
                 </ul>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; <%= new Date().getFullYear() %> MyDrive. All rights reserved.</p>
+            <p>&copy; <%= new Date().getFullYear() %> IMEER.ai. All rights reserved.</p>
         </div>
     </div>
 </footer>

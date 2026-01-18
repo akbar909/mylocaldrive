@@ -7,17 +7,55 @@
     <title><%= title || 'My Drive' %></title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2'><path d='M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z'/><polyline points='13 2 13 9 20 9'/></svg>">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
 
   <body>
 
   <%- include('../partials/header') %>
+  
+  <!-- Flash Messages -->
+  <% if (success) { %>
+  <div id="flashMessage" style="position: fixed; top: 80px; right: 20px; z-index: 10000; background: #111827; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.55); border-left: 4px solid #10b981; max-width: 400px; animation: slideIn 0.3s ease-out;">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.25rem;"></i>
+      <p style="margin: 0; color: var(--text-dark); flex: 1;"><%= success %></p>
+      <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: var(--text-light); cursor: pointer; font-size: 1.25rem; padding: 0;">&times;</button>
+    </div>
+  </div>
+  <% } %>
+  
+  <% if (error) { %>
+  <div id="flashMessage" style="position: fixed; top: 80px; right: 20px; z-index: 10000; background: #111827; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.55); border-left: 4px solid #ef4444; max-width: 400px; animation: slideIn 0.3s ease-out;">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <i class="fas fa-exclamation-circle" style="color: #ef4444; font-size: 1.25rem;"></i>
+      <p style="margin: 0; color: var(--text-dark); flex: 1;"><%= error %></p>
+      <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: var(--text-light); cursor: pointer; font-size: 1.25rem; padding: 0;">&times;</button>
+    </div>
+  </div>
+  <% } %>
+  
   <main>
     <%- body %>
   </main>
 
   <%- include('../partials/footer') %>
 
+  <script src="/js/custom-modal.js"></script>
+  <script src="/js/floating-upload.js"></script>
   <script src="/js/main.js"></script>
+  
+  <!-- Auto-dismiss flash messages -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const flashMessage = document.getElementById('flashMessage');
+      if (flashMessage) {
+        setTimeout(() => {
+          flashMessage.style.animation = 'slideIn 0.3s ease-out reverse';
+          setTimeout(() => flashMessage.remove(), 300);
+        }, 5000);
+      }
+    });
+  </script>
 </body>
 </html>

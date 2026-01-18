@@ -20,13 +20,13 @@ document.addEventListener('DOMContentLoaded', function() {
     password.addEventListener('input', handlePassword);
 
     form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
         const isUsernameValid = handleUsername();
         const isPasswordValid = handlePassword();
 
-        if (isUsernameValid && isPasswordValid) {
-            form.submit();
+        if (!isUsernameValid || !isPasswordValid) {
+            e.preventDefault();
+            return false;
         }
+        // Let the form submit naturally if validation passes
     });
 });

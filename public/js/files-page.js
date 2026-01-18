@@ -42,20 +42,6 @@
 		)).join('');
 	};
 
-	const traverseFileTree = (item) => {
-		if (item.isFile) {
-			item.file((file) => {
-				selectedFiles.push(file);
-				updateFileList();
-			});
-		} else if (item.isDirectory) {
-			const dirReader = item.createReader();
-			dirReader.readEntries((entries) => {
-				entries.forEach((entry) => traverseFileTree(entry));
-			});
-		}
-	};
-
 	// Drag and drop
 	if (dropZone) {
 		dropZone.addEventListener('dragover', (e) => {
@@ -73,17 +59,8 @@
 			e.preventDefault();
 			dropZone.style.background = 'rgba(129, 140, 248, 0.05)';
 			dropZone.style.borderColor = 'var(--primary-color)';
-			const items = e.dataTransfer.items;
-
-			if (items) {
-				for (let i = 0; i < items.length; i++) {
-					const entry = items[i].webkitGetAsEntry();
-					if (entry) traverseFileTree(entry);
-				}
-			} else {
-				selectedFiles = Array.from(e.dataTransfer.files);
-				updateFileList();
-			}
+			selectedFiles = Array.from(e.dataTransfer.files || []);
+			updateFileList();
 		});
 	}
 
@@ -137,19 +114,21 @@
 
 	// Delete
 	const confirmAction = async (message) => {
-		if (!confirmModal || !confirmMessage || !confirmOk || !confirmCancel) {
-			return await showConfirm(message);
+		if (!confirmModal || !confirmMessageEl || !confirmOkBtn || !confirmCancelBtn) {
+			return window.confirm(message);
 		}
-		confirmMessageEl.textContent = message;
-		confirmModal.style.display = 'flex';
-		const cleanup = () => {
-			confirmModal.style.display = 'none';
-			confirmOkBtn.onclick = null;
-			confirmCancelBtn.onclick = null;
-		};
-		confirmOkBtn.onclick = () => { cleanup(); resolve(true); };
-		confirmCancelBtn.onclick = () => { cleanup(); resolve(false); };
-	});
+		return new Promise((resolve) => {
+			confirmMessageEl.textContent = message;
+			confirmModal.style.display = 'flex';
+			const cleanup = () => {
+				confirmModal.style.display = 'none';
+				confirmOkBtn.onclick = null;
+				confirmCancelBtn.onclick = null;
+			};
+			confirmOkBtn.onclick = () => { cleanup(); resolve(true); };
+			confirmCancelBtn.onclick = () => { cleanup(); resolve(false); };
+		});
+	};
 
 	window.deleteFile = async (fileId) => {
 		if (!fileId) return;
@@ -207,6 +186,64 @@
 				console.error('Permanent delete error:', err);
 				showError('Failed to delete file permanently');
 			});
+	};
+
+	// View File
+	let currentViewFileId = null;
+	window.viewFile = (fileId, mimeType, fileName) => {
+		if (!fileId) return;
+		currentViewFileId = fileId;
+		const viewerModal = document.getElementById('fileViewerModal');
+		const viewerFrame = document.getElementById('fileViewerFrame');
+		const viewerImage = document.getElementById('fileViewerImage');
+		const viewerStatus = document.getElementById('fileViewerStatus');
+
+		if (!viewerModal) return;
+
+		if (viewerStatus) {
+			viewerStatus.textContent = 'Loading preview...';
+			viewerStatus.style.display = 'flex';
+		}
+
+		const isImage = mimeType && mimeType.startsWith('image/');
+		const isPdf = mimeType === 'application/pdf' || (fileName && fileName.toLowerCase().endsWith('.pdf'));
+
+		if (viewerImage) viewerImage.style.display = 'none';
+		if (viewerFrame) viewerFrame.style.display = 'none';
+
+		if (isImage && viewerImage) {
+			viewerImage.onload = () => { if (viewerStatus) viewerStatus.style.display = 'none'; };
+			viewerImage.onerror = () => { if (viewerStatus) viewerStatus.textContent = 'Preview unavailable. Try downloading instead.'; };
+			viewerImage.src = `/files/${fileId}/view`;
+			viewerImage.style.display = 'block';
+		} else if (viewerFrame) {
+			viewerFrame.onload = () => { if (viewerStatus) viewerStatus.style.display = 'none'; };
+			viewerFrame.onerror = () => { if (viewerStatus) viewerStatus.textContent = 'Preview unavailable. Try downloading instead.'; };
+			viewerFrame.src = `/files/${fileId}/view${isPdf ? '#toolbar=0' : ''}`;
+			viewerFrame.style.display = 'block';
+		}
+
+		viewerModal.style.display = 'flex';
+	};
+
+	// Close viewer on overlay click or ESC
+	const viewerModalEl = document.getElementById('fileViewerModal');
+	if (viewerModalEl) {
+		viewerModalEl.addEventListener('click', (e) => {
+			if (e.target === viewerModalEl) viewerModalEl.style.display = 'none';
+		});
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && viewerModalEl.style.display === 'flex') {
+				viewerModalEl.style.display = 'none';
+			}
+		});
+	}
+
+	window.downloadViewerFile = () => {
+		if (!currentViewFileId) return;
+		const link = document.createElement('a');
+		link.href = `/files/${currentViewFileId}`;
+		link.click();
 	};
 
 	// Rename
@@ -354,6 +391,100 @@
 			if (e.key === 'Enter') window.confirmRename();
 		});
 	}
+		// Bulk Trash Operations
+		window.toggleSelectAllTrash = () => {
+			const selectAllCheckbox = document.getElementById('selectAllTrash');
+			const trashCheckboxes = document.querySelectorAll('.trashCheckbox');
+			trashCheckboxes.forEach(checkbox => {
+				checkbox.checked = selectAllCheckbox.checked;
+			});
+			updateTrashSelection();
+		};
+
+		window.updateTrashSelection = () => {
+			const trashCheckboxes = document.querySelectorAll('.trashCheckbox:checked');
+			const selectAllCheckbox = document.getElementById('selectAllTrash');
+			const countEl = document.getElementById('trashSelectedCount');
+			const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
+			const bulkRestoreBtn = document.getElementById('bulkRestoreBtn');
+
+			const count = trashCheckboxes.length;
+			if (countEl) countEl.textContent = count + ' selected';
+
+			// Update select all checkbox state
+			const totalCheckboxes = document.querySelectorAll('.trashCheckbox').length;
+			if (selectAllCheckbox) {
+				selectAllCheckbox.checked = count === totalCheckboxes && totalCheckboxes > 0;
+				selectAllCheckbox.indeterminate = count > 0 && count < totalCheckboxes;
+			}
+
+			// Show/hide bulk action buttons
+			if (bulkDeleteBtn) bulkDeleteBtn.style.display = count > 0 ? 'block' : 'none';
+			if (bulkRestoreBtn) bulkRestoreBtn.style.display = count > 0 ? 'block' : 'none';
+		};
+
+		window.bulkDeleteTrash = async () => {
+			const trashCheckboxes = document.querySelectorAll('.trashCheckbox:checked');
+			if (trashCheckboxes.length === 0) {
+				showError('Please select files to delete');
+				return;
+			}
+
+			const ok = await confirmAction(`Permanently delete ${trashCheckboxes.length} file(s)? This cannot be undone.`);
+			if (!ok) return;
+
+			const fileIds = Array.from(trashCheckboxes).map(cb => cb.value);
+			let deletedCount = 0;
+
+			for (const fileId of fileIds) {
+				try {
+					const res = await fetch(`/files/${fileId}/permanent`, { method: 'DELETE' });
+					const data = await res.json();
+					if (data.success) {
+						deletedCount++;
+					}
+				} catch (err) {
+					console.error('Error deleting file:', err);
+				}
+			}
+
+			if (deletedCount > 0) {
+				showSuccess(`${deletedCount} file(s) permanently deleted`);
+				setTimeout(() => location.reload(), 1500);
+			} else {
+				showError('Failed to delete selected files');
+			}
+		};
+
+		window.bulkRestoreTrash = async () => {
+			const trashCheckboxes = document.querySelectorAll('.trashCheckbox:checked');
+			if (trashCheckboxes.length === 0) {
+				showError('Please select files to restore');
+				return;
+			}
+
+			const fileIds = Array.from(trashCheckboxes).map(cb => cb.value);
+			let restoredCount = 0;
+
+			for (const fileId of fileIds) {
+				try {
+					const res = await fetch(`/files/${fileId}/restore`, { method: 'POST' });
+					const data = await res.json();
+					if (data.success) {
+						restoredCount++;
+					}
+				} catch (err) {
+					console.error('Error restoring file:', err);
+				}
+			}
+
+			if (restoredCount > 0) {
+				showSuccess(`${restoredCount} file(s) restored successfully`);
+				setTimeout(() => location.reload(), 1500);
+			} else {
+				showError('Failed to restore selected files');
+			}
+		};
 
 	const shareUsernameInput = document.getElementById('shareUsername');
 	if (shareUsernameInput) {

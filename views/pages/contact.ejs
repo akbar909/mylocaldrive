@@ -55,13 +55,40 @@
 				</div>
 			</div>
 			
-			<!-- Right side - CTA card -->
+			<!-- Right side - Contact Form for logged in or CTA for guests -->
 			<div style="background: var(--white); padding: 2.5rem; border-radius: 12px; box-shadow: var(--shadow); border-left: 4px solid var(--primary-color);">
-				<h3 style="margin-bottom: 1rem;">Ready to get started?</h3>
-				<p style="color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.6;">
-					Create your account and start using IMEER.ai today. Simple, secure, and ready when you are.
-				</p>
-				<a href="/user/register" class="btn btn-primary" style="width: 100%; text-align: center; display: inline-block;">Create account</a>
+				<% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
+					<!-- Contact Form for logged in users -->
+					<h3 style="margin-bottom: 1rem;"><i class="fas fa-envelope"></i> Send us a message</h3>
+					
+					<form id="contactForm" style="display: flex; flex-direction: column; gap: 1rem;">
+						<input type="hidden" name="access_key" value="2ad96b88-adb7-489c-85fb-b9e5a0004a2c">
+						<input type="hidden" name="to_email" value="abbaszameer@example.com">
+						
+						<div>
+							<label style="display: block; color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase;">Subject</label>
+							<input type="text" name="subject" placeholder="What is this about?" style="width: 100%; padding: 0.75rem; border: 2px solid var(--primary-color); border-radius: 8px; background: rgba(129, 140, 248, 0.05); color: var(--text-dark); box-sizing: border-box; font-size: 1rem;" required>
+						</div>
+						
+						<div>
+							<label style="display: block; color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase;">Message</label>
+							<textarea name="message" placeholder="Tell us more..." style="width: 100%; padding: 0.75rem; border: 2px solid var(--primary-color); border-radius: 8px; background: rgba(129, 140, 248, 0.05); color: var(--text-dark); box-sizing: border-box; min-height: 120px; resize: vertical; font-size: 1rem; font-family: inherit;" required></textarea>
+						</div>
+						
+						<button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; text-align: center;">
+							<i class="fas fa-paper-plane"></i> Send Message
+						</button>
+					</form>
+					
+					<script src="/js/contact-form.js"></script>
+				<% } else { %>
+					<!-- CTA Card for guests -->
+					<h3 style="margin-bottom: 1rem;">Ready to get started?</h3>
+					<p style="color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.6;">
+						Create your account and start using IMEER.ai today. Simple, secure, and ready when you are.
+					</p>
+					<a href="/user/register" class="btn btn-primary" style="width: 100%; text-align: center; display: inline-block;">Create account</a>
+				<% } %>
 			</div>
 		</div>
 	</div>

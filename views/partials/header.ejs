@@ -23,13 +23,21 @@
 
             <div class="nav-menu" id="navMenu">
                 <ul class="nav-links">
-                    <li><a href="/" class="nav-link">Home</a></li>
-                    <li><a href="/about" class="nav-link">About</a></li>
-                    <li><a href="/features" class="nav-link">Features</a></li>
-                    <li><a href="/contact" class="nav-link">Contact</a></li>
+                    <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
+                        <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+                        <li><a href="/files" class="nav-link">My Files</a></li>
+                        <li><a href="/profile" class="nav-link">Profile</a></li>
+                    <% } else { %>
+                        <li><a href="/" class="nav-link">Home</a></li>
+                        <li><a href="/about" class="nav-link">About</a></li>
+                        <li><a href="/features" class="nav-link">Features</a></li>
+                        <li><a href="/contact" class="nav-link">Contact</a></li>
+                    <% } %>
                 </ul>
                 <div class="nav-actions">
-                    <% if (typeof currentPage === 'undefined' || (currentPage !== 'login' && currentPage !== 'register')) { %>
+                    <% if (typeof isLoggedIn !== 'undefined' && isLoggedIn) { %>
+                        <a href="/user/logout" class="btn btn-outline">Logout</a>
+                    <% } else if (typeof currentPage === 'undefined' || (currentPage !== 'login' && currentPage !== 'register')) { %>
                         <a href="/user/login" class="btn btn-outline">Login</a>
                         <a href="/user/register" class="btn btn-primary">Sign Up</a>
                     <% } %>

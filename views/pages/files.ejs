@@ -35,7 +35,7 @@
 									</td>
 									<td style="padding: 1rem; color: var(--text-dark);">
 										<% 
-											let size = file.fileSize;
+											let size = file.fileSize; 
 											let sizeStr = '';
 											if (size < 1024) sizeStr = size + ' B';
 											else if (size < 1024 * 1024) sizeStr = (size / 1024).toFixed(2) + ' KB';
@@ -47,7 +47,7 @@
 									<td style="padding: 1rem; color: var(--text-dark);">
 										<%= new Date(file.uploadedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %>
 									</td>
-									<td style="padding: 1rem; text-align: center;">									<a href="/files/<%= file._id %>/view" target="_blank" style="color: #06b6d4; text-decoration: none; margin: 0 0.5rem;" title="View"><i class="fas fa-eye"></i></a>										<a href="/files/<%= file._id %>" style="color: var(--primary-color); text-decoration: none; margin: 0 0.5rem;" title="Download"><i class="fas fa-download"></i></a>
+									<td style="padding: 1rem; text-align: center;">									<a href="javascript:void(0)" onclick="viewFile('<%= file._id %>', <%- JSON.stringify(file.mimeType) %>, <%- JSON.stringify(file.originalName) %>)" style="color: #06b6d4; text-decoration: none; margin: 0 0.5rem; cursor: pointer;" title="View"><i class="fas fa-eye"></i></a>										<a href="/files/<%= file._id %>" style="color: var(--primary-color); text-decoration: none; margin: 0 0.5rem;" title="Download"><i class="fas fa-download"></i></a>
 										<button onclick="deleteFile('<%= file._id %>')" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1rem; margin: 0 0.5rem;" title="Delete"><i class="fas fa-trash"></i></button>
 										<button onclick="showRenameModal('<%= file._id %>', '<%= file.originalName %>')" style="background: none; border: none; color: #f59e0b; cursor: pointer; font-size: 1rem; margin: 0 0.5rem;" title="Rename"><i class="fas fa-edit"></i></button>
 										<button onclick="showShareModal('<%= file._id %>')" style="background: none; border: none; color: #10b981; cursor: pointer; font-size: 1rem; margin: 0 0.5rem;" title="Share"><i class="fas fa-share-alt"></i></button>
@@ -73,10 +73,26 @@
 				<p style="margin: 0; color: var(--text-light); font-size: 0.9rem;">Files stay here until permanently deleted.</p>
 			</div>
 			<% if (trashedFiles && trashedFiles.length > 0) { %>
+				<!-- Bulk Actions -->
+				<div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: rgba(129, 140, 248, 0.05); border-radius: 8px; align-items: center; flex-wrap: wrap;">
+					<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; margin: 0;">
+						<input type="checkbox" id="selectAllTrash" onchange="toggleSelectAllTrash()" style="width: 18px; height: 18px; cursor: pointer;">
+						<span style="color: var(--text-dark); font-weight: 500;">Select All</span>
+					</label>
+					<span id="trashSelectedCount" style="color: var(--text-light); font-size: 0.9rem; margin-left: auto;">0 selected</span>
+					<button id="bulkDeleteBtn" onclick="bulkDeleteTrash()" class="btn" style="padding: 0.5rem 1rem; background: #ef4444; border: none; color: white; border-radius: 8px; cursor: pointer; display: none;">
+						<i class="fas fa-trash-alt"></i> Delete Selected
+					</button>
+					<button id="bulkRestoreBtn" onclick="bulkRestoreTrash()" class="btn" style="padding: 0.5rem 1rem; background: #10b981; border: none; color: white; border-radius: 8px; cursor: pointer; display: none;">
+						<i class="fas fa-undo"></i> Restore Selected
+					</button>
+				</div>
+
 				<div style="overflow-x: auto;">
 					<table style="width: 100%; border-collapse: collapse;">
 						<thead>
 							<tr style="border-bottom: 2px solid var(--gray-200);">
+								<th style="text-align: center; padding: 1rem; color: var(--text-light); width: 50px;"><i class="fas fa-check-square"></i></th>
 								<th style="text-align: left; padding: 1rem; color: var(--text-light);">File Name</th>
 								<th style="text-align: left; padding: 1rem; color: var(--text-light);">Size</th>
 								<th style="text-align: left; padding: 1rem; color: var(--text-light);">Deleted</th>
@@ -86,6 +102,9 @@
 						<tbody>
 							<% trashedFiles.forEach(file => { %>
 								<tr style="border-bottom: 1px solid var(--gray-100);">
+																		<td style="padding: 1rem; text-align: center;">
+																			<input type="checkbox" class="trashCheckbox" value="<%= file._id %>" onchange="updateTrashSelection()" style="width: 18px; height: 18px; cursor: pointer;">
+																		</td>
 									<td style="padding: 1rem; color: var(--text-dark);">
 										<i class="fas fa-trash" style="margin-right: 0.5rem; color: #ef4444;"></i><%= file.originalName %>
 									</td>
@@ -137,11 +156,11 @@
 		<!-- Drag & Drop Area -->
 		<div id="dropZone" style="border: 2px dashed var(--primary-color); border-radius: 8px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; margin-bottom: 1.5rem; background: rgba(129, 140, 248, 0.05);">
 			<div style="font-size: 2rem; margin-bottom: 0.5rem;"><i class="fas fa-cloud-upload-alt"></i></div>
-			<p style="margin: 0 0 0.5rem 0; color: var(--text-dark); font-weight: 500;">Drag files/folders here or click to select</p>
+			<p style="margin: 0 0 0.5rem 0; color: var(--text-dark); font-weight: 500;">Drag files here or click to select</p>
 			<p style="margin: 0; color: var(--text-light); font-size: 0.875rem;">Max 10 items | 500 MB per file</p>
 			<input type="file" id="fileInput" multiple style="display: none;">
 			<div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: center;">
-				<button type="button" onclick="document.getElementById('fileInput').click()" style="padding: 0.5rem 1rem; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">Select Files or Folders</button>
+				<button type="button" onclick="document.getElementById('fileInput').click()" style="padding: 0.5rem 1rem; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">Select Files</button>
 			</div>
 		</div>
 
@@ -164,7 +183,7 @@
 
 		<!-- Modal Buttons -->
 		<div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap;">
-			<button onclick="document.getElementById('uploadModal').style.display='none'" class="btn" style="padding: 0.75rem 1.5rem; background: var(--gray-700); border: none; color: white; border-radius: 8px; cursor: pointer;">Cancel</button>
+			<button onclick="cancelUpload()" class="btn" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-light); border-radius: 8px; cursor: pointer;">Cancel</button>
 			<button id="uploadBtn" onclick="uploadFiles()" class="btn btn-primary" style="padding: 0.75rem 1.5rem; display: none;"><i class="fas fa-upload"></i> Upload</button>
 		</div>
 	</div>
@@ -209,6 +228,23 @@
 		<div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap;">
 			<button onclick="document.getElementById('shareModal').style.display='none'" class="btn" style="padding: 0.75rem 1.5rem; background: var(--gray-700); border: none; color: white; border-radius: 8px; cursor: pointer;">Cancel</button>
 			<button onclick="confirmShare()" class="btn btn-primary" style="padding: 0.75rem 1.5rem;"><i class="fas fa-paper-plane"></i> Share</button>
+		</div>
+	</div>
+</div>
+
+<!-- File Viewer Modal -->
+<div id="fileViewerModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 1050; align-items: center; justify-content: center; z-index: 1050;">
+	<div style="background: #1a1f35; padding: 1rem; border-radius: 12px; max-width: 95vw; max-height: 95vh; width: 100%; height: 100%; display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.7);">
+		<!-- Header -->
+		<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(129, 140, 248, 0.2); padding-bottom: 1rem;">
+			<h3 style="margin: 0; font-size: 1.25rem;"><i class="fas fa-file-pdf"></i> File Viewer</h3>
+				<button onclick="downloadViewerFile()" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;"><i class="fas fa-download"></i> Download</button>
+		</div>
+		<!-- Viewer -->
+			<div style="flex: 1; overflow: hidden; border-radius: 8px; background: rgba(0,0,0,0.3); position: relative; display: flex; align-items: center; justify-content: center;">
+				<div id="fileViewerStatus" style="position: absolute; inset: 0; display: none; align-items: center; justify-content: center; color: var(--text-light); font-weight: 600; background: rgba(26,31,53,0.85); z-index: 1; text-align: center; padding: 1rem;">Loading preview...</div>
+				<img id="fileViewerImage" alt="Preview" style="max-width: 100%; max-height: 100%; border-radius: 8px; display: none; object-fit: contain; background: #0b1224;" />
+				<iframe id="fileViewerFrame" style="width: 100%; height: 100%; border: none; border-radius: 8px; display: none;"></iframe>
 		</div>
 	</div>
 </div>

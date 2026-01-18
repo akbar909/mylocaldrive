@@ -3,6 +3,10 @@ const router = express.Router({ mergeParams: true });
 const dashboardController = require('../controllers/dashboard.controller');
 const profileController = require('../controllers/profile.controller');
 const fileController = require('../controllers/file.controller');
+const contactController = require('../controllers/contact.controller');
+const statsController = require('../controllers/stats.controller');
+const { requireAuth } = require('../middleware/auth');
+const upload = require('../config/multer');
 
 // Home page route
 router.get('/', (req, res) => {
@@ -21,26 +25,42 @@ router.get('/features', (req, res) => {
 
 // Contact page route
 router.get('/contact', (req, res) => {
-  res.render('pages/contact', { title: "Contact Us - IMEER.ai" });
+  res.render('pages/contact', { 
+    title: "Contact Us - IMEER.ai",
+    user: res.locals.user || null
+  });
 });
 
+// Contact form submission
+router.post('/contact/send', requireAuth, contactController.sendContactMessage);
+
 // Dashboard route (after login)
-router.get('/dashboard', dashboardController.getDashboard);
+router.get('/dashboard', requireAuth, dashboardController.getDashboard);
 
 // Profile page routes
-router.get('/profile', profileController.getProfile);
-router.get('/profile/edit-name', profileController.getEditProfileName);
-router.post('/profile/edit-name', profileController.updateProfileName);
-router.get('/profile/change-password', profileController.getChangePassword);
-router.post('/profile/change-password', profileController.changePassword);
-router.get('/profile/security', profileController.getSecuritySettings);
+router.get('/profile', requireAuth, profileController.getProfile);
+router.get('/profile/edit-name', requireAuth, profileController.getEditProfileName);
+router.post('/profile/edit-name', requireAuth, profileController.updateProfileName);
+router.get('/profile/change-password', requireAuth, profileController.getChangePassword);
+router.post('/profile/change-password', requireAuth, profileController.changePassword);
+router.post('/profile/delete-account', requireAuth, profileController.deleteAccount);
 
 // Files management routes
-router.get('/files', fileController.getFiles);
-router.post('/files/upload', fileController.uploadSingleFile);
-router.get('/files/:fileId', fileController.downloadFile);
-router.delete('/files/:fileId', fileController.deleteFile);
-router.put('/files/:fileId/rename', fileController.renameFile);
-router.post('/files/:fileId/share', fileController.shareFile);
+router.get('/files', requireAuth, fileController.getFiles);
+router.post('/files/upload', requireAuth, upload.array('files', 10), fileController.uploadMultipleFiles);
+router.get('/files/:fileId/view', requireAuth, fileController.viewFile);
+router.get('/files/:fileId', requireAuth, fileController.downloadFile);
+router.delete('/files/:fileId', requireAuth, fileController.deleteFile);
+router.post('/files/:fileId/restore', requireAuth, fileController.restoreFile);
+router.delete('/files/:fileId/permanent', requireAuth, fileController.deleteForever);
+router.put('/files/:fileId/rename', requireAuth, fileController.renameFile);
+router.post('/files/:fileId/share', requireAuth, fileController.shareFile);
+router.post('/files/:fileId/generate-share-link', requireAuth, fileController.generateShareLink);
+
+// Stats API route
+router.get('/api/stats', statsController.getPlatformStats);
+
+// Public share link route
+router.get('/share/:shareCode', fileController.accessSharedFile);
 
 module.exports = router;

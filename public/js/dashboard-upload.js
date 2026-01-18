@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (progressContainer) progressContainer.style.display = 'none';
 		if (progressBar) progressBar.style.width = '0%';
 		if (progressPercent) progressPercent.textContent = '0%';
-		if (uploadStatus) uploadStatus.textContent = 'Ready to upload any files or folders.';
+		if (uploadStatus) uploadStatus.textContent = 'Ready to upload files.';
 		if (progressInterval) clearInterval(progressInterval);
 	}
 
@@ -84,20 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		}).join('');
 	}
 
-	function traverseFileTree(item) {
-		if (item.isFile) {
-			item.file(file => {
-				selectedFiles.push(file);
-				updateFileList();
-			});
-		} else if (item.isDirectory) {
-			const reader = item.createReader();
-			reader.readEntries(entries => {
-				entries.forEach(entry => traverseFileTree(entry));
-			});
-		}
-	}
-
 	function handleFiles(fileArray) {
 		selectedFiles = fileArray;
 		updateFileList();
@@ -121,15 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			e.preventDefault();
 			dropZone.style.background = 'rgba(129, 140, 248, 0.05)';
 			dropZone.style.borderColor = 'var(--primary-color)';
-			const items = e.dataTransfer.items;
-			if (items) {
-				for (let i = 0; i < items.length; i++) {
-					const item = items[i].webkitGetAsEntry();
-					if (item) traverseFileTree(item);
-				}
-			} else {
-				handleFiles(Array.from(e.dataTransfer.files));
-			}
+			handleFiles(Array.from(e.dataTransfer.files || []));
 		});
 	}
 
@@ -146,6 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			showError('Please select files to upload');
 			return;
 		}
+
+		console.log('Starting upload of', selectedFiles.length, 'files');
 
 		// Calculate total upload size
 		const totalSize = selectedFiles.reduce((sum, file) => sum + (file.fileSize || file.size), 0);
@@ -167,6 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		uploadBtn.disabled = true;
 		uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+		
+		// Close upload modal
+		if (uploadModal) uploadModal.style.display = 'none';
 		
 		// Show floating widget immediately
 		showFloatingUpload(selectedFiles[0].name, selectedFiles.length);
@@ -200,10 +183,19 @@ document.addEventListener('DOMContentLoaded', () => {
 			method: 'POST',
 			body: formData
 		})
-		.then(res => res.json())
-		.then(data => {
+		.then(async res => {
+			const data = await res.json();
 			clearInterval(progressInterval);
 			if (window.uploadCancelled) return;
+			
+			if (!res.ok) {
+				// Handle HTTP error responses
+				hideFloatingUpload();
+				showError(data.error || `Upload failed with status ${res.status}`);
+				uploadBtn.disabled = false;
+				uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Upload';
+				return;
+			}
 			
 			updateFloatingProgress(
 				selectedFiles[totalFiles - 1].name,
@@ -218,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					location.reload();
 				} else {
 					hideFloatingUpload();
-					showError(data.error);
+					showError(data.error || 'Upload failed - no error message');
 					uploadBtn.disabled = false;
 					uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Upload';
 				}
@@ -232,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 			console.error('Upload error:', err);
 			hideFloatingUpload();
-			showError('Upload failed');
+			showError(`Upload failed: ${err.message || 'Network error'}`);
 			uploadBtn.disabled = false;
 			uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Upload';
 		});
