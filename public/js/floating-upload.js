@@ -1,6 +1,6 @@
-// Floating Upload Progress Widget
+// Floating Upload Progress Widget - Displays real-time file upload progress in corner overlay
 (function() {
-	// Create floating widget HTML
+	// Create floating widget HTML - Builds the collapsible progress widget DOM structure
 	function createFloatingWidget() {
 		if (document.getElementById('floatingUploadWidget')) return;
 		
