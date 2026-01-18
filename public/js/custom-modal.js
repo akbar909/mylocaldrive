@@ -1,8 +1,8 @@
-// Custom Modal System - Reusable for Error, Success, and Confirmation
+// Custom Modal System - Reusable modal dialogs for alerts and confirmations
 (function() {
 	let confirmResolve = null;
 
-	// Create modal HTML if not exists
+	// Create modal HTML if not exists - initializes modal structures in DOM
 	function createModals() {
 		if (document.getElementById('customModal')) return;
 		
