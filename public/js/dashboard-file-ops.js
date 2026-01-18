@@ -42,67 +42,6 @@ async function deleteFileFromDashboard(fileId) {
 	.catch(err => console.error('Delete error:', err));
 }
 
-// View File in Modal
-let currentViewFileId = null;
-function viewFile(fileId, mimeType, fileName) {
-	if (!fileId) return;
-	currentViewFileId = fileId;
-	const viewerModal = document.getElementById('fileViewerModal');
-	const viewerFrame = document.getElementById('fileViewerFrame');
-	const viewerImage = document.getElementById('fileViewerImage');
-	const viewerStatus = document.getElementById('fileViewerStatus');
-
-	if (!viewerModal) {
-		window.open(`/files/${fileId}/view`, '_blank');
-		return;
-	}
-
-	if (viewerStatus) {
-		viewerStatus.textContent = 'Loading preview...';
-		viewerStatus.style.display = 'flex';
-	}
-
-	const isImage = mimeType && mimeType.startsWith('image/');
-	const isPdf = mimeType === 'application/pdf' || (fileName && fileName.toLowerCase().endsWith('.pdf'));
-
-	if (viewerImage) viewerImage.style.display = 'none';
-	if (viewerFrame) viewerFrame.style.display = 'none';
-
-	if (isImage && viewerImage) {
-		viewerImage.onload = () => { if (viewerStatus) viewerStatus.style.display = 'none'; };
-		viewerImage.onerror = () => { if (viewerStatus) viewerStatus.textContent = 'Preview unavailable. Try downloading instead.'; };
-		viewerImage.src = `/files/${fileId}/view`;
-		viewerImage.style.display = 'block';
-	} else if (viewerFrame) {
-		viewerFrame.onload = () => { if (viewerStatus) viewerStatus.style.display = 'none'; };
-		viewerFrame.onerror = () => { if (viewerStatus) viewerStatus.textContent = 'Preview unavailable. Try downloading instead.'; };
-		viewerFrame.src = `/files/${fileId}/view${isPdf ? '#toolbar=0' : ''}`;
-		viewerFrame.style.display = 'block';
-	}
-
-	viewerModal.style.display = 'flex';
-}
-
-// Close viewer on overlay click or ESC
-const viewerModalEl = document.getElementById('fileViewerModal');
-if (viewerModalEl) {
-	viewerModalEl.addEventListener('click', (e) => {
-		if (e.target === viewerModalEl) viewerModalEl.style.display = 'none';
-	});
-	document.addEventListener('keydown', (e) => {
-		if (e.key === 'Escape' && viewerModalEl.style.display === 'flex') {
-			viewerModalEl.style.display = 'none';
-		}
-	});
-}
-
-function downloadViewerFile() {
-	if (!currentViewFileId) return;
-	const link = document.createElement('a');
-	link.href = `/files/${currentViewFileId}`;
-	link.click();
-}
-
 function showRenameModal(fileId, fileName) {
 	document.getElementById('renameFileId').value = fileId;
 	document.getElementById('newFileName').value = fileName;

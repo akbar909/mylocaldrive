@@ -48,7 +48,6 @@ router.post('/profile/delete-account', requireAuth, profileController.deleteAcco
 // Files management routes
 router.get('/files', requireAuth, fileController.getFiles);
 router.post('/files/upload', requireAuth, upload.array('files', 10), fileController.uploadMultipleFiles);
-router.get('/files/:fileId/view', requireAuth, fileController.viewFile);
 router.get('/files/:fileId', requireAuth, fileController.downloadFile);
 router.delete('/files/:fileId', requireAuth, fileController.deleteFile);
 router.post('/files/:fileId/restore', requireAuth, fileController.restoreFile);

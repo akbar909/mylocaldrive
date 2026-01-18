@@ -191,52 +191,6 @@ async function downloadFile(req, res, next) {
 	}
 }
 
-async function viewFile(req, res, next) {
-	try {
-		const fileId = req.params.fileId;
-		const userId = req.user.id;
-		
-		const file = await File.findById(fileId);
-
-		if (!file || file.isDeleted) {
-			console.error(`[VIEW] File not found - ID: ${fileId}`);
-			return res.status(404).json({ error: 'File not found' });
-		}
-
-		if (!canAccessFile(file, userId)) {
-			console.error(`[VIEW] Access denied - User: ${userId}, File Owner: ${file.userId}`);
-			return res.status(403).json({ error: 'You do not have access to view this file' });
-		}
-
-		if (!file.r2Key) {
-			if (file.filePath && fs.existsSync(file.filePath)) {
-				res.setHeader('Content-Type', file.mimeType || 'application/octet-stream');
-				res.setHeader('Content-Disposition', `inline; filename="${encodeURIComponent(file.originalName)}"`);
-				const stream = fs.createReadStream(file.filePath);
-				return stream.pipe(res);
-			}
-			console.error(`[VIEW] File missing - r2Key not set for ${fileId}`);
-			return res.status(404).json({ error: 'File missing from storage' });
-		}
-
-		const bucket = file.bucket || BUCKET;
-		console.log(`[VIEW] Starting view - File: ${file.originalName}, Size: ${file.fileSize}`);
-
-		try {
-			const result = await r2.send(new GetObjectCommand({ Bucket: bucket, Key: file.r2Key }));
-			res.setHeader('Content-Type', file.mimeType || result.ContentType || 'application/octet-stream');
-			if (result.ContentLength) res.setHeader('Content-Length', result.ContentLength);
-			res.setHeader('Content-Disposition', `inline; filename="${encodeURIComponent(file.originalName)}"`);
-			result.Body.pipe(res);
-		} catch (storageErr) {
-			console.error(`[VIEW] R2 Error:`, storageErr.message);
-			if (storageErr?.$metadata?.httpStatusCode === 404) {
-				return res.status(404).json({ error: 'File missing from storage' });
-			}
-			throw storageErr;
-		}
-	} catch (err) {
-		console.error('Error viewing file:', err);
 		next(err);
 	}
 }
@@ -488,7 +442,6 @@ module.exports = {
 	getFiles,
 	uploadMultipleFiles,
 	downloadFile,
-	viewFile,
 	deleteFile,
 	restoreFile,
 	deleteForever,
