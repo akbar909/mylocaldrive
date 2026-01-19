@@ -8,13 +8,12 @@ const path = require('path');
 const app = express();
 const helmet = require('helmet');
 const compression = require('compression');
-const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
 const regRouter = require('./routes/user.routes');
 const indexRouter = require('./routes/index.routes');
 const engine = require('ejs-mate');
 const cookieParser = require('cookie-parser');
 const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
+const { sanitizeRequest } = require('./middleware/sanitize');
 
 // ========== VIEW ENGINE CONFIGURATION ==========
 app.engine('ejs', engine);
@@ -42,11 +41,8 @@ app.use(helmet({
 // Compression: Enable gzip compression
 app.use(compression());
 
-// Data Sanitization: Against NoSQL injection
-app.use(mongoSanitize());
-
-// Data Sanitization: Against XSS
-app.use(xss());
+// Data Sanitization: Against NoSQL injection + XSS (Express 5 safe)
+app.use(sanitizeRequest);
 
 // ========== STATIC FILES & MIDDLEWARE ==========
 app.use(express.static(path.join(__dirname, "public"), { maxAge: '1d' }));

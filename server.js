@@ -27,12 +27,12 @@ const startServer = async () => {
     
     const server = app.listen(PORT, () => {
       console.log(`
-╔════════════════════════════════════════╗
-║   IMEER.ai Cloud Storage Server        ║
+╔═══════════════════════════════════════════╗
+║   IMEER.ai Cloud Storage Server           ║
 ║   Environment: ${process.env.NODE_ENV.padEnd(27)}║
-║   Port: ${PORT.toString().padEnd(33)}║
-║   Security: ✓ Enabled                  ║
-╚════════════════════════════════════════╝
+║   Port: ${PORT.toString().padEnd(33)} ║
+║   Security: ✓ Enabled                     ║
+╚═══════════════════════════════════════════╝
       `);
     });
 

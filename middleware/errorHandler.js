@@ -10,17 +10,18 @@ const notFoundHandler = (req, res, next) => {
 
 // ========== ERROR HANDLER ==========
 const errorHandler = (err, req, res, next) => {
-  const status = err.status || 500;
-  
-  // Sanitize error message - don't leak sensitive info in production
-  let message = err.message || 'An error occurred';
-  let details = err.details || null;
-  
-  // In production, don't reveal technical details
-  if (process.env.NODE_ENV === 'production' && status === 500) {
-    message = 'Internal Server Error';
-    details = 'An unexpected error occurred. Our team has been notified.';
-    // Log actual error for debugging
+  const status = Number.isInteger(err.status) ? err.status : 500;
+  const isServerError = status >= 500;
+  const wantsJson = req.originalUrl.startsWith('/api') || (req.headers.accept && req.headers.accept.includes('application/json'));
+
+  // Always keep user-facing text minimal
+  const message = isServerError
+    ? 'Something went wrong. Please try again.'
+    : (err.publicMessage || err.message || 'Request could not be completed.');
+  const details = isServerError ? null : err.details || null;
+
+  // Log technical details for troubleshooting without exposing them to clients
+  if (isServerError) {
     console.error('Server Error:', {
       timestamp: new Date().toISOString(),
       status,
@@ -31,6 +32,11 @@ const errorHandler = (err, req, res, next) => {
     });
   }
   
+  // Respond with JSON for API requests, otherwise render error page
+  if (wantsJson) {
+    return res.status(status).json({ status, message, ...(details ? { details } : {}) });
+  }
+
   try {
     return res.status(status).render('errors/error', {
       title: err.title || (status === 500 ? 'Server Error' : 'Error'),
@@ -40,11 +46,7 @@ const errorHandler = (err, req, res, next) => {
     });
   } catch (renderErr) {
     // Fallback JSON response
-    return res.status(status).json({ 
-      status, 
-      message: process.env.NODE_ENV === 'production' && status === 500 ? 'Internal Server Error' : message,
-      ...(process.env.NODE_ENV !== 'production' && { details })
-    });
+    return res.status(status).json({ status, message, ...(details ? { details } : {}) });
   }
 };
 
