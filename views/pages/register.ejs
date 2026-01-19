@@ -4,13 +4,19 @@
     <div class="auth-card">
         <h2 class="auth-title">Create Account</h2>
         <p class="auth-subtitle">Sign up to get started with MyDrive</p>
-        
-        <% if (typeof error !== 'undefined' && error) { %>
+        <% 
+            const errorText = (typeof error !== 'undefined' && error) ? error : '';
+            const errLower = errorText ? errorText.toLowerCase() : '';
+            const usernameErr = errorText && errLower.includes('username') && (errLower.includes('exist') || errLower.includes('invalid') || errLower.includes('require'));
+            const emailErr = errorText && errLower.includes('email') && (errLower.includes('exist') || errLower.includes('invalid') || errLower.includes('require'));
+            const generalError = errorText && !usernameErr && !emailErr;
+        %>
+        <% if (generalError) { %>
             <div class="error-alert">
-                <p><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> <%= error %></p>
+                <p><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> <%= errorText %></p>
             </div>
         <% } %>
-        
+
         <form id="registerForm" class="auth-form" action="/user/register" method="POST">
             <div class="form-group">
                 <label for="username" class="form-label">Username</label>
@@ -18,11 +24,11 @@
                     type="text" 
                     id="username" 
                     name="username" 
-                    class="form-input"
+                    class="form-input <%= usernameErr ? 'input-error' : '' %>"
                     placeholder="Enter username"
                     required
                 >
-                <span class="error-message" id="usernameError"></span>
+                <span class="error-message" id="usernameError"><%= usernameErr ? errorText : '' %></span>
             </div>
 
             <div class="form-group" style="position: relative;">
@@ -32,26 +38,30 @@
                         type="email" 
                         id="email" 
                         name="email" 
-                        class="form-input"
+                        class="form-input <%= emailErr ? 'input-error' : '' %>"
                         placeholder="Enter email"
                         required
                         style="flex: 1; padding-right: 2.5rem;"
                     >
                     <span id="emailCheckIcon" style="position: absolute; right: 0.75rem; font-size: 1.2rem; display: none;"></span>
                 </div>
-                <span class="error-message" id="emailError"></span>
+                <span class="error-message" id="emailError"><%= emailErr ? errorText : '' %></span>
             </div>
 
             <div class="form-group">
                 <label for="password" class="form-label">Password</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    class="form-input"
-                    placeholder="Enter password"
-                    required
-                >
+                <div style="position: relative; display: inline-block; width: 100%;">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input"
+                        placeholder="Enter password"
+                        required
+                        style="width: 100%; padding-right: 2.5rem;"
+                    >
+                    <i class="fas fa-eye toggle-password" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #9ca3af; z-index: 10;"></i>
+                </div>
                 <span class="error-message" id="passwordError"></span>
             </div>
 
@@ -68,3 +78,20 @@
 
 <script src="/js/validation.js"></script>
 <script src="/js/register.js"></script>
+<script>
+// Password visibility toggle
+document.querySelectorAll('.toggle-password').forEach(icon => {
+    icon.addEventListener('click', function() {
+        const input = this.previousElementSibling;
+        if (input.type === 'password') {
+            input.type = 'text';
+            this.classList.remove('fa-eye');
+            this.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            this.classList.remove('fa-eye-slash');
+            this.classList.add('fa-eye');
+        }
+    });
+});
+</script>
