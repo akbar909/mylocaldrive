@@ -8,6 +8,7 @@ const path = require('path');
 const app = express();
 const helmet = require('helmet');
 const compression = require('compression');
+const session = require('express-session');
 const regRouter = require('./routes/user.routes');
 const indexRouter = require('./routes/index.routes');
 const engine = require('ejs-mate');
@@ -50,6 +51,18 @@ app.use('/uploads', express.static(path.join(__dirname, "uploads"), { maxAge: '7
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
+
+// Session middleware for temporary data storage
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'dev-session-secret-change-me',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: false,
+    maxAge: 10 * 60 * 1000 // 10 minutes
+  }
+}));
 
 // ========== CACHING MIDDLEWARE ==========
 // Set cache headers for different content types
