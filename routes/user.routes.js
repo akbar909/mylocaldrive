@@ -26,5 +26,18 @@ router.get("/logout", authController.logout);
 // Check if email exists
 router.get("/check-email", authController.checkEmail);
 
+// Forgot password routes
+router.get("/forgot-password", authController.getForgotPassword);
+router.post("/forgot-password", authLimiter, authController.postForgotPassword);
+
+// OTP verification routes
+router.get("/verify-otp", authController.getVerifyOTP);
+router.post("/verify-otp", authController.postVerifyOTP);
+router.post("/resend-otp", authController.resendOTP);
+
+// Reset password routes
+router.get("/reset-password", authController.getResetPassword);
+router.post("/reset-password", authController.postResetPassword);
+
 module.exports = router;
 
