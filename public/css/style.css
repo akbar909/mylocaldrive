@@ -523,49 +523,49 @@ main {
     background: var(--white);
     border-radius: 12px;
     box-shadow: var(--shadow-lg);
-    padding: 1.5rem;
-    max-width: 360px;
+    padding: 1.75rem;
+    max-width: 400px;
     width: 100%;
 }
 
 .auth-title {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-dark);
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.25rem;
     text-align: center;
 }
 
 .auth-subtitle {
     color: var(--text-light);
     text-align: center;
-    margin-bottom: 1.2rem;
-    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
 }
 
 .auth-form {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1rem;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.35rem;
 }
 
 .form-label {
     font-weight: 600;
     color: var(--text-dark);
-    font-size: 0.875rem;
+    font-size: 0.9rem;
 }
 
 .form-input {
-    padding: 0.65rem 0.85rem;
+    padding: 0.75rem 0.9rem;
     border: 2px solid #374151;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     transition: all 0.3s ease;
     outline: none;
     font-family: inherit;
@@ -619,15 +619,15 @@ main {
 }
 
 .auth-footer {
-    margin-top: 1rem;
+    margin-top: 1.2rem;
     text-align: center;
-    padding-top: 1rem;
+    padding-top: 1.2rem;
     border-top: 1px solid #374151;
 }
 
 .auth-footer p {
     color: var(--text-light);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
 }
 
 .auth-link {
@@ -639,6 +639,39 @@ main {
 
 .auth-link:hover {
     color: var(--primary-dark);
+}
+
+.error-alert {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 0.85rem;
+    border-radius: 8px;
+    margin-bottom: 1.1rem;
+}
+
+.error-alert p {
+    color: #ef4444;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.auth-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.auth-checkbox-group input {
+    width: auto;
+    margin: 0;
+}
+
+.auth-checkbox-group label {
+    margin: 0;
+    font-weight: 500;
+    color: var(--text-dark);
+    font-size: 0.85rem;
+    cursor: pointer;
 }
 
 @media (max-width: 576px) {

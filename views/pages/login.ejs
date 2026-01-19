@@ -6,8 +6,8 @@
         <p class="auth-subtitle">Sign in to continue to MyDrive</p>
 
         <% if (typeof error !== 'undefined' && error) { %>
-            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
-                <p style="color: #ef4444; margin: 0; font-size: 0.95rem;"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> <%= error %></p>
+            <div class="error-alert">
+                <p><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> <%= error %></p>
             </div>
         <% } %>
 
@@ -39,11 +39,11 @@
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <input type="checkbox" id="remember" name="remember" style="width: auto; margin: 0;" />
-                    <label for="remember" style="margin: 0; font-weight: 500; color: var(--text-dark); font-size: 0.95rem; cursor: pointer;">Remember me</label>
+                <div class="auth-checkbox-group">
+                    <input type="checkbox" id="remember" name="remember" />
+                    <label for="remember">Remember me</label>
                 </div>
-                <a href="/user/forgot" class="auth-link" style="font-size: 0.95rem;">Forgot password?</a>
+                <a href="/user/forgot" class="auth-link" style="font-size: 0.85rem;">Forgot password?</a>
             </div>
 
             <button type="submit" class="btn-primary btn-full">

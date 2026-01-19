@@ -6,8 +6,8 @@
         <p class="auth-subtitle">Sign up to get started with MyDrive</p>
         
         <% if (typeof error !== 'undefined' && error) { %>
-            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
-                <p style="color: #ef4444; margin: 0; font-size: 0.95rem;"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> <%= error %></p>
+            <div class="error-alert">
+                <p><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> <%= error %></p>
             </div>
         <% } %>
         
