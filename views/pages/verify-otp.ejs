@@ -1,0 +1,108 @@
+<%- layout('layouts/main') %>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 class="auth-title">Verify OTP</h2>
+        <p class="auth-subtitle">Enter the 6-digit code sent to <%= email %></p>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="error-alert">
+                <p><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> <%= error %></p>
+            </div>
+        <% } %>
+
+        <form id="verifyOTPForm" class="auth-form" action="/user/verify-otp" method="POST">
+            <input type="hidden" name="email" value="<%= email %>">
+            <input type="hidden" name="type" value="<%= type %>">
+            
+            <div class="form-group">
+                <label for="otp" class="form-label">OTP Code</label>
+                <input 
+                    type="text" 
+                    id="otp" 
+                    name="otp" 
+                    class="form-input"
+                    placeholder="Enter 6-digit OTP"
+                    maxlength="6"
+                    style="letter-spacing: 4px; text-transform: uppercase; text-align: center; font-size: 1.2rem; font-weight: 700;"
+                    required
+                    autocomplete="off"
+                >
+                <span class="error-message" id="otpError"></span>
+            </div>
+
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 0.85rem; border-radius: 6px; margin-bottom: 1rem;">
+                <p style="color: #92400e; margin: 0; font-size: 0.85rem;">
+                    <i class="fas fa-clock"></i> <strong>Time remaining:</strong> <span id="countdown">60</span> seconds
+                </p>
+            </div>
+
+            <button type="submit" class="btn-primary btn-full" id="verifyBtn">
+                Verify OTP
+            </button>
+
+            <button type="button" class="btn-primary btn-full" id="resendBtn" style="background: #6b7280; display: none; margin-top: 0.5rem;">
+                Resend OTP
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p><a href="/user/login" class="auth-link">Back to Login</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+let timeLeft = 60;
+const countdownEl = document.getElementById('countdown');
+const verifyBtn = document.getElementById('verifyBtn');
+const resendBtn = document.getElementById('resendBtn');
+const otpInput = document.getElementById('otp');
+
+const countdown = setInterval(() => {
+    timeLeft--;
+    countdownEl.textContent = timeLeft;
+    
+    if (timeLeft <= 0) {
+        clearInterval(countdown);
+        verifyBtn.disabled = true;
+        verifyBtn.style.background = '#9ca3af';
+        verifyBtn.textContent = 'OTP Expired';
+        otpInput.disabled = true;
+        resendBtn.style.display = 'block';
+    }
+}, 1000);
+
+resendBtn.addEventListener('click', async () => {
+    const email = document.querySelector('input[name="email"]').value;
+    const type = document.querySelector('input[name="type"]').value;
+    
+    resendBtn.disabled = true;
+    resendBtn.textContent = 'Sending...';
+    
+    try {
+        const response = await fetch('/user/resend-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, type })
+        });
+        
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            alert('Failed to resend OTP. Please try again.');
+            resendBtn.disabled = false;
+            resendBtn.textContent = 'Resend OTP';
+        }
+    } catch (error) {
+        alert('Error resending OTP');
+        resendBtn.disabled = false;
+        resendBtn.textContent = 'Resend OTP';
+    }
+});
+
+// Auto-format OTP input
+otpInput.addEventListener('input', (e) => {
+    e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+});
+</script>
