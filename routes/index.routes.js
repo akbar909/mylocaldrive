@@ -11,6 +11,9 @@ const upload = require('../config/multer');
 
 // Home page route
 router.get('/', (req, res) => {
+   if (res.locals.isLoggedIn) {
+    return res.redirect('/dashboard');
+  }
   res.render('pages/home', { title: "IMEER.ai" });
 });
 
@@ -28,12 +31,19 @@ router.get('/features', (req, res) => {
 router.get('/contact', (req, res) => {
   res.render('pages/contact', { 
     title: "Contact Us - IMEER.ai",
-    user: res.locals.user || null
+    user: res.locals.user || null,
+    isLoggedIn: res.locals.isLoggedIn
   });
 });
 
 // Contact form submission
-router.post('/contact/send', requireAuth, contactController.sendContactMessage);
+router.post(
+  '/contact/send',
+  (req, res, next) => { console.log('➡️  POST /contact/send received'); next(); },
+  requireAuth,
+  (req, res, next) => { console.log('✅ Auth passed for /contact/send'); next(); },
+  contactController.sendContactMessage
+);
 
 // Dashboard route (after login)
 router.get('/dashboard', requireAuth, dashboardController.getDashboard);
