@@ -3,8 +3,6 @@ const { Resend } = require('resend');
 const resend = new Resend(process.env.RESEND_API_KEY);
 // Default to Resend sandbox sender to avoid domain verification issues
 const FROM_EMAIL = process.env.FROM_EMAIL || 'onboarding@resend.dev';
-// Optional: force all outgoing emails to a single inbox while in Resend test mode
-const FORCE_TO_EMAIL = process.env.RESEND_FORCE_TO || '';
 
 // Send OTP email via Resend
 const sendOTPEmail = async (email, otp, type = 'verification') => {
@@ -12,7 +10,7 @@ const sendOTPEmail = async (email, otp, type = 'verification') => {
     throw new Error('Resend API key not configured');
   }
 
-  const recipient = FORCE_TO_EMAIL || email;
+  const recipient = email;
 
   const subject = type === 'verification' ? 'Verify Your Email - MyDrive' : 'Reset Your Password - MyDrive';
   const heading = type === 'verification' ? 'Email Verification' : 'Password Reset';
@@ -60,12 +58,17 @@ const sendOTPEmail = async (email, otp, type = 'verification') => {
         <div class="otp-code">${otp}</div>
       </div>
 
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="https://localhost:3000/user/verify-otp?email=${encodeURIComponent(email)}&type=${type}" class="verify-btn" style="display: inline-block; background: #6366f1; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; transition: background 0.3s;">
+          ✓ Verify Email
+        </a>
+      </div>
+
       <div class="expiry">
         <p>⏰ <strong>Important:</strong> This OTP will expire in 60 seconds. Please verify immediately.</p>
       </div>
 
       <p style="color: #6b7280; font-size: 14px;">If you didn't request this, please ignore this email or contact support if you have concerns.</p>
-      ${FORCE_TO_EMAIL ? `<p style="color:#b45309; font-size:13px; margin-top:16px;">Testing mode: delivered to ${FORCE_TO_EMAIL}. Original recipient: ${email}</p>` : ''}
     </div>
     <div class="footer">
       <p>Powered by <a href="https://imeer.ai" target="_blank">IMEER.ai</a></p>
@@ -101,7 +104,17 @@ const sendContactEmail = async (email, senderName, subject, message) => {
     throw new Error('Resend API key not configured');
   }
 
-  const contactTo = process.env.CONTACT_TO || 'abbaszameer234@gmail.com';
+  // Test-mode routing for onboarding@resend.dev
+  // - If RESEND_FORCE_TO is set, always send there
+  // - Else if using sandbox sender, send to the logged-in user's email (email param)
+  // - Else use CONTACT_TO (production/admin inbox)
+  const FORCE_TO = process.env.RESEND_FORCE_TO;
+  let contactTo = process.env.CONTACT_TO || 'abbaszameer234@gmail.com';
+  if (FORCE_TO) {
+    contactTo = FORCE_TO;
+  } else if ((process.env.FROM_EMAIL || '').endsWith('resend.dev')) {
+    contactTo = email; // sandbox can only send to your own/verified email
+  }
 
   const htmlContent = `
 <!DOCTYPE html>
@@ -168,8 +181,8 @@ const sendContactEmail = async (email, senderName, subject, message) => {
   try {
     const response = await resend.emails.send({
       from: FROM_EMAIL,
-      to: contactTo,
-      replyTo: email,
+      to: [contactTo],
+      reply_to: email,
       subject: `[MyDrive Contact] ${subject}`,
       html: htmlContent
     });
