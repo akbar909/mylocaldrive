@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const { signToken } = require('../middleware/auth');
 const { sendOTPEmail } = require('../config/email');
 
+const normalizeOtpType = (type) => (type === 'verification' ? 'registration' : type);
+
 // Get registration page
 const getRegister = (req, res) => {
   // If user is already logged in, redirect to dashboard
@@ -192,14 +194,15 @@ const postVerifyOTP = async (req, res) => {
   const { email, otp, type } = req.body;
 
   try {
-    const result = await OTP.verifyOTP(email, otp, type);
+    const normalizedType = normalizeOtpType(type);
+    const result = await OTP.verifyOTP(email, otp, normalizedType);
 
     if (!result.success) {
       return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${type}&error=${encodeURIComponent(result.message)}`);
     }
 
     // If registration OTP, create user and log in
-    if (type === 'registration') {
+    if (normalizedType === 'registration') {
       const pendingUser = req.session?.pendingUser;
       if (!pendingUser) {
         return res.redirect('/user/register?error=Session expired. Please register again.');
@@ -229,14 +232,70 @@ const postVerifyOTP = async (req, res) => {
     }
 
     // If password reset OTP, redirect to reset password page
-    if (type === 'password-reset') {
+    if (normalizedType === 'password-reset') {
       return res.redirect(`/user/reset-password?email=${encodeURIComponent(email)}`);
     }
 
     return res.redirect('/user/login');
   } catch (err) {
     console.error('Error verifying OTP:', err);
-    return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${type}&error=Verification failed`);
+    return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${normalizeOtpType(type)}&error=Verification failed`);
+  }
+};
+
+// Handle verification via direct link (email button)
+const verifyOtpLink = async (req, res) => {
+  const { email, otp, type } = req.query;
+
+  if (!email || !otp || !type) {
+    return res.redirect('/user/login');
+  }
+
+  try {
+    const normalizedType = normalizeOtpType(type);
+    const result = await OTP.verifyOTP(email, String(otp), normalizedType);
+
+    if (!result.success) {
+      return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${normalizedType}&error=${encodeURIComponent(result.message)}`);
+    }
+
+    if (normalizedType === 'registration') {
+      const pendingUser = req.session?.pendingUser;
+      if (!pendingUser) {
+        return res.redirect('/user/register?error=Session expired. Please register again.');
+      }
+
+      const hashedPassword = bcrypt.hashSync(pendingUser.password, 10);
+      const newUser = new User({
+        username: pendingUser.username,
+        email: pendingUser.email,
+        password: hashedPassword,
+        firstName: pendingUser.firstName,
+        lastName: pendingUser.lastName
+      });
+
+      await newUser.save();
+      delete req.session.pendingUser;
+
+      const token = signToken(newUser._id);
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'strict',
+        maxAge: 30 * 24 * 60 * 60 * 1000
+      });
+      res.cookie('success', 'Registration successful! Welcome to MyDrive.', { maxAge: 5000 });
+      return res.redirect('/dashboard');
+    }
+
+    if (normalizedType === 'password-reset') {
+      return res.redirect(`/user/reset-password?email=${encodeURIComponent(email)}`);
+    }
+
+    return res.redirect('/user/login');
+  } catch (err) {
+    console.error('Error verifying OTP via link:', err);
+    return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${normalizeOtpType(type)}&error=Verification failed`);
   }
 };
 
@@ -313,6 +372,7 @@ module.exports = {
   getVerifyOTP,
   postVerifyOTP,
   resendOTP,
+  verifyOtpLink,
   getResetPassword,
   postResetPassword
 };
