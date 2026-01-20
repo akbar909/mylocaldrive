@@ -1,4 +1,4 @@
-// Contact Form Handler - Handles form submission to Web3Forms API
+// Contact Form Handler - Handles form submission to backend Resend API
 document.addEventListener('DOMContentLoaded', function() {
 	const form = document.getElementById('contactForm');
 	if (!form) return;
@@ -8,28 +8,38 @@ document.addEventListener('DOMContentLoaded', function() {
 	form.addEventListener('submit', async (e) => {
 		e.preventDefault();
 
-		const formData = new FormData(form);
+		const subject = form.querySelector('input[name="subject"]').value;
+		const message = form.querySelector('textarea[name="message"]').value;
 		const originalText = submitBtn.textContent;
 
 		submitBtn.textContent = 'Sending...';
 		submitBtn.disabled = true;
 
 		try {
-			const response = await fetch('https://api.web3forms.com/submit', {
+			const response = await fetch('/contact/send', {
 				method: 'POST',
-				body: formData
+				headers: { 'Content-Type': 'application/json' },
+				credentials: 'include', // Send cookies with request
+				body: JSON.stringify({ subject, message })
 			});
 
-			const data = await response.json();
+			let data;
+			try {
+				data = await response.json();
+			} catch (parseErr) {
+				const text = await response.text();
+				throw new Error(`HTTP ${response.status}: ${text?.slice(0,200) || 'Non-JSON response'}`);
+			}
 
-			if (response.ok) {
-				alert('Success! Your message has been sent.');
+			if (response.ok && data.success) {
+				alert('✅ Success! Your message has been sent to our team.');
 				form.reset();
 			} else {
-				alert('Error: ' + data.message);
+				alert('❌ Error: ' + (data.error || data.message || `HTTP ${response.status}`));
 			}
 		} catch (error) {
-			alert('Something went wrong. Please try again.');
+			console.error('Contact form error:', error);
+			alert(String(error?.message || error || '❌ Something went wrong. Please try again.'));
 		} finally {
 			submitBtn.textContent = originalText;
 			submitBtn.disabled = false;
