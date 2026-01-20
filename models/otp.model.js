@@ -62,9 +62,13 @@ otpSchema.statics.createOTP = async function(email, type = 'registration') {
 
 // Verify OTP
 otpSchema.statics.verifyOTP = async function(email, otp, type) {
+  if (!otp) {
+    return { success: false, message: 'Invalid or expired OTP' };
+  }
+
   const otpDoc = await this.findOne({
     email,
-    otp: otp.toUpperCase(),
+    otp: String(otp).toUpperCase(),
     type,
     verified: false,
     expiresAt: { $gt: new Date() }
