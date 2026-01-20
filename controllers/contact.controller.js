@@ -1,5 +1,5 @@
 const User = require('../models/user.model');
-const { sendContactEmail } = require('../config/email');
+const { sendContactEmail, sendAcknowledgementEmail } = require('../config/email');
 
 // Send formatted contact email
 const sendContactMessage = async (req, res, next) => {
@@ -34,6 +34,14 @@ const sendContactMessage = async (req, res, next) => {
     console.log('✓ Sending email from:', senderName, 'to abbaszameer234@gmail.com');
     
     await sendContactEmail(user.email, senderName, subject, message);
+    // Optionally send acknowledgement to user
+    if (String(process.env.CONTACT_ACK_ENABLED || 'false').toLowerCase() === 'true') {
+      try {
+        await sendAcknowledgementEmail(user.email, subject);
+      } catch (ackErr) {
+        console.warn('Ack email failed (non-blocking):', ackErr?.message || ackErr);
+      }
+    }
 
     console.log('✓ Email sent successfully');
 

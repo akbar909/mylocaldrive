@@ -48,7 +48,7 @@ otpSchema.statics.createOTP = async function(email, type = 'registration') {
   await this.deleteMany({ email, type, verified: false });
 
   const otp = this.generateOTP();
-  const expiresAt = new Date(Date.now() + 60 * 1000); // 60 seconds
+  const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
   const otpDoc = await this.create({
     email,
