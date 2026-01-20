@@ -20,6 +20,14 @@ const FROM_EMAIL = process.env.SMTP_USER || 'noreply@example.com';
 const CONTACT_TO = process.env.CONTACT_TO || 'abbaszameer234@gmail.com';
 const APP_URL = process.env.APP_URL || 'http://localhost:3000';
 
+const escapeHtml = (value = '') =>
+  String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
 // Send OTP email via Nodemailer
 const sendOTPEmail = async (email, otp, type = 'verification') => {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
@@ -33,7 +41,9 @@ const sendOTPEmail = async (email, otp, type = 'verification') => {
   const message =
     type === 'verification'
       ? 'Welcome to MyDrive! Please verify your email address to complete your registration.'
-      : 'We received a request to reset your password. Use the OTP below to proceed.';
+      : 'We received a request to reset your password. Use the OTP below or tap the button to continue.';
+
+  const actionUrl = `${APP_URL}/user/verify-otp-link?email=${encodeURIComponent(email)}&type=${encodeURIComponent(type === 'verification' ? 'registration' : type)}&otp=${encodeURIComponent(otp)}`;
 
   const htmlContent = `
 <!DOCTYPE html>
@@ -76,8 +86,8 @@ const sendOTPEmail = async (email, otp, type = 'verification') => {
       </div>
 
       <div style="text-align: center; margin: 30px 0;">
-        <a href="${APP_URL}/user/verify-otp?email=${encodeURIComponent(email)}&type=${type}" class="verify-btn" style="display: inline-block; background: #6366f1; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; transition: background 0.3s;">
-          ✓ Verify Email
+        <a href="${actionUrl}" class="verify-btn" style="display: inline-block; background: #6366f1; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; transition: background 0.3s;">
+          ${type === 'verification' ? '✓ Verify & Continue' : 'Reset Password'}
         </a>
       </div>
 
@@ -120,6 +130,10 @@ const sendContactEmail = async (email, senderName, subject, message) => {
 
   const contactTo = CONTACT_TO;
 
+  const safeSubject = escapeHtml(subject || 'New contact message');
+  const safeMessage = escapeHtml(message || '');
+  const safeSender = escapeHtml(senderName || 'MyDrive user');
+
   const htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -127,55 +141,58 @@ const sendContactEmail = async (email, senderName, subject, message) => {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: #f3f4f6; }
-    .container { max-width: 600px; margin: 0 auto; background: #ffffff; }
-    .header { background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%); padding: 30px 20px; text-align: center; }
-    .header h1 { margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; }
-    .header p { margin: 10px 0 0 0; color: rgba(255,255,255,0.9); font-size: 14px; }
-    .content { padding: 40px 30px; }
-    .sender-info { background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #818cf8; }
-    .sender-info p { margin: 5px 0; color: #374151; font-size: 14px; }
-    .sender-info strong { color: #1f2937; }
-    .subject-box { background: #eff6ff; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6; }
-    .subject-box h2 { margin: 0 0 10px 0; color: #1e40af; font-size: 20px; }
-    .message-box { background: #fafafa; padding: 25px; border-radius: 8px; margin: 25px 0; border: 1px solid #e5e7eb; line-height: 1.8; }
-    .message-box p { margin: 0; color: #374151; white-space: pre-wrap; word-wrap: break-word; }
-    .footer { background: #1f2937; padding: 25px 30px; text-align: center; }
-    .footer p { color: #9ca3af; font-size: 14px; margin: 5px 0; }
-    .footer a { color: #818cf8; text-decoration: none; }
+    body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: #0b1224; color: #e5e7eb; }
+    .container { max-width: 640px; margin: 0 auto; background: #0f172a; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.55); border: 1px solid #1f2a44; }
+    .header { background: linear-gradient(135deg, #111827 0%, #1f2937 45%, #312e81 100%); padding: 32px 26px; text-align: left; }
+    .header h1 { margin: 0; color: #e0e7ff; font-size: 26px; font-weight: 800; letter-spacing: -0.01em; }
+    .header p { margin: 10px 0 0 0; color: #cbd5e1; font-size: 14px; }
+    .content { padding: 34px 30px; background: radial-gradient(circle at 20% 20%, rgba(129, 140, 248, 0.08), transparent 32%), radial-gradient(circle at 80% 0%, rgba(14, 165, 233, 0.08), transparent 30%), #0f172a; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 999px; background: rgba(129, 140, 248, 0.15); color: #c7d2fe; font-size: 12px; letter-spacing: 0.04em; font-weight: 700; text-transform: uppercase; }
+    .card { background: rgba(17, 24, 39, 0.85); border: 1px solid #1f2937; border-radius: 12px; padding: 18px 16px; margin-bottom: 18px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.02); }
+    .card h3 { margin: 0 0 8px 0; color: #e5e7eb; font-size: 15px; letter-spacing: 0.01em; }
+    .card p { margin: 4px 0; color: #cbd5e1; font-size: 14px; }
+    .card a { color: #a5b4fc; text-decoration: none; }
+    .subject-box { background: linear-gradient(135deg, rgba(79, 70, 229, 0.18), rgba(14, 165, 233, 0.12)); border: 1px solid rgba(129, 140, 248, 0.4); padding: 18px 16px; border-radius: 12px; margin: 16px 0; }
+    .subject-box h2 { margin: 0 0 6px 0; color: #e0e7ff; font-size: 20px; }
+    .subject-box span { color: #cbd5e1; font-size: 13px; }
+    .message-box { background: #0b1327; border: 1px solid #1f2937; border-radius: 12px; padding: 18px; line-height: 1.7; color: #e5e7eb; white-space: pre-wrap; word-break: break-word; }
+    .meta { color: #94a3b8; font-size: 13px; margin-top: 16px; }
+    .footer { background: #0b1224; padding: 20px 24px; text-align: center; border-top: 1px solid #1f2937; }
+    .footer p { color: #94a3b8; font-size: 13px; margin: 6px 0; }
+    .footer a { color: #a5b4fc; text-decoration: none; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>📧 New Contact Message</h1>
-      <p>From MyDrive Contact Form</p>
+      <div class="pill">New contact message</div>
+      <h1>MyDrive Support</h1>
+      <p>Someone reached out through your contact form.</p>
     </div>
-    
+
     <div class="content">
-      <div class="sender-info">
-        <p><strong>From:</strong> ${senderName}</p>
-        <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-        <p><strong>Date:</strong> ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+      <div class="card">
+        <h3>From</h3>
+        <p>${safeSender}</p>
+        <p><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
+        <p class="meta">${new Date().toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
       </div>
 
       <div class="subject-box">
-        <h2>${subject}</h2>
+        <span>Subject</span>
+        <h2>${safeSubject}</h2>
       </div>
 
       <div class="message-box">
-        <p>${message}</p>
+        ${safeMessage}
       </div>
 
-      <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">
-        <strong>Reply instructions:</strong> Click the sender's email above to reply directly, or use your email client to respond to ${email}
-      </p>
+      <p class="meta">Reply directly to the sender via ${escapeHtml(email)}.</p>
     </div>
 
     <div class="footer">
-      <p>This is an automated message from <strong>MyDrive</strong> contact form</p>
-      <p>Powered by <a href="https://imeer.ai" target="_blank">IMEER.ai</a></p>
-      <p>&copy; ${new Date().getFullYear()} MyDrive. All rights reserved.</p>
+      <p>This notification was sent from your MyDrive contact form.</p>
+      <p>Powered by <a href="https://imeer.ai" target="_blank">IMEER.ai</a> • © ${new Date().getFullYear()} MyDrive</p>
     </div>
   </div>
 </body>
@@ -187,7 +204,7 @@ const sendContactEmail = async (email, senderName, subject, message) => {
       from: `"MyDrive" <${FROM_EMAIL}>`,
       to: contactTo,
       replyTo: email,
-      subject: `[MyDrive Contact] ${subject}`,
+      subject: `MyDrive • New message from ${senderName || 'User'}`,
       html: htmlContent,
     };
 
@@ -206,12 +223,46 @@ const sendAcknowledgementEmail = async (toEmail, subject) => {
   }
 
   const htmlContent = `
-  <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6;">
-    <h2 style="color:#1f2937;">Thanks for contacting MyDrive</h2>
-    <p>We received your message regarding: <strong>${subject}</strong>.</p>
-    <p>Our team will get back to you shortly.</p>
-    <p style="color:#6b7280; font-size: 14px;">This is an automated acknowledgement.</p>
-  </div>`;
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: #0b1224; color: #e5e7eb; }
+    .container { max-width: 560px; margin: 0 auto; background: #0f172a; border-radius: 14px; overflow: hidden; border: 1px solid #1f2937; box-shadow: 0 20px 50px rgba(0,0,0,0.55); }
+    .header { background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #312e81 100%); padding: 26px 24px; }
+    .header h1 { margin: 0; color: #e0e7ff; font-size: 22px; font-weight: 800; }
+    .content { padding: 26px 24px; background: #0f172a; }
+    .pill { display: inline-flex; padding: 6px 12px; border-radius: 999px; background: rgba(129, 140, 248, 0.15); color: #c7d2fe; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 700; }
+    .card { background: rgba(17, 24, 39, 0.9); border: 1px solid #1f2937; border-radius: 12px; padding: 16px; margin-top: 14px; }
+    .card p { margin: 8px 0; color: #cbd5e1; font-size: 14px; line-height: 1.6; }
+    .footer { background: #0b1224; padding: 18px 24px; text-align: center; border-top: 1px solid #1f2937; }
+    .footer p { color: #94a3b8; font-size: 13px; margin: 6px 0; }
+    .footer a { color: #a5b4fc; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="pill">We got your message</div>
+      <h1>Thanks for reaching out</h1>
+    </div>
+    <div class="content">
+      <div class="card">
+        <p>Hi there,</p>
+        <p>We received your request about <strong style="color:#e0e7ff;">${escapeHtml(subject || 'your query')}</strong>. Our team will reply soon. If you need to add more details, just reply to this email.</p>
+        <p style="color:#94a3b8; font-size: 13px;">This is an automated confirmation so you know your message arrived safely.</p>
+      </div>
+    </div>
+    <div class="footer">
+      <p>MyDrive Support</p>
+      <p>Powered by <a href="https://imeer.ai" target="_blank">IMEER.ai</a> • © ${new Date().getFullYear()} MyDrive</p>
+    </div>
+  </div>
+</body>
+</html>
+  `;
 
   const mailOptions = {
     from: `"MyDrive" <${FROM_EMAIL}>`,
