@@ -101,8 +101,8 @@ app.use(async (req, res, next) => {
     try {
       const User = require('./models/user.model');
       const decoded = require('jsonwebtoken').decode(req.cookies.token);
-      if (decoded && decoded.id) {
-        const user = await User.findById(decoded.id).select('-password');
+      if (decoded && decoded.sub) {
+        const user = await User.findById(decoded.sub).select('-password');
         res.locals.user = user;
       }
     } catch (err) {
