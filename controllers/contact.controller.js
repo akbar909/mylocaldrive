@@ -34,13 +34,11 @@ const sendContactMessage = async (req, res, next) => {
     console.log('✓ Sending email from:', senderName, 'to abbaszameer234@gmail.com');
     
     await sendContactEmail(user.email, senderName, subject, message);
-    // Optionally send acknowledgement to user
-    if (String(process.env.CONTACT_ACK_ENABLED || 'false').toLowerCase() === 'true') {
-      try {
-        await sendAcknowledgementEmail(user.email, subject);
-      } catch (ackErr) {
-        console.warn('Ack email failed (non-blocking):', ackErr?.message || ackErr);
-      }
+    // Always attempt acknowledgement but do not block success if it fails
+    try {
+      await sendAcknowledgementEmail(user.email, subject);
+    } catch (ackErr) {
+      console.warn('Ack email failed (non-blocking):', ackErr?.message || ackErr);
     }
 
     console.log('✓ Email sent successfully');
