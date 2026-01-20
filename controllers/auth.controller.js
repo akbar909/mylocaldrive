@@ -32,6 +32,9 @@ const postRegister = async (req, res, next) => {
 
     // Create OTP and send email
     const { otp } = await OTP.createOTP(email, 'registration');
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('🔐 DEV OTP (registration):', otp, '→', email);
+    }
     await sendOTPEmail(email, otp, 'verification');
 
     // Store user data temporarily in session or pass via query
@@ -155,6 +158,9 @@ const postForgotPassword = async (req, res) => {
 
     // Create OTP and send email
     const { otp } = await OTP.createOTP(email, 'password-reset');
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('🔐 DEV OTP (forgot-password):', otp, '→', email);
+    }
     await sendOTPEmail(email, otp, 'password-reset');
 
     return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=password-reset`);
@@ -240,6 +246,9 @@ const resendOTP = async (req, res) => {
 
   try {
     const { otp } = await OTP.createOTP(email, type);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`🔐 DEV OTP (resend:${type}):`, otp, '→', email);
+    }
     await sendOTPEmail(email, otp, type === 'registration' ? 'verification' : 'password-reset');
 
     return res.json({ success: true });
