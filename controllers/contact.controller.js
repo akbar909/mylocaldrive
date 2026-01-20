@@ -51,6 +51,8 @@ const sendContactMessage = async (req, res, next) => {
     });
   } catch (err) {
     console.error('❌ Error sending contact message:', err);
+    console.error('❌ Error stack:', err.stack);
+    console.error('❌ Error details:', { name: err.name, message: err.message, code: err.code });
     return res.status(500).json({ success: false, error: err?.message || 'Failed to send message. Please try again.' });
   }
 };

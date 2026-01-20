@@ -36,7 +36,7 @@ router.get('/contact', (req, res) => {
   });
 });
 
-// Contact form submission
+// Contact form submission (requires auth - user must be logged in)
 router.post(
   '/contact/send',
   (req, res, next) => { console.log('➡️  POST /contact/send received'); next(); },
