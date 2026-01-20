@@ -41,9 +41,20 @@ const apiLimiter = rateLimit({
 	legacyHeaders: false
 });
 
+// OTP verification rate limiter: 3 attempts per 15 minutes (brute force protection)
+const otpLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 3,
+	message: 'Too many OTP verification attempts, please try again after 15 minutes.',
+	standardHeaders: true,
+	legacyHeaders: false,
+	keyGenerator: (req) => req.body.email || req.query.email || req.ip // Rate limit per email, not IP
+});
+
 module.exports = {
 	generalLimiter,
 	authLimiter,
 	uploadLimiter,
-	apiLimiter
+	apiLimiter,
+	otpLimiter
 };

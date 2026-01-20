@@ -4,13 +4,8 @@ const { sendContactEmail, sendAcknowledgementEmail } = require('../config/email'
 // Send formatted contact email
 const sendContactMessage = async (req, res, next) => {
   try {
-    console.log('✓ Contact endpoint hit. req.user:', req.user);
-    console.log('✓ req.body:', req.body);
-    
     const { subject, message } = req.body;
     const userId = req.user?.id;
-
-    console.log('✓ userId:', userId);
 
     if (!userId) {
       return res.status(401).json({ success: false, error: 'User authentication required' });
@@ -18,8 +13,6 @@ const sendContactMessage = async (req, res, next) => {
 
     // Get user info
     const user = await User.findById(userId).select('email username firstName lastName');
-    
-    console.log('✓ User found:', user ? 'yes' : 'no');
 
     if (!user) {
       return res.status(404).json({ success: false, error: 'User not found' });
@@ -31,26 +24,21 @@ const sendContactMessage = async (req, res, next) => {
 
     // Send formatted email via Resend
     const senderName = `${user.firstName || user.username || 'User'} ${user.lastName || ''}`.trim();
-    console.log('✓ Sending email from:', senderName, 'to abbaszameer234@gmail.com');
     
     await sendContactEmail(user.email, senderName, subject, message);
     // Always attempt acknowledgement but do not block success if it fails
     try {
       await sendAcknowledgementEmail(user.email, subject);
     } catch (ackErr) {
-      console.warn('Ack email failed (non-blocking):', ackErr?.message || ackErr);
+      // Silently fail, non-blocking
     }
-
-    console.log('✓ Email sent successfully');
 
     res.json({ 
       success: true, 
       message: 'Your message has been sent successfully. Our team will respond shortly.' 
     });
   } catch (err) {
-    console.error('❌ Error sending contact message:', err);
-    console.error('❌ Error stack:', err.stack);
-    console.error('❌ Error details:', { name: err.name, message: err.message, code: err.code });
+    console.error('Contact message error:', err.message);
     return res.status(500).json({ success: false, error: err?.message || 'Failed to send message. Please try again.' });
   }
 };
