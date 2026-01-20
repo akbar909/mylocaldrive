@@ -32,6 +32,7 @@ router.post("/forgot-password", authLimiter, authController.postForgotPassword);
 
 // OTP verification routes
 router.get("/verify-otp", authController.getVerifyOTP);
+router.get("/verify-otp-link", authController.verifyOtpLink);
 router.post("/verify-otp", authController.postVerifyOTP);
 router.post("/resend-otp", authController.resendOTP);
 
