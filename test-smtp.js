@@ -53,9 +53,5 @@ transporter.verify((error, success) => {
 });
 
 /////test smpt
-
-
-    qqqq
-
 /////test smpt
 
