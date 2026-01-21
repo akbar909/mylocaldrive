@@ -1,7 +1,9 @@
 const User = require('../models/user.model');
 const OTP = require('../models/otp.model');
+const TokenBlacklist = require('../models/tokenBlacklist.model');
 const bcrypt = require('bcryptjs');
-const { signToken } = require('../middleware/auth');
+const jwt = require('jsonwebtoken');
+const { signAccessToken, signRefreshToken } = require('../middleware/auth');
 const { sendOTPEmail } = require('../config/email');
 
 const normalizeOtpType = (type) => (type === 'verification' ? 'registration' : type);
@@ -33,8 +35,8 @@ const postRegister = async (req, res, next) => {
     }
 
     // Create OTP and send email
-    const { otp } = await OTP.createOTP(email, 'registration');
-    await sendOTPEmail(email, otp, 'verification');
+    const { otp, verificationToken } = await OTP.createOTP(email, 'registration');
+    await sendOTPEmail(email, otp, 'verification', verificationToken);
 
     // Store user data temporarily in session or pass via query
     req.session = req.session || {};
@@ -81,16 +83,28 @@ const postLogin = async (req, res, next) => {
       return res.redirect('/user/login?error=Invalid username or password');
     }
 
-    const token = signToken(existingUser._id);
-    res.cookie('token', token, {
+    // Generate access token (1 hour) and refresh token (30 days)
+    const accessToken = signAccessToken(existingUser._id);
+    const refreshToken = signRefreshToken(existingUser._id);
+
+    // Set access token (HttpOnly, secure, sameSite=strict)
+    res.cookie('token', accessToken, {
       httpOnly: true,
       secure: false,
       sameSite: 'strict',
-      maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days in milliseconds
+      maxAge: 60 * 60 * 1000 // 1 hour
     });
+
+    // Set refresh token (HttpOnly, secure, sameSite=strict)
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+    });
+
     return res.redirect('/dashboard');
   } catch (err) {
-    console.error('Error logging in:', err);
     return next(err);
   }
 };
@@ -109,10 +123,35 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
-// Handle logout
-const logout = (req, res) => {
-  res.clearCookie('token');
-  res.redirect('/');
+// Handle logout - blacklist only refresh token (access tokens auto-expire in 1h)
+const logout = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+    const userId = req.user?.id;
+
+    // Blacklist ONLY refresh token (so it cannot be reused after logout)
+    // Access token doesn't need blacklist since it expires in 1 hour anyway
+    if (refreshToken && userId) {
+      const decoded = jwt.decode(refreshToken);
+      if (decoded && decoded.exp) {
+        await TokenBlacklist.blacklistToken(
+          refreshToken,
+          userId,
+          new Date(decoded.exp * 1000)
+        );
+      }
+    }
+
+    // Clear all auth cookies
+    res.clearCookie('token', { httpOnly: true, secure: false, sameSite: 'strict' });
+    res.clearCookie('refreshToken', { httpOnly: true, secure: false, sameSite: 'strict' });
+    
+    res.redirect('/');
+  } catch (err) {
+    res.clearCookie('token');
+    res.clearCookie('refreshToken');
+    res.redirect('/');
+  }
 };
 
 // Check if email exists
@@ -156,8 +195,8 @@ const postForgotPassword = async (req, res) => {
     }
 
     // Create OTP and send email
-    const { otp } = await OTP.createOTP(email, 'password-reset');
-    await sendOTPEmail(email, otp, 'password-reset');
+    const { otp, verificationToken } = await OTP.createOTP(email, 'password-reset');
+    await sendOTPEmail(email, otp, 'password-reset', verificationToken);
 
     return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=password-reset`);
   } catch (err) {
@@ -239,15 +278,15 @@ const postVerifyOTP = async (req, res) => {
 
 // Handle verification via direct link (email button)
 const verifyOtpLink = async (req, res) => {
-  const { email, otp, type } = req.query;
+  const { email, token, type } = req.query;
 
-  if (!email || !otp || !type) {
+  if (!email || !token || !type) {
     return res.redirect('/user/login');
   }
 
   try {
     const normalizedType = normalizeOtpType(type);
-    const result = await OTP.verifyOTP(email, String(otp), normalizedType);
+    const result = await OTP.verifyOTPByToken(email, token, normalizedType);
 
     if (!result.success) {
       return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${normalizedType}&error=${encodeURIComponent(result.message)}`);
@@ -298,7 +337,7 @@ const resendOTP = async (req, res) => {
   const { email, type } = req.body;
 
   try {
-    const { otp } = await OTP.createOTP(email, type);
+    const otp = await OTP.createOTP(email, type);
     await sendOTPEmail(email, otp, type === 'registration' ? 'verification' : 'password-reset');
 
     return res.json({ success: true });

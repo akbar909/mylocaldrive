@@ -5,6 +5,7 @@ let progressInterval;
 document.addEventListener('DOMContentLoaded', () => {
 	const dropZone = document.getElementById('dropZone');
 	const fileInput = document.getElementById('fileInput');
+	const selectFilesBtn = document.getElementById('selectFilesBtn');
 	const fileListContainer = document.getElementById('fileListContainer');
 	const fileList = document.getElementById('fileList');
 	const uploadBtn = document.getElementById('uploadBtn');
@@ -14,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const uploadStatus = document.getElementById('uploadStatus');
 	const uploadModal = document.getElementById('uploadModal');
 	const cancelUploadBtn = document.getElementById('cancelUploadBtn');
+	const uploadModalCloseBtn = document.getElementById('uploadModalCloseBtn');
 
 	// Guard early if modal is not present
 	if (!uploadModal) return;
@@ -66,22 +68,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		fileListContainer.style.display = 'block';
 		uploadBtn.style.display = 'block';
-		fileList.innerHTML = selectedFiles.map((file, idx) => {
-			const size = file.size;
-			let sizeStr = '';
-			if (size < 1024) sizeStr = `${size} B`;
-			else if (size < 1024 * 1024) sizeStr = `${(size / 1024).toFixed(2)} KB`;
-			else if (size < 1024 * 1024 * 1024) sizeStr = `${(size / (1024 * 1024)).toFixed(2)} MB`;
-			else sizeStr = `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
-			
-			return `<div style="padding: 0.5rem 0; color: var(--text-light); border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
-				<span style="display: inline-flex; align-items: center; gap: 0.5rem;"><i class="fas fa-file"></i>${file.name}</span>
-				<div style="display: flex; align-items: center; gap: 0.75rem;">
-					<span style="font-size: 0.8rem; color: var(--gray-400);">${sizeStr}</span>
-					<button onclick="removeSelectedFile(${idx})" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.95rem; padding: 0.2rem 0.4rem; hover: opacity 0.8;" title="Remove" aria-label="Remove file"><i class="fas fa-times-circle"></i></button>
-				</div>
-			</div>`;
-		}).join('');
+		fileList.innerHTML = '';
+			selectedFiles.forEach((file, idx) => {
+				const size = file.size;
+				let sizeStr = '';
+				if (size < 1024) sizeStr = `${size} B`;
+				else if (size < 1024 * 1024) sizeStr = `${(size / 1024).toFixed(2)} KB`;
+				else if (size < 1024 * 1024 * 1024) sizeStr = `${(size / (1024 * 1024)).toFixed(2)} MB`;
+				else sizeStr = `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+
+				const row = document.createElement('div');
+				row.setAttribute('data-index', idx);
+				row.style.cssText = 'padding: 0.5rem 0; color: var(--text-light); border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;';
+
+				const nameSpan = document.createElement('span');
+				nameSpan.style.cssText = 'display: inline-flex; align-items: center; gap: 0.5rem;';
+				nameSpan.innerHTML = `<i class="fas fa-file"></i>${file.name}`;
+
+				const right = document.createElement('div');
+				right.style.cssText = 'display: flex; align-items: center; gap: 0.75rem;';
+
+				const sizeEl = document.createElement('span');
+				sizeEl.style.cssText = 'font-size: 0.8rem; color: var(--gray-400);';
+				sizeEl.textContent = sizeStr;
+
+				const removeBtn = document.createElement('button');
+				removeBtn.type = 'button';
+				removeBtn.dataset.index = String(idx);
+				removeBtn.style.cssText = 'background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.95rem; padding: 0.2rem 0.4rem;';
+				removeBtn.title = 'Remove';
+				removeBtn.setAttribute('aria-label', 'Remove file');
+				removeBtn.innerHTML = '<i class="fas fa-times-circle"></i>';
+
+				right.appendChild(sizeEl);
+				right.appendChild(removeBtn);
+				row.appendChild(nameSpan);
+				row.appendChild(right);
+				fileList.appendChild(row);
+			});
 	}
 
 	function handleFiles(fileArray) {
@@ -116,6 +140,14 @@ document.addEventListener('DOMContentLoaded', () => {
 		fileInput.addEventListener('change', (e) => {
 			handleFiles(Array.from(e.target.files || []));
 		});
+	}
+
+	if (selectFilesBtn && fileInput) {
+		selectFilesBtn.addEventListener('click', () => fileInput.click());
+	}
+
+	if (dropZone && fileInput) {
+		dropZone.addEventListener('click', () => fileInput.click());
 	}
 
 	function uploadFiles() {
@@ -244,10 +276,19 @@ document.addEventListener('DOMContentLoaded', () => {
 		uploadModal.style.display = 'none';
 		resetUploadUI();
 	};
-
-	if (cancelUploadBtn) {
-		cancelUploadBtn.addEventListener('click', () => window.closeUploadModal());
+	if (fileList) {
+		fileList.addEventListener('click', (e) => {
+			const btn = e.target.closest('button[data-index]');
+			if (!btn) return;
+			const idx = parseInt(btn.dataset.index, 10);
+			if (Number.isNaN(idx)) return;
+			selectedFiles.splice(idx, 1);
+			updateFileList();
+		});
 	}
+
+	if (uploadBtn) uploadBtn.addEventListener('click', uploadFiles);	if (cancelUploadBtn) cancelUploadBtn.addEventListener('click', () => window.closeUploadModal());
+	if (uploadModalCloseBtn) uploadModalCloseBtn.addEventListener('click', () => window.closeUploadModal());
 
 	resetUploadUI();
 });

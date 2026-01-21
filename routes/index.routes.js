@@ -50,8 +50,6 @@ router.get('/dashboard', requireAuth, dashboardController.getDashboard);
 
 // Profile page routes
 router.get('/profile', requireAuth, profileController.getProfile);
-router.get('/profile/edit-name', requireAuth, profileController.getEditProfileName);
-router.post('/profile/edit-name', requireAuth, profileController.updateProfileName);
 router.get('/profile/change-password', requireAuth, profileController.getChangePassword);
 router.post('/profile/change-password', requireAuth, profileController.changePassword);
 router.post('/profile/delete-account', requireAuth, profileController.deleteAccount);

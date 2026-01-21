@@ -83,8 +83,6 @@ app.use((req, res, next) => {
 // ========== AUTH STATUS MIDDLEWARE ==========
 // Check if user is logged in and pass to all views
 app.use(async (req, res, next) => {
-  res.locals.isLoggedIn = req.cookies.token ? true : false;
-  
   // Flash message system
   res.locals.success = req.cookies.success || null;
   res.locals.error = req.cookies.error || null;
@@ -96,17 +94,36 @@ app.use(async (req, res, next) => {
     res.cookie(type, message, { maxAge: 5000 }); // 5 seconds
   };
   
+  // Check if user has a valid token
+  res.locals.isLoggedIn = false;
+  
   // If logged in, fetch user and pass to views
-  if (res.locals.isLoggedIn && req.cookies.token) {
+  if (req.cookies.token) {
     try {
-      const User = require('./models/user.model');
-      const decoded = require('jsonwebtoken').decode(req.cookies.token);
-      if (decoded && decoded.sub) {
+      const jwt = require('jsonwebtoken');
+      const JWT_SECRET = process.env.JWT_SECRET || "dev-change-me";
+      const decoded = jwt.verify(req.cookies.token, JWT_SECRET);
+      
+      if (decoded && decoded.type === 'access' && decoded.sub) {
+        const User = require('./models/user.model');
         const user = await User.findById(decoded.sub).select('-password');
-        res.locals.user = user;
+        if (user) {
+          res.locals.user = user;
+          res.locals.isLoggedIn = true;
+        } else {
+          // User not found, clear invalid token
+          res.clearCookie('token');
+          res.clearCookie('refreshToken');
+        }
+      } else {
+        // Invalid token type, clear it
+        res.clearCookie('token');
+        res.clearCookie('refreshToken');
       }
     } catch (err) {
-      console.error('Error fetching user for views:', err);
+      // Token invalid or expired, clear it
+      res.clearCookie('token');
+      res.clearCookie('refreshToken');
     }
   }
   

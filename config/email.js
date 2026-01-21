@@ -29,7 +29,7 @@ const escapeHtml = (value = '') =>
     .replace(/'/g, '&#39;');
 
 // Send OTP email via Nodemailer
-const sendOTPEmail = async (email, otp, type = 'verification') => {
+const sendOTPEmail = async (email, otp, type = 'verification', verificationToken) => {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
     throw new Error('SMTP credentials not configured');
   }
@@ -43,7 +43,7 @@ const sendOTPEmail = async (email, otp, type = 'verification') => {
       ? 'Welcome to MyDrive! Please verify your email address to complete your registration.'
       : 'We received a request to reset your password. Use the OTP below or tap the button to continue.';
 
-  const actionUrl = `${APP_URL}/user/verify-otp-link?email=${encodeURIComponent(email)}&type=${encodeURIComponent(type === 'verification' ? 'registration' : type)}&otp=${encodeURIComponent(otp)}`;
+  const actionUrl = `${APP_URL}/user/verify-otp-link?email=${encodeURIComponent(email)}&type=${encodeURIComponent(type === 'verification' ? 'registration' : type)}&token=${encodeURIComponent(verificationToken)}`;
 
   const htmlContent = `
 <!DOCTYPE html>

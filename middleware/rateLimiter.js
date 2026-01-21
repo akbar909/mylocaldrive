@@ -48,7 +48,11 @@ const otpLimiter = rateLimit({
 	message: 'Too many OTP verification attempts, please try again after 15 minutes.',
 	standardHeaders: true,
 	legacyHeaders: false,
-	keyGenerator: (req) => req.body.email || req.query.email || req.ip // Rate limit per email, not IP
+	keyGenerator: (req) => {
+		// Try to get email from various sources for rate limiting
+		const email = req.body?.email || req.query?.email || req.user?.email;
+		return email || req.ip; // Fallback to IP if no email
+	}
 });
 
 module.exports = {

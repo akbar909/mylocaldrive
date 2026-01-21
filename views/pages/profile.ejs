@@ -31,14 +31,6 @@
 
 			<!-- Profile Info -->
 			<div style="margin-bottom: 1.5rem;">
-				<label style="display: block; color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Full Name</label>
-				<div style="background: rgba(255,255,255,0.05); padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem;">
-					<p style="margin: 0; color: var(--text-dark);"><% if (user.firstName && user.lastName) { %><%= user.firstName %> <%= user.lastName %><% } else { %>Not set<% } %></p>
-				</div>
-				<a href="/profile/edit-name" class="btn btn-primary" style="font-size: 0.875rem;">Edit Name</a>
-			</div>
-
-			<div style="margin-bottom: 1.5rem;">
 				<label style="display: block; color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Email</label>
 				<div style="background: rgba(255,255,255,0.05); padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem;">
 					<p style="margin: 0; color: var(--text-dark);"><%= user.email %></p>

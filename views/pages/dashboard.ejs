@@ -21,9 +21,9 @@
 				<p style="color: var(--text-light); font-size: 1.1rem;">Manage your files, profile, and storage all in one place.</p>
 			</div>
 			<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-				<button onclick="window.location.href='/profile'" class="btn" style="padding: 0.75rem 1.5rem; white-space: nowrap; background: #a78bfa; border: none; color: white; border-radius: 8px; cursor: pointer;"><i class="fas fa-user-circle"></i> Profile</button>
-				<button onclick="openUploadModal()" class="btn" style="padding: 0.75rem 1.5rem; white-space: nowrap; background: #06b6d4; border: none; color: white; border-radius: 8px; cursor: pointer;"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
-				<button onclick="location.reload()" class="btn btn-primary" style="padding: 0.75rem 1.5rem; white-space: nowrap;"><i class="fas fa-sync-alt"></i> Refresh</button>
+				<button id="dashboardProfileBtn" class="btn" style="padding: 0.75rem 1.5rem; white-space: nowrap; background: #a78bfa; border: none; color: white; border-radius: 8px; cursor: pointer;"><i class="fas fa-user-circle"></i> Profile</button>
+				<button id="dashboardUploadBtn" class="btn" style="padding: 0.75rem 1.5rem; white-space: nowrap; background: #06b6d4; border: none; color: white; border-radius: 8px; cursor: pointer;"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
+				<button id="dashboardRefreshBtn" class="btn btn-primary" style="padding: 0.75rem 1.5rem; white-space: nowrap;"><i class="fas fa-sync-alt"></i> Refresh</button>
 			</div>
 		</div>
 
@@ -233,7 +233,7 @@
 				<!-- Modal Header -->
 				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
 					<h2 style="margin: 0; font-size: 1.4rem; display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-cloud-upload-alt" aria-hidden="true"></i> Upload Files</h2>
-				<button onclick="closeUploadModal()" style="background: none; border: none; color: var(--text-light); font-size: 1.25rem; cursor: pointer; display: none;" class="mobile-close-btn" aria-label="Close upload modal"><i class="fas fa-times"></i></button>
+				<button id="uploadModalCloseBtn" style="background: none; border: none; color: var(--text-light); font-size: 1.25rem; cursor: pointer; display: none;" class="mobile-close-btn" aria-label="Close upload modal"><i class="fas fa-times"></i></button>
 			</div>
 			<style>
 				@media (max-width: 768px) {
@@ -248,7 +248,7 @@
 				<p style="margin: 0; color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.75rem;">Max 10 items | 500 MB per file</p>
 				<input type="file" id="fileInput" multiple style="display: none;">
 					<div style="margin-top: 0.75rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-						<button type="button" onclick="document.getElementById('fileInput').click()" style="padding: 0.7rem 1.4rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;"><i class="fas fa-folder-plus" aria-hidden="true"></i> Select Files</button>
+						<button type="button" id="selectFilesBtn" style="padding: 0.7rem 1.4rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;"><i class="fas fa-folder-plus" aria-hidden="true"></i> Select Files</button>
 					</div>
 				</div>
 
@@ -268,8 +268,8 @@
 
 				<!-- Modal Buttons -->
 				<div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap; margin-top: 1rem;">
-					<button id="cancelUploadBtn" class="btn" style="padding: 0.75rem 1.5rem; background: none; border: 1px solid #4b5563; color: white; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='none'">Cancel</button>
-					<button id="uploadBtn" onclick="uploadFiles()" class="btn btn-primary" style="padding: 0.75rem 1.5rem; display: none;"><i class="fas fa-upload"></i> Upload</button>
+			<button id="cancelUploadBtn" class="btn" style="padding: 0.75rem 1.5rem; background: none; border: 1px solid #4b5563; color: white; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;">Cancel</button>
+			<button id="uploadBtn" class="btn btn-primary" style="padding: 0.75rem 1.5rem; display: none;"><i class="fas fa-upload"></i> Upload</button>
 				</div>
 			</div>
 		</div>
@@ -308,4 +308,27 @@
 	
 	<script src="/js/dashboard-upload.js"></script>
 	<script src="/js/dashboard-file-ops.js"></script>
+	<script>
+		function bindDashboardButtons() {
+			const profileBtn = document.getElementById('dashboardProfileBtn');
+			const uploadBtn = document.getElementById('dashboardUploadBtn');
+			const refreshBtn = document.getElementById('dashboardRefreshBtn');
+			if (profileBtn) profileBtn.addEventListener('click', () => window.location.href = '/profile');
+			if (refreshBtn) refreshBtn.addEventListener('click', () => window.location.reload());
+			if (uploadBtn) uploadBtn.addEventListener('click', () => {
+				if (window.openUploadModal) {
+					window.openUploadModal();
+					return;
+				}
+				const modal = document.getElementById('uploadModal');
+				if (modal) modal.style.display = 'flex';
+			});
+		}
+
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', bindDashboardButtons);
+		} else {
+			bindDashboardButtons();
+		}
+	</script>
 </section>

@@ -627,10 +627,13 @@ main {
 
 .password-field {
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .form-input.with-toggle {
     padding-right: 3rem;
+    flex: 1;
 }
 
 .password-toggle {
@@ -648,6 +651,7 @@ main {
     width: 32px;
     height: 32px;
     padding: 0;
+    z-index: 10;
 }
 
 .password-toggle:focus-visible {
@@ -1252,6 +1256,60 @@ main {
 
     main {
         padding: 0 !important;
+    }
+
+    table {
+        font-size: 0.95rem;
+    }
+
+    table th, table td {
+        padding: 0.75rem 0.6rem;
+    }
+}
+
+@media (max-width: 640px) {
+    h1 {
+        font-size: 1.7rem;
+    }
+
+    .btn {
+        padding: 0.65rem 1.1rem;
+    }
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        width: 100%;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.02);
+        overflow: hidden;
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.9rem;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    td:last-child {
+        border-bottom: none;
     }
 }
 

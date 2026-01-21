@@ -6,6 +6,14 @@
 	const fileListContainer = document.getElementById('fileListContainer');
 	const fileList = document.getElementById('fileList');
 	const uploadBtn = document.getElementById('uploadBtn');
+	const uploadOpenBtns = [
+		document.getElementById('filesUploadBtn'),
+		document.getElementById('filesUploadEmptyBtn'),
+	];
+	const uploadCloseBtn = document.getElementById('filesUploadCloseBtn');
+	const uploadCancelBtn = document.getElementById('filesCancelUploadBtn');
+	const selectFilesBtn = document.getElementById('filesSelectBtn');
+	const sortSelect = document.getElementById('sortSelect');
 	const renameModal = document.getElementById('renameModal');
 	const shareModal = document.getElementById('shareModal');
 	const uploadModal = document.getElementById('uploadModal');
@@ -318,11 +326,49 @@
 			});
 	};
 
+	const openUploadModal = () => {
+		if (uploadModal) uploadModal.style.display = 'flex';
+	};
+
+	const closeUploadModal = () => {
+		if (uploadModal) uploadModal.style.display = 'none';
+		selectedFiles = [];
+		updateFileList();
+		if (uploadBtn) {
+			uploadBtn.disabled = false;
+			uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Upload';
+		}
+	};
+
+	uploadOpenBtns.forEach(btn => {
+		if (btn) btn.addEventListener('click', openUploadModal);
+	});
+	if (uploadCloseBtn) uploadCloseBtn.addEventListener('click', closeUploadModal);
+	if (uploadCancelBtn) uploadCancelBtn.addEventListener('click', closeUploadModal);
+
+	if (selectFilesBtn && fileInput) {
+		selectFilesBtn.addEventListener('click', () => fileInput.click());
+	}
+
+	if (dropZone && fileInput) {
+		dropZone.addEventListener('click', () => fileInput.click());
+	}
+
+	if (sortSelect) {
+		sortSelect.addEventListener('change', (e) => window.handleSort(e.target.value));
+	}
+
 	// Close modals on outside click
 	[uploadModal, renameModal, shareModal].forEach((modal) => {
 		if (!modal) return;
 		modal.addEventListener('click', (e) => {
-			if (e.target === modal) modal.style.display = 'none';
+			if (e.target === modal) {
+				if (modal === uploadModal) {
+					closeUploadModal();
+				} else {
+					modal.style.display = 'none';
+				}
+			}
 		});
 	});
 

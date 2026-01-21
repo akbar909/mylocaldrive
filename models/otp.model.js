@@ -1,76 +1,113 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const otpSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
     lowercase: true,
-    trim: true
+    index: true
   },
-  otp: {
+  otpHash: {
     type: String,
     required: true
+  },
+  verificationToken: {
+    type: String,
+    required: true,
+    unique: true
   },
   type: {
     type: String,
     enum: ['registration', 'password-reset'],
     required: true
   },
-  verified: {
+  failedAttempts: {
+    type: Number,
+    default: 0
+  },
+  isLocked: {
     type: Boolean,
     default: false
   },
+  lockedUntil: Date,
   expiresAt: {
     type: Date,
     required: true,
-    index: { expires: 0 } // Auto-delete when expired
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
+    index: { expireAfterSeconds: 0 } // Auto-delete
   }
 });
 
-// Generate secure 6-digit alphanumeric OTP
+// Generate 6-char alphanumeric OTP
 otpSchema.statics.generateOTP = function() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let otp = '';
   for (let i = 0; i < 6; i++) {
-    const randomIndex = Math.floor(Math.random() * chars.length);
-    otp += chars[randomIndex];
+    otp += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return otp;
 };
 
-// Create and save OTP
+// Create OTP (delete old, save new)
 otpSchema.statics.createOTP = async function(email, type = 'registration') {
-  // Delete any existing unverified OTPs for this email and type
-  await this.deleteMany({ email, type, verified: false });
+  // Delete old OTPs - no blacklist needed, just delete
+  await this.deleteMany({ email: email.toLowerCase(), type });
 
   const otp = this.generateOTP();
-  const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+  const otpHash = await bcrypt.hash(otp, 10);
+  const verificationToken = crypto.randomBytes(32).toString('hex');
 
-  const otpDoc = await this.create({
-    email,
-    otp,
+  await this.create({
+    email: email.toLowerCase(),
+    otpHash,
+    verificationToken,
     type,
-    expiresAt
+    expiresAt: new Date(Date.now() + 3 * 60 * 1000) // 3 min
   });
 
-  return { otp: otpDoc.otp, expiresAt: otpDoc.expiresAt };
+  return { otp, verificationToken }; // Return both OTP and token
 };
 
-// Verify OTP
-otpSchema.statics.verifyOTP = async function(email, otp, type) {
-  if (!otp) {
-    return { success: false, message: 'Invalid or expired OTP' };
+// Verify OTP via token from email link (more secure)
+otpSchema.statics.verifyOTPByToken = async function(email, token, type) {
+  if (!token || !email) {
+    return { success: false, message: 'Email and token required' };
   }
 
+  email = email.toLowerCase();
   const otpDoc = await this.findOne({
     email,
-    otp: String(otp).toUpperCase(),
     type,
-    verified: false,
+    verificationToken: token,
+    expiresAt: { $gt: new Date() }
+  });
+
+  if (!otpDoc) {
+    return { success: false, message: 'Invalid or expired verification link' };
+  }
+
+  // Check lockout
+  if (otpDoc.isLocked && otpDoc.lockedUntil > new Date()) {
+    const mins = Math.ceil((otpDoc.lockedUntil - new Date()) / 60000);
+    return { success: false, message: `Try again in ${mins} minute(s)` };
+  }
+
+  // Token verified - delete OTP after successful verification (one-time use)
+  await this.deleteOne({ _id: otpDoc._id });
+  return { success: true, message: 'Email verified successfully' };
+};
+
+// Verify OTP (then delete it) - for manual entry
+otpSchema.statics.verifyOTP = async function(email, otp, type) {
+  if (!otp || !email) {
+    return { success: false, message: 'Email and OTP required' };
+  }
+
+  email = email.toLowerCase();
+  const otpDoc = await this.findOne({
+    email,
+    type,
     expiresAt: { $gt: new Date() }
   });
 
@@ -78,16 +115,34 @@ otpSchema.statics.verifyOTP = async function(email, otp, type) {
     return { success: false, message: 'Invalid or expired OTP' };
   }
 
-  // Mark as verified
-  otpDoc.verified = true;
+  // Check lockout
+  if (otpDoc.isLocked && otpDoc.lockedUntil > new Date()) {
+    const mins = Math.ceil((otpDoc.lockedUntil - new Date()) / 60000);
+    return { success: false, message: `Try again in ${mins} minute(s)` };
+  }
+
+  // Verify OTP
+  const isMatch = await bcrypt.compare(String(otp).toUpperCase(), otpDoc.otpHash);
+
+  if (isMatch) {
+    // Delete OTP after successful verification (one-time use)
+    await this.deleteOne({ _id: otpDoc._id });
+    return { success: true, message: 'OTP verified' };
+  }
+
+  // Failed attempt
+  otpDoc.failedAttempts += 1;
+  
+  if (otpDoc.failedAttempts >= 5) {
+    otpDoc.isLocked = true;
+    otpDoc.lockedUntil = new Date(Date.now() + 15 * 60 * 1000);
+    await otpDoc.save();
+    return { success: false, message: 'Locked 15 minutes. Too many attempts.' };
+  }
+
   await otpDoc.save();
-
-  return { success: true, message: 'OTP verified successfully' };
-};
-
-// Clean up expired OTPs (optional manual cleanup)
-otpSchema.statics.cleanupExpired = async function() {
-  await this.deleteMany({ expiresAt: { $lt: new Date() } });
+  const left = 5 - otpDoc.failedAttempts;
+  return { success: false, message: `Incorrect. ${left} attempts left.` };
 };
 
 module.exports = mongoose.model('OTP', otpSchema);

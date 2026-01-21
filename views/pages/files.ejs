@@ -9,7 +9,7 @@
 				<h1 style="font-size: 2.5rem; margin: 1rem 0 0.5rem 0;">My Files</h1>
 				<p style="color: var(--text-light);">Upload, manage, and share your files securely</p>
 			</div>
-			<button onclick="document.getElementById('uploadModal').style.display='flex'" class="btn btn-primary" style="padding: 0.75rem 1.5rem; white-space: nowrap;"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
+			<button id="filesUploadBtn" class="btn btn-primary" style="padding: 0.75rem 1.5rem; white-space: nowrap;"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
 		</div>
 
 		<!-- Files List -->
@@ -20,7 +20,7 @@
 				<!-- Sort Controls -->
 				<div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
 					<span style="color: var(--text-light); font-size: 0.875rem;">Sort by:</span>
-					<select id="sortSelect" onchange="handleSort(this.value)" style="padding: 0.5rem 0.75rem; background: #1f2937; color: white; border: 1px solid rgba(129, 140, 248, 0.3); border-radius: 6px; cursor: pointer;">
+					<select id="sortSelect" style="padding: 0.5rem 0.75rem; background: #1f2937; color: white; border: 1px solid rgba(129, 140, 248, 0.3); border-radius: 6px; cursor: pointer;">
 						<option value="date" <%= currentSort === 'date' ? 'selected' : '' %>>Newest First</option>
 						<option value="oldest" <%= currentSort === 'oldest' ? 'selected' : '' %>>Oldest First</option>
 						<option value="name" <%= currentSort === 'name' ? 'selected' : '' %>>Name (A-Z)</option>
@@ -108,7 +108,7 @@
 				<div style="text-align: center; padding: 3rem 2rem; color: var(--text-light);">
 					<p style="font-size: 2rem;"><i class="fas fa-folder-open"></i></p>
 					<p>No files uploaded yet.</p>
-					<button onclick="document.getElementById('uploadModal').style.display='flex'" class="btn btn-primary" style="margin-top: 1rem;"><i class="fas fa-cloud-upload-alt"></i> Upload Your First File</button>
+					<button id="filesUploadEmptyBtn" class="btn btn-primary" style="margin-top: 1rem;"><i class="fas fa-cloud-upload-alt"></i> Upload Your First File</button>
 				</div>
 			<% } %>
 		</div>
@@ -192,22 +192,22 @@
 </section>
 
 <!-- Upload Modal -->
-<div id="uploadModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; height: 100vh;">
+	<div id="uploadModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; height: 100vh;">
 	<div style="background: #111827; padding: 1.5rem; border-radius: 12px; max-width: 85vw; max-height: 75vh; width: calc(100% - 3rem); height: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.5); overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(129, 140, 248, 0.5) transparent; display: flex; flex-direction: column;">
 		<!-- Modal Header -->
 		<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
 			<h2 style="margin: 0; font-size: 1.5rem;"><i class="fas fa-cloud-upload-alt"></i> Upload Files</h2>
-			<button onclick="document.getElementById('uploadModal').style.display='none'" style="background: none; border: none; color: var(--text-light); font-size: 1.5rem; cursor: pointer;"><i class="fas fa-times"></i></button>
+				<button id="filesUploadCloseBtn" style="background: none; border: none; color: var(--text-light); font-size: 1.5rem; cursor: pointer;"><i class="fas fa-times"></i></button>
 		</div>
 
 		<!-- Drag & Drop Area -->
-		<div id="dropZone" style="border: 2px dashed var(--primary-color); border-radius: 8px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; margin-bottom: 1.5rem; background: rgba(129, 140, 248, 0.05);">
+			<div id="dropZone" style="border: 2px dashed var(--primary-color); border-radius: 8px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; margin-bottom: 1.5rem; background: rgba(129, 140, 248, 0.05);">
 			<div style="font-size: 2rem; margin-bottom: 0.5rem;"><i class="fas fa-cloud-upload-alt"></i></div>
 			<p style="margin: 0 0 0.5rem 0; color: var(--text-dark); font-weight: 500;">Drag files here or click to select</p>
 			<p style="margin: 0; color: var(--text-light); font-size: 0.875rem;">Max 10 items | 500 MB per file</p>
 			<input type="file" id="fileInput" multiple style="display: none;">
 			<div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: center;">
-				<button type="button" onclick="document.getElementById('fileInput').click()" style="padding: 0.5rem 1rem; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">Select Files</button>
+					<button type="button" id="filesSelectBtn" style="padding: 0.5rem 1rem; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.875rem;">Select Files</button>
 			</div>
 		</div>
 
@@ -230,8 +230,8 @@
 
 		<!-- Modal Buttons -->
 		<div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap;">
-			<button onclick="cancelUpload()" class="btn" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-light); border-radius: 8px; cursor: pointer;">Cancel</button>
-			<button id="uploadBtn" onclick="uploadFiles()" class="btn btn-primary" style="padding: 0.75rem 1.5rem; display: none;"><i class="fas fa-upload"></i> Upload</button>
+			<button id="filesCancelUploadBtn" class="btn" style="padding: 0.75rem 1.5rem; background: none; border: none; color: var(--text-light); border-radius: 8px; cursor: pointer;">Cancel</button>
+			<button id="uploadBtn" class="btn btn-primary" style="padding: 0.75rem 1.5rem; display: none;"><i class="fas fa-upload"></i> Upload</button>
 		</div>
 	</div>
 </div>
