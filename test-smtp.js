@@ -2,6 +2,8 @@ require('dotenv').config();
 const nodemailer = require('nodemailer');
 /////test smpt
 
+/////test smpt
+
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.zoho.com',
