@@ -107,9 +107,12 @@
 									<td style="padding: 1rem; color: var(--text-dark);">
 										<% 
 																					let size = file.fileSize;
-																					let sizeMB = (size / (1024 * 1024)).toFixed(2);
+																					let sizeStr = '';
+																					if (size < 1024) sizeStr = size + ' B';
+																					else if (size < 1024 * 1024) sizeStr = (size / 1024).toFixed(2) + ' KB';
+																					else sizeStr = (size / (1024 * 1024)).toFixed(2) + ' MB';
 										%>
-										<%= sizeMB %> MB
+										<%= sizeStr %>
 									</td>
 									<td style="padding: 1rem; color: var(--text-dark);">
 										<%= new Date(file.uploadedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
@@ -310,6 +313,10 @@
 	<script src="/js/dashboard-upload.js"></script>
 	<script src="/js/dashboard-file-ops.js"></script>
 	<script>
+		function showError(msg) {
+			alert(msg); // You can replace this with a custom toast if desired
+		}
+
 		function bindDashboardButtons() {
 			const profileBtn = document.getElementById('dashboardProfileBtn');
 			const uploadBtn = document.getElementById('dashboardUploadBtn');
@@ -323,6 +330,20 @@
 				}
 				const modal = document.getElementById('uploadModal');
 				if (modal) modal.style.display = 'flex';
+			});
+
+			// Re-bind all dashboard action buttons (for dynamic content)
+			document.querySelectorAll('button[onclick^="showFileDetails"]').forEach(btn => {
+				btn.onclick = function(e) { try { eval(this.getAttribute('onclick')); } catch (err) { showError('Failed to show file details.'); } };
+			});
+			document.querySelectorAll('button[onclick^="deleteFileFromDashboard"]').forEach(btn => {
+				btn.onclick = function(e) { try { eval(this.getAttribute('onclick')); } catch (err) { showError('Failed to delete file.'); } };
+			});
+			document.querySelectorAll('button[onclick^="showRenameModal"]').forEach(btn => {
+				btn.onclick = function(e) { try { eval(this.getAttribute('onclick')); } catch (err) { showError('Failed to rename file.'); } };
+			});
+			document.querySelectorAll('button[onclick^="showShareModal"]').forEach(btn => {
+				btn.onclick = function(e) { try { eval(this.getAttribute('onclick')); } catch (err) { showError('Failed to share file.'); } };
 			});
 		}
 
