@@ -52,5 +52,3 @@ transporter.verify((error, success) => {
   }
 });
 
-\``
-
