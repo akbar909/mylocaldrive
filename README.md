@@ -232,8 +232,7 @@ The application will run on `http://localhost:3000`
 - [ ] Configure secure MongoDB connection
 - [ ] Set up Cloudflare R2 bucket
 - [ ] Configure email service (SMTP)
-- [ ] Set strong JWT_SECRET and SESSION_SECRET
-- [ ] Enable HTTPS/SSL
+
 
 
 ## 👨‍💻 Author
