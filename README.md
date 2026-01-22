@@ -236,10 +236,7 @@ The application will run on `http://localhost:3000`
 - [ ] Enable HTTPS/SSL
 - [ ] Configure CORS for production domain
 - [ ] Set up logging and monitoring
-- [ ] Regular database backups
-- [ ] Configure rate limits appropriately
 
-## 📝 Environment Variables
 
 ## 👨‍💻 Author
 IMEER.ai
