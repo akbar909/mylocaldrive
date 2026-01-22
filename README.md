@@ -243,9 +243,6 @@ The application will run on `http://localhost:3000`
 
 Create a `.env` file in the root directory:
 
-```env
-# Server
-PORT=3000
 
 ## 👨‍💻 Author
 IMEER.ai
