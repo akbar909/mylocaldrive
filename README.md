@@ -266,8 +266,6 @@ R2_PUBLIC_URL=https://your-public-url.r2.dev
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_USER=your-email@gmail.com
-EMAIL_PASS=your-app-password
-EMAIL_FROM=MyDrive <noreply@mydrive.com>
 
 ## 👨‍💻 Author
 IMEER.ai
