@@ -255,9 +255,6 @@ MONGODB_URI=mongodb://localhost:27017/mydrive
 JWT_SECRET=your-super-secret-jwt-key
 SESSION_SECRET=your-super-secret-session-key
 
-# Cloudflare R2
-R2_ACCOUNT_ID=your-account-id
-R
 ## 👨‍💻 Author
 IMEER.ai
 ---
