@@ -262,8 +262,7 @@ R2_SECRET_ACCESS_KEY=your-secret-key
 R2_BUCKET_NAME=your-bucket-name
 R2_PUBLIC_URL=https://your-public-url.r2.dev
 
-# Email
-EMAIL_HOST=smtp.gmail.com
+
 
 ## 👨‍💻 Author
 IMEER.ai
