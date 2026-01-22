@@ -230,8 +230,6 @@ The application will run on `http://localhost:3000`
 ### Production Checklist
 - [ ] Set NODE_ENV=production
 - [ ] Configure secure MongoDB connection
-- [ ] Set up Cloudflare R2 bucket
-- [ ] Configure email service (SMTP)
 
 
 
