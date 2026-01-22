@@ -274,9 +274,6 @@ MAX_FILE_SIZE=1073741824
 STORAGE_QUOTA=1073741824
 ```
 
-## � License
-
-ISC
 
 ## 👨‍💻 Author
 IMEER.ai
