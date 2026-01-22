@@ -248,8 +248,6 @@ Create a `.env` file in the root directory:
 PORT=3000
 NODE_ENV=development
 
-# Database
-MONGODB_URI=mongodb://localhost:27017/mydrive
 
 
 ## 👨‍💻 Author
