@@ -251,9 +251,6 @@ NODE_ENV=development
 # Database
 MONGODB_URI=mongodb://localhost:27017/mydrive
 
-# Authentication
-JWT_SECRET=your-super-secret-jwt-key
-SESSION_SECRET=your-super-secret-session-key
 
 ## 👨‍💻 Author
 IMEER.ai
