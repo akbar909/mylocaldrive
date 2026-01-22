@@ -264,8 +264,6 @@ R2_PUBLIC_URL=https://your-public-url.r2.dev
 
 # Email
 EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=your-email@gmail.com
 
 ## 👨‍💻 Author
 IMEER.ai
