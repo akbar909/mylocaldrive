@@ -1,4 +1,3 @@
-// Server entry point - Database connection and Express server initialization
 const app = require('./app');
 const connectDB = require('./config/db');
 
