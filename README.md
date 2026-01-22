@@ -246,9 +246,6 @@ Create a `.env` file in the root directory:
 ```env
 # Server
 PORT=3000
-NODE_ENV=development
-
-
 
 ## 👨‍💻 Author
 IMEER.ai
