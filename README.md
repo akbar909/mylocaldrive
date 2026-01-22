@@ -269,8 +269,6 @@ EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
 EMAIL_FROM=MyDrive <noreply@mydrive.com>
 
-
-
 ## 👨‍💻 Author
 IMEER.ai
 ---
