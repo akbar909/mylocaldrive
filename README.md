@@ -225,12 +225,6 @@ The application will run on `http://localhost:3000`
 ### Development
 - nodemon@3.1.11 - Development server with auto-reload
 
-## 🚀 Deployment
-
-### Production Checklist
-
-
-
 
 ## 👨‍💻 Author
 IMEER.ai
