@@ -234,8 +234,6 @@ The application will run on `http://localhost:3000`
 - [ ] Configure email service (SMTP)
 - [ ] Set strong JWT_SECRET and SESSION_SECRET
 - [ ] Enable HTTPS/SSL
-- [ ] Configure CORS for production domain
-- [ ] Set up logging and monitoring
 
 
 ## 👨‍💻 Author
