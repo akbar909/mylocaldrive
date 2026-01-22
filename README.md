@@ -228,8 +228,7 @@ The application will run on `http://localhost:3000`
 ## 🚀 Deployment
 
 ### Production Checklist
-- [ ] Set NODE_ENV=production
-- [ ] Configure secure MongoDB connection
+
 
 
 
