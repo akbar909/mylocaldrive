@@ -271,8 +271,7 @@ EMAIL_FROM=MyDrive <noreply@mydrive.com>
 
 # Application
 MAX_FILE_SIZE=1073741824
-STORAGE_QUOTA=1073741824
-```
+
 
 
 ## 👨‍💻 Author
