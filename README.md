@@ -279,9 +279,7 @@ STORAGE_QUOTA=1073741824
 ISC
 
 ## 👨‍💻 Author
-
 IMEER.ai
-
 ---
 
 **Note**: This is a full-featured cloud storage application with enterprise-grade security features. Make sure to properly configure all environment variables before deployment.
