@@ -183,8 +183,6 @@ The application will run on `http://localhost:3000`
 - `DELETE /files/:fileId` - Delete file (protected)
 - `PUT /files/:fileId/rename` - Rename file (protected)
 
-### Statistics Routes
-- `GET /api/stats/storage` - Get storage statistics (protected)
 
 ## 🔒 Security Features
 
@@ -198,7 +196,6 @@ The application will run on `http://localhost:3000`
 - **Session Management**: Secure session configuration
 - **CORS Protection**: Configured cross-origin resource sharing
 - **File Validation**: Type and size validation for uploads
-
 
 ## 📦 Dependencies
 
