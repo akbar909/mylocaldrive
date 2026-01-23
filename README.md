@@ -178,9 +178,6 @@ The application will run on `http://localhost:3000`
 
 ### File Management Routes
 - `GET /files` - File management page (protected)
-- `POST /files/upload` - Upload files (protected)
-- `GET /files/:fileId/download` - Download file (protected)
-
 
 
 ## 🔒 Security Features
