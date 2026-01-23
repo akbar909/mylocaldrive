@@ -155,8 +155,6 @@ The application will run on `http://localhost:3000`
 ### Authentication Routes
 - `POST /user/register` - User registration
 - `POST /user/verify-otp` - Verify email OTP
-- `POST /user/login` - User login
-- `GET /user/logout` - User logout
 
 
 
