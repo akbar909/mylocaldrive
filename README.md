@@ -150,12 +150,6 @@ The application will run on `http://localhost:3000`
 - Rate limiting to prevent spam
 - Flash messages for user feedback
 
-
-
-
-
-
-
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
