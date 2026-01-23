@@ -153,8 +153,6 @@ The application will run on `http://localhost:3000`
 ## 📋 API Routes
 
 ### Authentication Routes
-- `POST /user/register` - User registration
-- `POST /user/verify-otp` - Verify email OTP
 
 
 
