@@ -200,8 +200,7 @@ The application will run on `http://localhost:3000`
 - **File Validation**: Type and size validation for uploads
 
 ## 🎨 Color Scheme
-- Primary: `#818cf8` (Indigo)
-- Background: `#111827` (Dark Charcoal)
+
 
 ## 📦 Dependencies
 
