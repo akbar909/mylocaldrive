@@ -152,8 +152,6 @@ The application will run on `http://localhost:3000`
 
 ## 📋 API Routes
 
-### Authentication Routes
-
 
 
 
