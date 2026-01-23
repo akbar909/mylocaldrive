@@ -164,8 +164,6 @@ The application will run on `http://localhost:3000`
 - `GET /` - Home page
 - `GET /about` - About page
 - `GET /features` - Features page
-- `GET /contact` - Contact page
-- `POST /contact` - Submit contact form
 
 
 
