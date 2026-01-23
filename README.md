@@ -157,8 +157,6 @@ The application will run on `http://localhost:3000`
 - `POST /user/verify-otp` - Verify email OTP
 - `POST /user/login` - User login
 - `GET /user/logout` - User logout
-- `POST /user/forgot-password` - Request password reset
-- `POST /user/reset-password/:token` - Reset password
 
 
 
