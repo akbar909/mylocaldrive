@@ -162,8 +162,6 @@ The application will run on `http://localhost:3000`
 
 ### Page Routes
 - `GET /` - Home page
-- `GET /about` - About page
-- `GET /features` - Features page
 
 
 
