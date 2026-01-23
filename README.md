@@ -167,8 +167,6 @@ The application will run on `http://localhost:3000`
 - `GET /contact` - Contact page
 - `POST /contact` - Submit contact form
 
-### Dashboard & Profile Routes
-- `GET /dashboard` - Dashboard home (protected)
 
 
 
