@@ -171,8 +171,6 @@ The application will run on `http://localhost:3000`
 - `GET /dashboard` - Dashboard home (protected)
 - `GET /profile` - User profile (protected)
 - `GET /profile/edit-name` - Edit profile form (protected)
-- `POST /profile/edit-name` - Update profile name (protected)
-- `GET /profile/change-password` - Change password form (protected)
 
 
 
