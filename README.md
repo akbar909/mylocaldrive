@@ -160,8 +160,6 @@ The application will run on `http://localhost:3000`
 - `POST /user/forgot-password` - Request password reset
 - `POST /user/reset-password/:token` - Reset password
 
-### Page Routes
-- `GET /` - Home page
 
 
 
