@@ -173,8 +173,6 @@ The application will run on `http://localhost:3000`
 - `GET /profile/edit-name` - Edit profile form (protected)
 - `POST /profile/edit-name` - Update profile name (protected)
 - `GET /profile/change-password` - Change password form (protected)
-- `POST /profile/change-password` - Update password (protected)
-- `POST /profile/delete-account` - Delete account (protected)
 
 
 
