@@ -180,8 +180,7 @@ The application will run on `http://localhost:3000`
 - `GET /files` - File management page (protected)
 - `POST /files/upload` - Upload files (protected)
 - `GET /files/:fileId/download` - Download file (protected)
-- `DELETE /files/:fileId` - Delete file (protected)
-- `PUT /files/:fileId/rename` - Rename file (protected)
+
 
 
 ## 🔒 Security Features
