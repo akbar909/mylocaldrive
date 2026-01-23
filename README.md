@@ -199,8 +199,6 @@ The application will run on `http://localhost:3000`
 - **CORS Protection**: Configured cross-origin resource sharing
 - **File Validation**: Type and size validation for uploads
 
-## 🎨 Color Scheme
-
 
 ## 📦 Dependencies
 
