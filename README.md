@@ -176,8 +176,6 @@ The application will run on `http://localhost:3000`
 - `POST /profile/change-password` - Update password (protected)
 - `POST /profile/delete-account` - Delete account (protected)
 
-### File Management Routes
-- `GET /files` - File management page (protected)
 
 
 ## 🔒 Security Features
