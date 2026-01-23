@@ -204,8 +204,6 @@ The application will run on `http://localhost:3000`
 - Background: `#111827` (Dark Charcoal)
 - Text Dark: `#f9fafb` (Off-white)
 - Text Light: `#d1d5db` (Light Gray)
-- Accent: `#06b6d4` (Cyan)
-- Danger: `#ef4444` (Red)
 
 ## 📦 Dependencies
 
