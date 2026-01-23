@@ -202,8 +202,6 @@ The application will run on `http://localhost:3000`
 ## 🎨 Color Scheme
 - Primary: `#818cf8` (Indigo)
 - Background: `#111827` (Dark Charcoal)
-- Text Dark: `#f9fafb` (Off-white)
-- Text Light: `#d1d5db` (Light Gray)
 
 ## 📦 Dependencies
 
