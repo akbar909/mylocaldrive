@@ -136,9 +136,6 @@ The application will run on `http://localhost:3000`
   - Rename files
 - Storage usage tracking
 - File metadata management
-
-### Profile Management (`/profile`)
-
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
