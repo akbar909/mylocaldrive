@@ -138,8 +138,6 @@ The application will run on `http://localhost:3000`
 - File metadata management
 
 ### Profile Management (`/profile`)
-- View user profile information
-- Edit name functionality
 
 ## 🔒 Security Features
 
