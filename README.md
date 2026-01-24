@@ -117,8 +117,6 @@ The application will run on `http://localhost:3000`
 - Password strength requirements (8+ chars, uppercase, lowercase, number, special char)
 - Secure password encryption with bcrypt
 - JWT token-based authentication
-- Forgot password with email recovery
-- Token blacklisting on logout
 
 
 ## 🔒 Security Features
