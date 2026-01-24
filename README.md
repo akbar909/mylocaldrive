@@ -132,8 +132,6 @@ The application will run on `http://localhost:3000`
 - Cloudflare R2 cloud storage integration
 - File operations:
   - Download files
-  - Delete files
-  - Rename files
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
