@@ -120,9 +120,6 @@ The application will run on `http://localhost:3000`
 - Forgot password with email recovery
 - Token blacklisting on logout
 
-### Dashboard (`/dashboard`)
-- Personalized welcome message
-- Storage statistics (total files, storage used, 1 GB limit)
 
 ## 🔒 Security Features
 
