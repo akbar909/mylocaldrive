@@ -123,8 +123,6 @@ The application will run on `http://localhost:3000`
 ### Dashboard (`/dashboard`)
 - Personalized welcome message
 - Storage statistics (total files, storage used, 1 GB limit)
-- Quick action buttons (My Files, My Profile, Upload Files)
-- Recent activity overview
 
 ## 🔒 Security Features
 
