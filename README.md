@@ -111,8 +111,6 @@ The application will run on `http://localhost:3000`
 
 ## 🎨 Features in Detail
 
-### User Authentication
-- Username validation (3-20 characters, alphanumeric + underscore)
 
 
 ## 🔒 Security Features
