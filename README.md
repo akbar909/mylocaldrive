@@ -144,8 +144,6 @@ The application will run on `http://localhost:3000`
 - Delete account option
 - User statistics display
 
-- Email notifications to admin
-
 
 ## 🔒 Security Features
 
