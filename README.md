@@ -147,7 +147,6 @@ The application will run on `http://localhost:3000`
 ### Contact System (`/contact`)
 - Contact form with validation
 - Email notifications to admin
-- Rate limiting to prevent spam
 
 
 ## 🔒 Security Features
