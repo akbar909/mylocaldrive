@@ -128,8 +128,6 @@ The application will run on `http://localhost:3000`
 
 ### File Management (`/files`)
 - Upload files with drag-and-drop support
-- File size validation (1 GB max per file)
-- Cloudflare R2 cloud storage integration
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
