@@ -108,11 +108,6 @@ The application will run on `http://localhost:3000`
 │   └── js/                # Client-side scripts
 └── uploads/               # Temporary file uploads
 ```
-
-## 🎨 Features in Detail
-
-
-
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
