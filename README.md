@@ -140,8 +140,6 @@ The application will run on `http://localhost:3000`
 ### Profile Management (`/profile`)
 - View user profile information
 - Edit name functionality
-- Change password with current password verification
-- Delete account option
 
 ## 🔒 Security Features
 
