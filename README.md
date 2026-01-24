@@ -113,8 +113,6 @@ The application will run on `http://localhost:3000`
 
 ### User Authentication
 - Username validation (3-20 characters, alphanumeric + underscore)
-- Email validation and OTP verification
-- Password strength requirements (8+ chars, uppercase, lowercase, number, special char)
 
 
 ## 🔒 Security Features
