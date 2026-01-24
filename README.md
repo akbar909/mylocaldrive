@@ -142,8 +142,6 @@ The application will run on `http://localhost:3000`
 - Edit name functionality
 - Change password with current password verification
 - Delete account option
-- User statistics display
-
 
 ## 🔒 Security Features
 
