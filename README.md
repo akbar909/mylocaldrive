@@ -126,8 +126,6 @@ The application will run on `http://localhost:3000`
 - Quick action buttons (My Files, My Profile, Upload Files)
 - Recent activity overview
 
-### File Management (`/files`)
-- Upload files with drag-and-drop support
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
