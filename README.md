@@ -70,8 +70,6 @@ The application will run on `http://localhost:3000`
 
 ```
 │   ├── db.js              # MongoDB conation
-│   └── r2.js              # Cloudflare R2 storage
-├── routes/                # API routes
 │   ├── index.routes.js    # Main routes (pages)
 │   └── user.routes.js     # User/auth routes
 ├── controllers/           # Business logic
