@@ -103,7 +103,6 @@ The application will run on `http://localhost:3000`
 │   ├── pages/             # Page templates
 │   ├── partials/          # Reusable components
 │   └── errors/            # Error pages
-├── public/                # Static files
 ```
 ## 🔒 Security Features
 
