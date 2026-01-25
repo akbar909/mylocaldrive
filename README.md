@@ -69,9 +69,7 @@ The application will run on `http://localhost:3000`
 ## Project Structure
 
 ```
-│   ├── db.js              # MongoDB connection
-│   ├── email.js           # Email/SMTP setup
-│   ├── multer.js          # File upload configuration
+│   ├── db.js              # MongoDB conation
 │   └── r2.js              # Cloudflare R2 storage
 ├── routes/                # API routes
 │   ├── index.routes.js    # Main routes (pages)
