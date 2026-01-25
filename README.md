@@ -69,8 +69,6 @@ The application will run on `http://localhost:3000`
 ## Project Structure
 
 ```
-├── package.json           # Project dependencies
-├── config/                # Configuration files
 │   ├── db.js              # MongoDB connection
 │   ├── email.js           # Email/SMTP setup
 │   ├── multer.js          # File upload configuration
