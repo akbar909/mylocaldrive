@@ -97,7 +97,6 @@ The application will run on `http://localhost:3000`
 │   ├── errorHandler.js    # Error handling
 │   ├── rateLimiter.js     # Rate limiting
 │   ├── sanitize.js        # Input sanitization
-│   └── validation.js      # Input validation
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
