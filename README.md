@@ -71,9 +71,6 @@ The application will run on `http://localhost:3000`
 ```
 │   ├── auth.controller.js # Authentication logic
 │   ├── contact.controller.js # Contact form
-│   ├── dashboard.controller.js # Dashboard
-│   ├── file.controller.js # File operations
-│   ├── profile.controller.js # Profile management
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
