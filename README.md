@@ -69,8 +69,6 @@ The application will run on `http://localhost:3000`
 ## Project Structure
 
 ```
-├── app.js                 # Express application setup
-├── server.js              # Server entry point
 ├── package.json           # Project dependencies
 ├── config/                # Configuration files
 │   ├── db.js              # MongoDB connection
