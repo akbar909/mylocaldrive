@@ -77,9 +77,6 @@ The application will run on `http://localhost:3000`
 │   └── stats.controller.js # Statistics
 ├── models/                # Data models
 │   ├── file.model.js      # File schema
-│   ├── otp.model.js       # OTP schema
-│   ├── tokenBlacklist.model.js # Blacklisted tokens
-│   └── user.model.js      # User schema
 ├── middleware/            # Custom middleware
 ## 🔒 Security Features
 
