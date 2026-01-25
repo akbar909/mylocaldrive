@@ -76,8 +76,6 @@ The application will run on `http://localhost:3000`
 │   ├── profile.controller.js # Profile management
 │   └── stats.controller.js # Statistics
 ├── models/                # Data models
-│   ├── file.model.js      # File schema
-├── middleware/            # Custom middleware
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
