@@ -98,8 +98,6 @@ The application will run on `http://localhost:3000`
 │   ├── rateLimiter.js     # Rate limiting
 │   ├── sanitize.js        # Input sanitization
 │   └── validation.js      # Input validation
-├── views/                 # EJS templates
-```
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
