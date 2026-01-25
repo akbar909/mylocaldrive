@@ -100,8 +100,6 @@ The application will run on `http://localhost:3000`
 │   └── validation.js      # Input validation
 ├── views/                 # EJS templates
 │   ├── layouts/           # Main layout
-│   ├── pages/             # Page templates
-│   ├── partials/          # Reusable components\
 ```
 ## 🔒 Security Features
 
