@@ -105,8 +105,6 @@ The application will run on `http://localhost:3000`
 │   └── errors/            # Error pages
 ├── public/                # Static files
 │   ├── css/               # Stylesheets
-│   └── js/                # Client-side scripts
-└── uploads/               # Temporary file uploads
 ```
 ## 🔒 Security Features
 
