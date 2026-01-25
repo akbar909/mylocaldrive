@@ -69,8 +69,6 @@ The application will run on `http://localhost:3000`
 ## Project Structure
 
 ```
-│   ├── db.js              # MongoDB conation
-│   ├── index.routes.js    # Main routes (pages
 │   ├── auth.controller.js # Authentication logic
 │   ├── contact.controller.js # Contact form
 │   ├── dashboard.controller.js # Dashboard
