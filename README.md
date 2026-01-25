@@ -101,8 +101,7 @@ The application will run on `http://localhost:3000`
 ├── views/                 # EJS templates
 │   ├── layouts/           # Main layout
 │   ├── pages/             # Page templates
-│   ├── partials/          # Reusable components
-│   └── errors/            # Error pages
+│   ├── partials/          # Reusable components\
 ```
 ## 🔒 Security Features
 
