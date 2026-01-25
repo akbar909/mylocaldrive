@@ -68,9 +68,6 @@ The application will run on `http://localhost:3000`
 
 ## Project Structure
 
-```
-│   ├── auth.controller.js # Authentication logic
-│   ├── contact.controller.js # Contact form
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
