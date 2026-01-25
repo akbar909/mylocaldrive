@@ -104,7 +104,6 @@ The application will run on `http://localhost:3000`
 │   ├── partials/          # Reusable components
 │   └── errors/            # Error pages
 ├── public/                # Static files
-│   ├── css/               # Stylesheets
 ```
 ## 🔒 Security Features
 
