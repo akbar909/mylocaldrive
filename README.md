@@ -99,7 +99,6 @@ The application will run on `http://localhost:3000`
 │   ├── sanitize.js        # Input sanitization
 │   └── validation.js      # Input validation
 ├── views/                 # EJS templates
-│   ├── layouts/           # Main layout
 ```
 ## 🔒 Security Features
 
