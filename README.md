@@ -95,8 +95,6 @@ The application will run on `http://localhost:3000`
 ├── middleware/            # Custom middleware
 │   ├── auth.js            # JWT authentication
 │   ├── errorHandler.js    # Error handling
-│   ├── rateLimiter.js     # Rate limiting
-│   ├── sanitize.js        # Input sanitization
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
