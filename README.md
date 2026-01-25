@@ -93,8 +93,6 @@ The application will run on `http://localhost:3000`
 │   ├── tokenBlacklist.model.js # Blacklisted tokens
 │   └── user.model.js      # User schema
 ├── middleware/            # Custom middleware
-│   ├── auth.js            # JWT authentication
-│   ├── errorHandler.js    # Error handling
 ## 🔒 Security Features
 
 - **Authentication**: JWT-based authentication with httpOnly cookies
