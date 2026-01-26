@@ -43,7 +43,6 @@ npm install
 PORT=3000
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
-SESSION_SECRET=your_session_secret
 # Start development server
 npm run dev
 
