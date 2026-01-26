@@ -44,9 +44,6 @@ PORT=3000
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
 SESSION_SECRET=your_session_secret
-
-# Cloudflare R2 Configuration
-R2_ACCOUNT_ID=your_r2_account_id
 # Start development server
 npm run dev
 
