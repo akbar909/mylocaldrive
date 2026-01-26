@@ -73,7 +73,6 @@ The application will run on `http://localhost:3000`
 - multer@2.0.2 - File upload handling
 - helmet@7.1.0 - Security headers
 - express-rate-limit@7.1.5 - Rate limiting
-- express-validator@7.3.1 - Input validation
 
 ## 👨‍💻 Author
 IMEER.ai
