@@ -38,7 +38,6 @@ A modern, secure cloud storage platform built with Express.js and EJS featuring 
 # Install dependencies
 npm install
 
-
 # Start development server
 npm run dev
 
