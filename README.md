@@ -38,9 +38,7 @@ A modern, secure cloud storage platform built with Express.js and EJS featuring 
 # Install dependencies
 npm install
 
-# Configure environment variables
-# Create .env file with the following:
-PORT=3000
+
 # Start development server
 npm run dev
 
