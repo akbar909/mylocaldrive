@@ -41,8 +41,6 @@ npm install
 # Configure environment variables
 # Create .env file with the following:
 PORT=3000
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
 # Start development server
 npm run dev
 
