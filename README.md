@@ -52,8 +52,6 @@ R2_SECRET_ACCESS_KEY=your_r2_secret_key
 R2_BUCKET_NAME=your_bucket_name
 
 # Email Configuration
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
 
 # Start development server
 npm run dev
