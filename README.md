@@ -70,7 +70,6 @@ The application will run on `http://localhost:3000`
 - jsonwebtoken@9.0.3 - JWT authentication
 - nodemailer@7.0.12 - Email sending
 - @aws-sdk/client-s3@3.970.0 - S3-compatible storage
-- multer@2.0.2 - File upload handling
 
 ## 👨‍💻 Author
 IMEER.ai
