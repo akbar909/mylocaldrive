@@ -48,8 +48,7 @@ SESSION_SECRET=your_session_secret
 # Cloudflare R2 Configuration
 R2_ACCOUNT_ID=your_r2_account_id
 R2_ACCESS_KEY_ID=your_r2_access_key
-R2_SECRET_ACCESS_KEY=your_r2_secret_key
-R2_BUCKET_NAME=your_bucket_name
+R2_SECRET_ACCESS_KEY=your_r2_secret_kejjj
 # Start development server
 npm run dev
 
