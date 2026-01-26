@@ -55,7 +55,6 @@ R2_BUCKET_NAME=your_bucket_name
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_email_password
 
 # Start development server
 npm run dev
