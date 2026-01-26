@@ -77,7 +77,6 @@ The application will run on `http://localhost:3000`
 - ejs@3.1.10 - Templating engine
 
 ### Development
-- nodemon@3.1.11 - Development server with auto-reload
 
 ## 👨‍💻 Author
 IMEER.ai
