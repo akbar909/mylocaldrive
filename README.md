@@ -74,7 +74,6 @@ The application will run on `http://localhost:3000`
 - helmet@7.1.0 - Security headers
 - express-rate-limit@7.1.5 - Rate limiting
 - express-validator@7.3.1 - Input validation
-- ejs@3.1.10 - Templating engine
 
 ## 👨‍💻 Author
 IMEER.ai
