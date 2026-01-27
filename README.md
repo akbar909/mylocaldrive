@@ -68,4 +68,4 @@ The application will run on `http://localhost:3000`
 IMEER.ai
 ---
 
-**Note**: This is a full-featured cloud storage application with enterprise-grade security features. Make sure to properly configure all environment variables
+**Note**: This is a full-featured cloud storage application with enterprise-grade security features. Make sure to properly configure all environment 
