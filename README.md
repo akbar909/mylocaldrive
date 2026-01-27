@@ -61,7 +61,7 @@ The application will run on `http://localhost:3000`
 - express - Web framework
 - mongoose - MongoDB ODM
 - bcryptjs - Password hashing
-- jsonwebtoken@9.0.3 - JWT authentication
+- jsonwebtoken - JWT authentication
 - nodemailer@7.0.12 - Email sending
 
 ## 👨‍💻 Author
