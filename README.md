@@ -62,7 +62,7 @@ The application will run on `http://localhost:3000`
 - mongoose - MongoDB ODM
 - bcryptjs - Password hashing
 - jsonwebtoken - JWT authentication
-- nodemailer@7.0.12 - Email sending
+- nodemailer - Email sending
 
 ## 👨‍💻 Author
 IMEER.ai
