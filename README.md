@@ -41,7 +41,6 @@ npm run dev
 # Start production server
 npm start
 ```
-
 The application will run on `http://localhost:3000`
 
 
