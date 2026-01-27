@@ -9,7 +9,7 @@ A modern, secure cloud storage platform built with Express.js and EJS featuring 
 - **Profile Management**: Edit profile, change password, forgot password with email recovery
 - **Contact System**: Contact form with email notifications via Nodemailer
 - **Security Features**: Rate limiting, input sanitization, token blacklisting, helmet security headers
-- **Storage Quota**: 1 GB per user with file size validation
+- **Storage Quota**: 0.5 GB per user with file size validation
 - **Email System**: OTP verification and password reset via SMTP
 - **Modern UI**: Clean, professional dark theme with responsive design
 
