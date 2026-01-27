@@ -31,7 +31,6 @@ A modern, secure cloud storage platform built with Express.js and EJS featuring 
 - SMTP email service (Gmail, SendGrid, etc.)
 
 ### Installation Steps
-
 ```bash
 # Install dependencies
 npm install
