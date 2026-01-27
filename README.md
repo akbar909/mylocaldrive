@@ -44,7 +44,6 @@ npm start
 The application will run on `http://localhost:3000`
 
 ## 🔒 Security Features
-
 - **Authentication**: JWT-based authentication with httpOnly cookies
 - **Password Security**: Bcrypt hashing with salt rounds
 - **OTP Verification**: Email-based OTP for registration
