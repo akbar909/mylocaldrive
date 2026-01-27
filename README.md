@@ -14,7 +14,6 @@ A modern, secure cloud storage platform built with Express.js and EJS featuring 
 - **Modern UI**: Clean, professional dark theme with responsive design
 
 ## 🛠️ Technology Stack
-
 - **Backend**: Node.js with Express.js
 - **Frontend**: EJS templating, CSS3, Vanilla JavaScript
 - **Database**: MongoDB with Mongoose ODM
