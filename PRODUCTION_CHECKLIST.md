@@ -65,7 +65,6 @@ APP_URL=<your-production-url>
 10. Set secure cookies flag to true
 
 ## Database
-- ✅ OTP auto-expires after 5 minutes (TTL index)
 
 
 
