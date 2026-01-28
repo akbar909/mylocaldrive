@@ -70,8 +70,6 @@ APP_URL=<your-production-url>
 - ✅ User email/username unique indexes
 - ✅ Password never logged or exposed
 
-## Known Limitations
-
 
 
 
