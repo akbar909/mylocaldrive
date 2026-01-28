@@ -74,7 +74,6 @@ APP_URL=<your-production-url>
 - Files stored in /uploads (use cloud storage in production: R2, S3)
 - No email signature/branding in acknowledgment
 - OTP limited to 6 alphanumeric (consider 6-digit numeric for UX)
-- Rate limiting per IP (consider per user session)
 
 
 
