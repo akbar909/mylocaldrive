@@ -79,6 +79,6 @@ APP_URL=<your-production-url>
 ## Monitoring
 - Monitor SMTP failures
 - Track failed OTP attempts
-- Log failed authentications
+
 
 
