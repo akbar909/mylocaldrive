@@ -20,9 +20,7 @@ transporter.verify((error, success) => {
     console.error('Full error:', error);
   } else {
     console.log('✓ SMTP Server is ready to send emails');
-    
-    // Try sending a test email
-    const mailOptions = {
+        const mailOptions = {
       from: `"MyDrive Test" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_TO || 'abbaszameer234@gmail.com',
       subject: 'Test Email from MyDrive',
