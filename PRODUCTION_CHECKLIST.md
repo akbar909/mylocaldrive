@@ -76,7 +76,6 @@ APP_URL=<your-production-url>
 - OTP limited to 6 alphanumeric (consider 6-digit numeric for UX)
 - Rate limiting per IP (consider per user session)
 
-## Monitoring
 
 
 
