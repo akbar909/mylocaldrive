@@ -77,7 +77,7 @@ APP_URL=<your-production-url>
 - Rate limiting per IP (consider per user session)
 
 ## Monitoring
-- Monitor SMTP failures
+
 
 
 
