@@ -68,7 +68,6 @@ APP_URL=<your-production-url>
 - ✅ OTP auto-expires after 5 minutes (TTL index)
 - ✅ Verified OTP marked as used (no reuse)
 - ✅ User email/username unique indexes
-- ✅ Password never logged or exposed
 
 
 
