@@ -10,7 +10,6 @@ if (missingEnvVars.length > 0) {
   process.exit(1);
 }
 
-// Validate environment
 const validEnvs = ['development', 'production', 'staging'];
 if (!validEnvs.includes(process.env.NODE_ENV)) {
   console.error(`❌ Invalid NODE_ENV: ${process.env.NODE_ENV}. Must be one of: ${validEnvs.join(', ')}`);
