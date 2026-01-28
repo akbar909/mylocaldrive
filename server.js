@@ -35,7 +35,6 @@ const startServer = async () => {
       `);
     });
 
-    // Graceful shutdown
     process.on('SIGTERM', () => {
       console.log('⚠️  SIGTERM received. Shutting down gracefully...');
       server.close(() => {
