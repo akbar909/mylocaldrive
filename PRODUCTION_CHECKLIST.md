@@ -66,7 +66,6 @@ APP_URL=<your-production-url>
 
 ## Database
 - ✅ OTP auto-expires after 5 minutes (TTL index)
-- ✅ Verified OTP marked as used (no reuse)
 
 
 
