@@ -72,8 +72,6 @@ APP_URL=<your-production-url>
 
 ## Known Limitations
 - Files stored in /uploads (use cloud storage in production: R2, S3)
-- No email signature/branding in acknowledgment
-
 
 
 
