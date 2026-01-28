@@ -1,7 +1,6 @@
 const app = require('./app');
 const connectDB = require('./config/db');
 
-// ========== ENVIRONMENT VALIDATION ==========
 const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET', 'PORT', 'NODE_ENV'];
 const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
 
