@@ -71,7 +71,6 @@ APP_URL=<your-production-url>
 - ✅ Password never logged or exposed
 
 ## Known Limitations
-- Files stored in /uploads (use cloud storage in production: R2, S3)
 
 
 
