@@ -64,7 +64,7 @@ APP_URL=<your-production-url>
 9. Enable HTTPS/SSL certificate
 10. Set secure cookies flag to true
 
-## Database
+
 
 
 
