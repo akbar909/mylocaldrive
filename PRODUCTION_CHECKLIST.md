@@ -46,8 +46,6 @@ JWT_SECRET=<strong-random-secret>
 SMTP_HOST=smtp.zoho.com
 SMTP_PORT=465
 SMTP_SECURE=true
-SMTP_USER=<sender-email>
-SMTP_PASS=<sender-password>
 ``` 
 
 
