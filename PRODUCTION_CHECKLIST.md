@@ -41,7 +41,6 @@
 ```
 NODE_ENV=production
 PORT=3000
-MONGODB_URI=<your-mongodb-connection>
 ``` 
 
 
