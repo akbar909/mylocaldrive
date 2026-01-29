@@ -40,7 +40,6 @@
 ## Environment Variables Required
 ```
 NODE_ENV=production
-PORT=3000
 ``` 
 
 
