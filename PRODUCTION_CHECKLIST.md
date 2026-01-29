@@ -43,7 +43,6 @@ NODE_ENV=production
 PORT=3000
 MONGODB_URI=<your-mongodb-connection>
 JWT_SECRET=<strong-random-secret>
-SMTP_HOST=smtp.zoho.com
 ``` 
 
 
