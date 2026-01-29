@@ -58,7 +58,6 @@ APP_URL=<your-production-url>
 3. Verify SMTP credentials work
 4. Test OTP flow (register → verify → login)
 5. Test password reset (email link + manual code)
-6. Verify rate limiting works
 
 
 
