@@ -38,7 +38,6 @@
 - ✅ Form validation feedback inline
 
 ## Environment Variables Required
-```
 
 
 
