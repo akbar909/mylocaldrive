@@ -57,7 +57,6 @@ APP_URL=<your-production-url>
 2. Use strong JWT_SECRET (min 32 chars, random)
 3. Verify SMTP credentials work
 4. Test OTP flow (register → verify → login)
-5. Test password reset (email link + manual code)
 
 
 
