@@ -54,7 +54,6 @@ APP_URL=<your-production-url>
 
 ## Before Deployment
 1. Set `NODE_ENV=production` in .env
-2. Use strong JWT_SECRET (min 32 chars, random)
 
 
 
