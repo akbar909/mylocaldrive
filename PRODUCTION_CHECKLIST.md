@@ -56,7 +56,6 @@ APP_URL=<your-production-url>
 1. Set `NODE_ENV=production` in .env
 2. Use strong JWT_SECRET (min 32 chars, random)
 3. Verify SMTP credentials work
-4. Test OTP flow (register → verify → login)
 
 
 
