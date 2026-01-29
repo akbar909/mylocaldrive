@@ -45,7 +45,6 @@ MONGODB_URI=<your-mongodb-connection>
 JWT_SECRET=<strong-random-secret>
 SMTP_HOST=smtp.zoho.com
 SMTP_PORT=465
-SMTP_SECURE=true
 ``` 
 
 
