@@ -53,7 +53,6 @@ APP_URL=<your-production-url>
 ```
 
 ## Before Deployment
-1. Set `NODE_ENV=production` in .env
 
 
 
