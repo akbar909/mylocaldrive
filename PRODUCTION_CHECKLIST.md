@@ -59,7 +59,6 @@ APP_URL=<your-production-url>
 4. Test OTP flow (register → verify → login)
 5. Test password reset (email link + manual code)
 6. Verify rate limiting works
-7. Check all console logs removed (dev mode)
 
 
 
