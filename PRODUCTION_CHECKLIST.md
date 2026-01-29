@@ -48,12 +48,7 @@ SMTP_PORT=465
 SMTP_SECURE=true
 SMTP_USER=<sender-email>
 SMTP_PASS=<sender-password>
-CONTACT_TO=<admin-email>
-APP_URL=<your-production-url>
-```
-
-## Before Deployment
-
+``` 
 
 
 
