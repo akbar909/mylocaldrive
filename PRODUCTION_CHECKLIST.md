@@ -60,8 +60,6 @@ APP_URL=<your-production-url>
 5. Test password reset (email link + manual code)
 6. Verify rate limiting works
 7. Check all console logs removed (dev mode)
-8. Test contact form (acknowledgment should arrive)
-9. Enable HTTPS/SSL certificate
 
 
 
