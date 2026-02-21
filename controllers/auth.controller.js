@@ -7,6 +7,43 @@ const { signAccessToken, signRefreshToken } = require('../middleware/auth');
 const { sendOTPEmail } = require('../config/email');
 
 const normalizeOtpType = (type) => (type === 'verification' ? 'registration' : type);
+const AUTH_COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: false,
+  sameSite: 'lax'
+};
+
+const setAuthCookies = (res, userId) => {
+  const accessToken = signAccessToken(userId);
+  const refreshToken = signRefreshToken(userId);
+
+  res.cookie('token', accessToken, {
+    ...AUTH_COOKIE_OPTIONS,
+    maxAge: 60 * 60 * 1000 // 1 hour
+  });
+
+  res.cookie('refreshToken', refreshToken, {
+    ...AUTH_COOKIE_OPTIONS,
+    maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+  });
+};
+
+const ensureHashedPassword = (password) => {
+  const value = String(password || '');
+  return value.startsWith('$2a$') || value.startsWith('$2b$') || value.startsWith('$2y$')
+    ? value
+    : bcrypt.hashSync(value, 10);
+};
+
+const loginExistingUserIfAny = async (res, email) => {
+  if (!email) return false;
+  const existingUser = await User.findOne({ email: String(email).toLowerCase() });
+  if (!existingUser) return false;
+
+  setAuthCookies(res, existingUser._id);
+  res.cookie('success', 'Email already verified. Welcome back!', { maxAge: 5000 });
+  return true;
+};
 
 // Get registration page
 const getRegister = (req, res) => {
@@ -34,13 +71,22 @@ const postRegister = async (req, res, next) => {
       return res.redirect(`/user/register?error=${duplicateField} already exists`);
     }
 
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    const pendingUser = {
+      username,
+      email: email.toLowerCase(),
+      password: hashedPassword,
+      firstName: firstName || '',
+      lastName: lastName || ''
+    };
+
     // Create OTP and send email
-    const { otp, verificationToken } = await OTP.createOTP(email, 'registration');
+    const { otp, verificationToken } = await OTP.createOTP(email, 'registration', { pendingUser });
     await sendOTPEmail(email, otp, 'verification', verificationToken);
 
     // Store user data temporarily in session or pass via query
     req.session = req.session || {};
-    req.session.pendingUser = { username, email, password, firstName: firstName || '', lastName: lastName || '' };
+    req.session.pendingUser = pendingUser;
 
     return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=registration`);
   } catch (err) {
@@ -83,25 +129,8 @@ const postLogin = async (req, res, next) => {
       return res.redirect('/user/login?error=Invalid username or password');
     }
 
-    // Generate access token (1 hour) and refresh token (30 days)
-    const accessToken = signAccessToken(existingUser._id);
-    const refreshToken = signRefreshToken(existingUser._id);
-
-    // Set access token (HttpOnly, secure, sameSite=strict)
-    res.cookie('token', accessToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 1000 // 1 hour
-    });
-
-    // Set refresh token (HttpOnly, secure, sameSite=strict)
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'strict',
-      maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
-    });
+    // Set access + refresh cookies
+    setAuthCookies(res, existingUser._id);
 
     return res.redirect('/dashboard');
   } catch (err) {
@@ -143,8 +172,8 @@ const logout = async (req, res) => {
     }
 
     // Clear all auth cookies
-    res.clearCookie('token', { httpOnly: true, secure: false, sameSite: 'strict' });
-    res.clearCookie('refreshToken', { httpOnly: true, secure: false, sameSite: 'strict' });
+    res.clearCookie('token', AUTH_COOKIE_OPTIONS);
+    res.clearCookie('refreshToken', AUTH_COOKIE_OPTIONS);
     
     res.redirect('/');
   } catch (err) {
@@ -206,20 +235,31 @@ const postForgotPassword = async (req, res) => {
 };
 
 // Get OTP verification page
-const getVerifyOTP = (req, res) => {
+const getVerifyOTP = async (req, res) => {
   const { email, type } = req.query;
   
   if (!email || !type) {
     return res.redirect('/user/login');
   }
 
-  res.render('pages/verify-otp', {
-    title: 'Verify OTP',
-    currentPage: 'verify-otp',
-    email,
-    type,
-    error: req.query.error || null
-  });
+  try {
+    const normalizedType = normalizeOtpType(type);
+    const initialCountdown = await OTP.getRemainingSeconds(email, normalizedType);
+    const otpExpiresAtMs = await OTP.getExpiryTimestamp(email, normalizedType);
+
+    res.render('pages/verify-otp', {
+      title: 'Verify OTP',
+      currentPage: 'verify-otp',
+      email,
+      type: normalizedType,
+      initialCountdown,
+      otpExpiresAtMs,
+      error: req.query.error || null
+    });
+  } catch (err) {
+    console.error('Error loading verify OTP page:', err);
+    return res.redirect('/user/login?error=Unable to load OTP verification');
+  }
 };
 
 // Handle OTP verification
@@ -236,16 +276,21 @@ const postVerifyOTP = async (req, res) => {
 
     // If registration OTP, create user and log in
     if (normalizedType === 'registration') {
-      const pendingUser = req.session?.pendingUser;
-      if (!pendingUser) {
-        return res.redirect('/user/register?error=Session expired. Please register again.');
+      const alreadyLoggedIn = await loginExistingUserIfAny(res, email);
+      if (alreadyLoggedIn) {
+        delete req.session.pendingUser;
+        return res.redirect('/dashboard');
       }
 
-      const hashedPassword = bcrypt.hashSync(pendingUser.password, 10);
+      const pendingUser = result.pendingUser || req.session?.pendingUser;
+      if (!pendingUser) {
+        return res.redirect('/user/register?error=Registration data missing. Please register again.');
+      }
+
       const newUser = new User({
         username: pendingUser.username,
-        email: pendingUser.email,
-        password: hashedPassword,
+        email: String(pendingUser.email).toLowerCase(),
+        password: ensureHashedPassword(pendingUser.password),
         firstName: pendingUser.firstName,
         lastName: pendingUser.lastName
       });
@@ -253,13 +298,7 @@ const postVerifyOTP = async (req, res) => {
       await newUser.save();
       delete req.session.pendingUser;
 
-      const token = signToken(newUser._id);
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: 'strict',
-        maxAge: 30 * 24 * 60 * 60 * 1000
-      });
+      setAuthCookies(res, newUser._id);
       res.cookie('success', 'Registration successful! Welcome to MyDrive.', { maxAge: 5000 });
       return res.redirect('/dashboard');
     }
@@ -284,25 +323,38 @@ const verifyOtpLink = async (req, res) => {
     return res.redirect('/user/login');
   }
 
+  const normalizedType = normalizeOtpType(type);
+
   try {
-    const normalizedType = normalizeOtpType(type);
     const result = await OTP.verifyOTPByToken(email, token, normalizedType);
 
     if (!result.success) {
+      if (normalizedType === 'registration') {
+        const alreadyLoggedIn = await loginExistingUserIfAny(res, email);
+        if (alreadyLoggedIn) {
+          delete req.session.pendingUser;
+          return res.redirect('/dashboard');
+        }
+      }
       return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${normalizedType}&error=${encodeURIComponent(result.message)}`);
     }
 
     if (normalizedType === 'registration') {
-      const pendingUser = req.session?.pendingUser;
-      if (!pendingUser) {
-        return res.redirect('/user/register?error=Session expired. Please register again.');
+      const alreadyLoggedIn = await loginExistingUserIfAny(res, email);
+      if (alreadyLoggedIn) {
+        delete req.session.pendingUser;
+        return res.redirect('/dashboard');
       }
 
-      const hashedPassword = bcrypt.hashSync(pendingUser.password, 10);
+      const pendingUser = result.pendingUser || req.session?.pendingUser;
+      if (!pendingUser) {
+        return res.redirect('/user/register?error=Registration data missing. Please register again.');
+      }
+
       const newUser = new User({
         username: pendingUser.username,
-        email: pendingUser.email,
-        password: hashedPassword,
+        email: String(pendingUser.email).toLowerCase(),
+        password: ensureHashedPassword(pendingUser.password),
         firstName: pendingUser.firstName,
         lastName: pendingUser.lastName
       });
@@ -310,13 +362,7 @@ const verifyOtpLink = async (req, res) => {
       await newUser.save();
       delete req.session.pendingUser;
 
-      const token = signToken(newUser._id);
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: 'strict',
-        maxAge: 30 * 24 * 60 * 60 * 1000
-      });
+      setAuthCookies(res, newUser._id);
       res.cookie('success', 'Registration successful! Welcome to MyDrive.', { maxAge: 5000 });
       return res.redirect('/dashboard');
     }
@@ -328,6 +374,19 @@ const verifyOtpLink = async (req, res) => {
     return res.redirect('/user/login');
   } catch (err) {
     console.error('Error verifying OTP via link:', err);
+
+    if (normalizedType === 'registration') {
+      try {
+        const alreadyLoggedIn = await loginExistingUserIfAny(res, email);
+        if (alreadyLoggedIn) {
+          delete req.session.pendingUser;
+          return res.redirect('/dashboard');
+        }
+      } catch (lookupErr) {
+        console.error('Error checking existing user after link verify failure:', lookupErr);
+      }
+    }
+
     return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${normalizeOtpType(type)}&error=Verification failed`);
   }
 };
@@ -337,13 +396,19 @@ const resendOTP = async (req, res) => {
   const { email, type } = req.body;
 
   try {
-    const otp = await OTP.createOTP(email, type);
-    await sendOTPEmail(email, otp, type === 'registration' ? 'verification' : 'password-reset');
+    const normalizedType = normalizeOtpType(type);
+    const { otp, verificationToken } = await OTP.createOTP(email, normalizedType);
+    await sendOTPEmail(
+      email,
+      otp,
+      normalizedType === 'registration' ? 'verification' : 'password-reset',
+      verificationToken
+    );
 
     return res.json({ success: true });
   } catch (err) {
     console.error('Error resending OTP:', err);
-    return res.status(500).json({ success: false });
+    return res.status(500).json({ success: false, message: 'Failed to resend OTP. Please try again.' });
   }
 };
 
