@@ -92,7 +92,7 @@ const sendOTPEmail = async (email, otp, type = 'verification', verificationToken
       </div>
 
       <div class="expiry">
-        <p>⏰ <strong>Important:</strong> This OTP will expire in 5 minutes. Please verify immediately.</p>
+        <p>⏰ <strong>Important:</strong> This OTP will expire in 60 seconds. Please verify immediately.</p>
       </div>
 
       <p style="color: #6b7280; font-size: 14px;">If you didn't request this, please ignore this email or contact support if you have concerns.</p>
@@ -148,15 +148,16 @@ const sendContactEmail = async (email, senderName, subject, message) => {
     .header p { margin: 10px 0 0 0; color: #cbd5e1; font-size: 14px; }
     .content { padding: 34px 30px; background: radial-gradient(circle at 20% 20%, rgba(129, 140, 248, 0.08), transparent 32%), radial-gradient(circle at 80% 0%, rgba(14, 165, 233, 0.08), transparent 30%), #0f172a; }
     .pill { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 999px; background: rgba(129, 140, 248, 0.15); color: #c7d2fe; font-size: 12px; letter-spacing: 0.04em; font-weight: 700; text-transform: uppercase; }
-    .card { background: rgba(17, 24, 39, 0.85); border: 1px solid #1f2937; border-radius: 12px; padding: 18px 16px; margin-bottom: 18px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.02); }
-    .card h3 { margin: 0 0 8px 0; color: #e5e7eb; font-size: 15px; letter-spacing: 0.01em; }
-    .card p { margin: 4px 0; color: #cbd5e1; font-size: 14px; }
-    .card a { color: #a5b4fc; text-decoration: none; }
-    .subject-box { background: linear-gradient(135deg, rgba(79, 70, 229, 0.18), rgba(14, 165, 233, 0.12)); border: 1px solid rgba(129, 140, 248, 0.4); padding: 18px 16px; border-radius: 12px; margin: 16px 0; }
-    .subject-box h2 { margin: 0 0 6px 0; color: #e0e7ff; font-size: 20px; }
-    .subject-box span { color: #cbd5e1; font-size: 13px; }
-    .message-box { background: #0b1327; border: 1px solid #1f2937; border-radius: 12px; padding: 18px; line-height: 1.7; color: #e5e7eb; white-space: pre-wrap; word-break: break-word; }
-    .meta { color: #94a3b8; font-size: 13px; margin-top: 16px; }
+    .message-card { background: rgba(17, 24, 39, 0.85); border: 1px solid #1f2937; border-radius: 12px; padding: 24px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.02); }
+    .separator { height: 1px; background: linear-gradient(to right, transparent, #374151, transparent); margin: 20px 0; }
+    .section-label { color: #9ca3af; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+    .from-name { color: #e5e7eb; font-size: 16px; font-weight: 600; margin: 0 0 6px 0; }
+    .from-email { margin: 0 0 4px 0; }
+    .from-email a { color: #a5b4fc; text-decoration: none; font-size: 14px; }
+    .from-date { color: #94a3b8; font-size: 13px; margin: 0; }
+    .subject-text { color: #e0e7ff; font-size: 18px; font-weight: 600; margin: 0; line-height: 1.4; }
+    .message-text { color: #cbd5e1; font-size: 14px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; margin: 0; }
+    .meta { color: #94a3b8; font-size: 13px; margin-top: 20px; }
     .footer { background: #0b1224; padding: 20px 24px; text-align: center; border-top: 1px solid #1f2937; }
     .footer p { color: #94a3b8; font-size: 13px; margin: 6px 0; }
     .footer a { color: #a5b4fc; text-decoration: none; }
@@ -171,20 +172,21 @@ const sendContactEmail = async (email, senderName, subject, message) => {
     </div>
 
     <div class="content">
-      <div class="card">
-        <h3>From</h3>
-        <p>${safeSender}</p>
-        <p><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
-        <p class="meta">${new Date().toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
-      </div>
+      <div class="message-card">
+        <div class="section-label">From</div>
+        <p class="from-name">${safeSender}</p>
+        <p class="from-email"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
+        <p class="from-date">${new Date().toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
 
-      <div class="subject-box">
-        <span>Subject</span>
-        <h2>${safeSubject}</h2>
-      </div>
+        <div class="separator"></div>
 
-      <div class="message-box">
-        ${safeMessage}
+        <div class="section-label">Subject</div>
+        <p class="subject-text">${safeSubject}</p>
+
+        <div class="separator"></div>
+
+        <div class="section-label">Message</div>
+        <p class="message-text">${safeMessage}</p>
       </div>
 
       <p class="meta">Reply directly to the sender via ${escapeHtml(email)}.</p>
