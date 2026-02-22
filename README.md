@@ -1,70 +1,62 @@
-# 🚀 MyDrive - Cloud Storage Application
-A modern, secure cloud storage platform built with Express.js and EJS featuring file management, profile administration, and user authentication.
+# MyDrive
 
-## ✨ Features
+MyDrive ek secure cloud storage web app hai jahan user account bana kar apni files upload, manage aur access kar sakta hai.
 
-- **User Authentication**: Secure login/registration with OTP verification and JWT tokens
-- **File Management**: Upload, download, delete, and rename files with Cloudflare R2 storage
-- **Profile Management**: Edit profile, change password, forgot password with email recovery
-- **Contact System**: Contact form with email notifications via Nodemailer
-- **Security Features**: Rate limiting, input sanitization, token blacklisting, helmet security headers
-- **Storage Quota**: 0.5 GB per user with file size validation
-- **Email System**: OTP verification and password reset via SMTP
-- **Modern UI**: Clean, professional dark theme with responsive design
+## Project Overview
 
-## 🛠️ Technology Stack
-- **Backend**: Node.js with Express.js
-- **Frontend**: EJS templating, CSS3, Vanilla JavaScript
-- **Database**: MongoDB with Mongoose ODM
-- **Storage**: Cloudflare R2 (AWS S3 compatible)
-- **Email**: Nodemailer with SMTP
-- **Security**: Helmet, bcrypt, JWT, express-rate-limit
-- **Validation**: express-validator with custom sanitization middleware
+Is project ka main goal simple aur practical file management dena hai:
 
-## ▶️ Installation & Setup
+- User register/login system with OTP verification
+- Dashboard se file upload, rename, download, delete
+- Profile management (name/password update)
+- Forgot password + reset flow via email
+- Contact form support
+- Security middleware (rate limit, sanitize, auth guards)
 
-### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB (local or MongoDB Atlas)
-- Cloudflare R2 account (or AWS S3)
-- SMTP email service (Gmail, SendGrid, etc.)
+## Tech Stack
 
-### Installation Steps
+- Node.js + Express.js
+- EJS templates + Vanilla JavaScript + CSS
+- MongoDB (Mongoose)
+- Cloudflare R2 / S3-style object storage
+- Nodemailer (SMTP)
+
+## Main Modules (Short)
+
+- `controllers/` - auth, files, profile, dashboard, stats logic
+- `routes/` - app routes and user routes
+- `models/` - user, file, otp, token blacklist schemas
+- `config/` - db, email, multer, r2 config
+- `middleware/` - auth, validation, sanitize, error handling, rate limiter
+- `views/` + `public/` - UI templates and frontend JS/CSS
+
+## Local Setup
+
 ```bash
-# Install dependencies
 npm install
-
-# Start development server
 npm run dev
-
-# Start production server
-npm start
 ```
-The application will run on `http://localhost:3000`
 
-## 🔒 Security Features
-- **Authentication**: JWT-based authentication with httpOnly cookies
-- **Password Security**: Bcrypt hashing with salt rounds
-- **OTP Verification**: Email-based OTP for registration
-- **Rate Limiting**: Request throttling to prevent abuse
-- **Input Sanitization**: MongoDB injection and XSS protection
-- **Token Blacklisting**: Invalidate tokens on logout
-- **Helmet Security**: HTTP headers protection
-- **Session Management**: Secure session configuration
-- **CORS Protection**: Configured cross-origin resource sharing
-- **File Validation**: Type and size validation for uploads
+App local pe run hoga: `http://localhost:3000`
 
-## 📦 Dependencies
+## Environment (Required)
 
-### Production
-- express - Web framework
-- mongoose - MongoDB ODM
-- bcryptjs - Password hashing
-- jsonwebtoken - JWT authentication
-- nodemailer - Email sending
+Project run karne ke liye aapko DB, JWT, SMTP, aur storage keys set karni hongi (example: Mongo URI, JWT secret, SMTP creds, R2/S3 creds).
 
-## 👨‍💻 Author
+## Live Demo / Deploy Link
+
+Deploy URL: **https://your-deploy-link-here.com**
+
+> Is link ko aap baad mein apne actual deploy URL se replace kar dena.
+
+## Visual Preview
+
+### Screenshot 1
+![MyDrive Preview 1](display/up1.png)
+
+### Screenshot 2
+![MyDrive Preview 2](display/up2.png)
+
+## Author
+
 IMEER.ai
----
-
-**Note**: This is a full-featured cloud storage application with enterprise-grade security features. Make sure
