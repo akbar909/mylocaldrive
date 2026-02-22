@@ -1,61 +1,74 @@
-# MyDrive
+# MyDrive - Secure File Storage Platform
 
-MyDrive ek secure cloud storage web app hai jahan user account bana kar apni files upload, manage aur access kar sakta hai.
+MyDrive ek full-stack cloud storage application hai jahan users apna account bana kar files securely upload, organize aur manage karte hain.
 
-## Project Overview
+## Quick Access
 
-Is project ka main goal simple aur practical file management dena hai:
+- **Live Demo:** https://your-deploy-link-here.com
+- **Local URL:** http://localhost:3000
 
-- User register/login system with OTP verification
-- Dashboard se file upload, rename, download, delete
-- Profile management (name/password update)
-- Forgot password + reset flow via email
-- Contact form support
-- Security middleware (rate limit, sanitize, auth guards)
+> Live demo link ko aap baad mein apne actual deploy URL se replace kar dena.
 
-## Tech Stack
+## Visual Preview
 
-- Node.js + Express.js
-- EJS templates + Vanilla JavaScript + CSS
-- MongoDB (Mongoose)
-- Cloudflare R2 / S3-style object storage
-- Nodemailer (SMTP)
+![MyDrive Preview 1](display/up1.png)
+![MyDrive Preview 2](display/up2.png)
 
-## Main Modules (Short)
+## What We Actually Built
 
-- `controllers/` - auth, files, profile, dashboard, stats logic
-- `routes/` - app routes and user routes
-- `models/` - user, file, otp, token blacklist schemas
-- `config/` - db, email, multer, r2 config
-- `middleware/` - auth, validation, sanitize, error handling, rate limiter
-- `views/` + `public/` - UI templates and frontend JS/CSS
+- Complete auth flow: register, login, logout, OTP verification
+- Password recovery flow: forgot password, OTP verify, reset password
+- File manager: upload, rename, delete, download
+- User dashboard with usage/stats and file operations
+- Profile management: update name and change password
+- Contact form with email handling
+- Protected routes with authentication middleware
 
-## Local Setup
+## Tech Used (Actual)
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB + Mongoose
+
+### Frontend
+- EJS templating
+- Vanilla JavaScript
+- CSS
+
+### Storage & Email
+- Cloudflare R2 (S3-compatible object storage)
+- Multer (file upload handling)
+- Nodemailer + SMTP (OTP and reset emails)
+
+### Security & Validation
+- JWT authentication
+- bcrypt password hashing
+- Helmet security headers
+- Express rate limiting
+- Input sanitization + request validation
+- Token blacklist on logout
+
+## Project Structure
+
+- `controllers/` business logic (auth, files, profile, stats)
+- `routes/` route definitions
+- `models/` MongoDB schemas
+- `middleware/` auth, sanitize, validation, error handling
+- `config/` db, email, multer, r2 setup
+- `views/` EJS pages
+- `public/` client-side JS/CSS
+
+## Run Locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-App local pe run hoga: `http://localhost:3000`
+## Environment Variables Required
 
-## Environment (Required)
-
-Project run karne ke liye aapko DB, JWT, SMTP, aur storage keys set karni hongi (example: Mongo URI, JWT secret, SMTP creds, R2/S3 creds).
-
-## Live Demo / Deploy Link
-
-Deploy URL: **https://your-deploy-link-here.com**
-
-> Is link ko aap baad mein apne actual deploy URL se replace kar dena.
-
-## Visual Preview
-
-### Screenshot 1
-![MyDrive Preview 1](display/up1.png)
-
-### Screenshot 2
-![MyDrive Preview 2](display/up2.png)
+MongoDB URI, JWT secret, SMTP credentials, and Cloudflare R2/S3 credentials required.
 
 ## Author
 
