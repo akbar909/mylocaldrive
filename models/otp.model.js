@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
+const OTP_EXPIRY_MS = 60 * 1000;
+
 const otpSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -17,6 +19,13 @@ const otpSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true
+  },
+  pendingUser: {
+    username: String,
+    email: String,
+    password: String,
+    firstName: String,
+    lastName: String
   },
   type: {
     type: String,
@@ -50,23 +59,70 @@ otpSchema.statics.generateOTP = function() {
 };
 
 // Create OTP (delete old, save new)
-otpSchema.statics.createOTP = async function(email, type = 'registration') {
+otpSchema.statics.createOTP = async function(email, type = 'registration', options = {}) {
+  const normalizedEmail = email.toLowerCase();
+
+  let pendingUser = options.pendingUser || null;
+  if (type === 'registration' && !pendingUser) {
+    const existingOtp = await this.findOne({ email: normalizedEmail, type }).sort({ expiresAt: -1 });
+    if (existingOtp?.pendingUser) {
+      pendingUser = existingOtp.pendingUser;
+    }
+  }
+
   // Delete old OTPs - no blacklist needed, just delete
-  await this.deleteMany({ email: email.toLowerCase(), type });
+  await this.deleteMany({ email: normalizedEmail, type });
 
   const otp = this.generateOTP();
   const otpHash = await bcrypt.hash(otp, 10);
   const verificationToken = crypto.randomBytes(32).toString('hex');
 
   await this.create({
-    email: email.toLowerCase(),
+    email: normalizedEmail,
     otpHash,
     verificationToken,
+    pendingUser,
     type,
-    expiresAt: new Date(Date.now() + 3 * 60 * 1000) // 3 min
+    expiresAt: new Date(Date.now() + OTP_EXPIRY_MS)
   });
 
   return { otp, verificationToken }; // Return both OTP and token
+};
+
+// Get remaining OTP time in seconds for current email/type
+otpSchema.statics.getRemainingSeconds = async function(email, type) {
+  if (!email || !type) {
+    return 0;
+  }
+
+  const otpDoc = await this.findOne({
+    email: email.toLowerCase(),
+    type
+  }).sort({ expiresAt: -1 });
+
+  if (!otpDoc || !otpDoc.expiresAt) {
+    return 0;
+  }
+
+  const remainingMs = otpDoc.expiresAt.getTime() - Date.now();
+  return remainingMs > 0 ? Math.ceil(remainingMs / 1000) : 0;
+};
+
+otpSchema.statics.getExpiryTimestamp = async function(email, type) {
+  if (!email || !type) {
+    return 0;
+  }
+
+  const otpDoc = await this.findOne({
+    email: email.toLowerCase(),
+    type
+  }).sort({ expiresAt: -1 });
+
+  if (!otpDoc || !otpDoc.expiresAt) {
+    return 0;
+  }
+
+  return otpDoc.expiresAt.getTime();
 };
 
 // Verify OTP via token from email link (more secure)
@@ -95,7 +151,11 @@ otpSchema.statics.verifyOTPByToken = async function(email, token, type) {
 
   // Token verified - delete OTP after successful verification (one-time use)
   await this.deleteOne({ _id: otpDoc._id });
-  return { success: true, message: 'Email verified successfully' };
+  return {
+    success: true,
+    message: 'Email verified successfully',
+    pendingUser: otpDoc.pendingUser || null
+  };
 };
 
 // Verify OTP (then delete it) - for manual entry
@@ -127,7 +187,11 @@ otpSchema.statics.verifyOTP = async function(email, otp, type) {
   if (isMatch) {
     // Delete OTP after successful verification (one-time use)
     await this.deleteOne({ _id: otpDoc._id });
-    return { success: true, message: 'OTP verified' };
+    return {
+      success: true,
+      message: 'OTP verified',
+      pendingUser: otpDoc.pendingUser || null
+    };
   }
 
   // Failed attempt
