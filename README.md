@@ -1,13 +1,13 @@
 # MyDrive - Secure File Storage Platform
 
-MyDrive ek full-stack cloud storage application hai jahan users apna account bana kar files securely upload, organize aur manage karte hain.
+MyDrive is a full-stack cloud storage application where users can create accounts and securely upload, organize, and manage files.
 
 ## Quick Access
 
 - **Live Demo:** https://your-deploy-link-here.com
 - **Local URL:** http://localhost:3000
 
-> Live demo link ko aap baad mein apne actual deploy URL se replace kar dena.
+> Replace the live demo link with your actual deployed URL.
 
 ## Visual Preview
 
@@ -68,7 +68,7 @@ npm run dev
 
 ## Environment Variables Required
 
-MongoDB URI, JWT secret, SMTP credentials, and Cloudflare R2/S3 credentials required.
+MongoDB URI, JWT secret, SMTP credentials, and Cloudflare R2/S3 credentials are required.
 
 ## Author
 
