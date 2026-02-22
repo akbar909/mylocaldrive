@@ -41,17 +41,35 @@ const apiLimiter = rateLimit({
 	legacyHeaders: false
 });
 
-// OTP verification rate limiter: 3 attempts per 15 minutes (brute force protection)
-const otpLimiter = rateLimit({
+const getOtpRateLimitKey = (req) => {
+	const email = req.body?.email || req.query?.email || req.user?.email;
+	return email || req.ip;
+};
+
+// OTP verification rate limiter: 5 attempts per 15 minutes (brute force protection)
+const otpVerifyLimiter = rateLimit({
 	windowMs: 15 * 60 * 1000,
-	max: 3,
+	max: 5,
 	message: 'Too many OTP verification attempts, please try again after 15 minutes.',
 	standardHeaders: true,
 	legacyHeaders: false,
-	keyGenerator: (req) => {
-		// Try to get email from various sources for rate limiting
-		const email = req.body?.email || req.query?.email || req.user?.email;
-		return email || req.ip; // Fallback to IP if no email
+	keyGenerator: getOtpRateLimitKey,
+	skipSuccessfulRequests: true
+});
+
+// OTP resend limiter: keep separate from verification attempts
+const otpResendLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 3,
+	message: 'Too many OTP resend requests, please try again after 15 minutes.',
+	standardHeaders: true,
+	legacyHeaders: false,
+	keyGenerator: getOtpRateLimitKey,
+	handler: (req, res, next, options) => {
+		return res.status(options.statusCode).json({
+			success: false,
+			message: options.message
+		});
 	}
 });
 
@@ -60,5 +78,6 @@ module.exports = {
 	authLimiter,
 	uploadLimiter,
 	apiLimiter,
-	otpLimiter
+	otpVerifyLimiter,
+	otpResendLimiter
 };
