@@ -4,6 +4,18 @@ const confirmMessage = document.getElementById('confirmMessage');
 const confirmOk = document.getElementById('confirmOk');
 const confirmCancel = document.getElementById('confirmCancel');
 
+// Make functions globally accessible
+window.showFileDetails = function(fileId, fileName, fileSize, uploadDate) {
+	const sizeKB = (fileSize / 1024).toFixed(2);
+	const formattedDate = new Date(uploadDate).toLocaleDateString('en-US', { 
+		year: 'numeric', month: 'long', day: 'numeric', 
+		hour: '2-digit', minute: '2-digit' 
+	});
+	
+	const message = `File: ${fileName}\nSize: ${sizeKB} KB\nUploaded: ${formattedDate}`;
+	alert(message);
+};
+
 const confirmAction = (message) => new Promise((resolve) => {
 	if (!confirmModal || !confirmMessage || !confirmOk || !confirmCancel) {
 		const fallback = window.confirm(message);
@@ -24,7 +36,7 @@ const confirmAction = (message) => new Promise((resolve) => {
 	confirmCancel.onclick = () => { cleanup(); resolve(false); };
 });
 
-async function deleteFileFromDashboard(fileId) {
+window.deleteFileFromDashboard = async function(fileId) {
 	const ok = await confirmAction('Move this file to the Recycle Bin?');
 	if (!ok) return;
 
@@ -40,17 +52,17 @@ async function deleteFileFromDashboard(fileId) {
 		}
 	})
 	.catch(err => console.error('Delete error:', err));
-}
+};
 
-function showRenameModal(fileId, fileName) {
+window.showRenameModal = function(fileId, fileName) {
 	document.getElementById('renameFileId').value = fileId;
 	document.getElementById('newFileName').value = fileName;
 	document.getElementById('renameModal').style.display = 'flex';
 	document.getElementById('newFileName').focus();
 	document.getElementById('newFileName').select();
-}
+};
 
-function confirmRename() {
+window.confirmRename = function() {
 	const fileId = document.getElementById('renameFileId').value;
 	const newName = document.getElementById('newFileName').value.trim();
 
@@ -76,7 +88,7 @@ function confirmRename() {
 	.catch(err => console.error('Rename error:', err));
 }
 
-function showShareModal(fileId) {
+window.showShareModal = function(fileId) {
 	document.getElementById('shareFileId').value = fileId;
 	document.getElementById('shareUsername').value = '';
 	document.getElementById('shareLink').value = '';
@@ -87,7 +99,7 @@ function showShareModal(fileId) {
 	
 	document.getElementById('shareModal').style.display = 'flex';
 	document.getElementById('shareUsername').focus();
-}
+};
 
 async function generateShareLink(fileId) {
 	try {
@@ -108,7 +120,7 @@ async function generateShareLink(fileId) {
 	}
 }
 
-function copyShareLink() {
+window.copyShareLink = function() {
 	const linkInput = document.getElementById('shareLink');
 	if (!linkInput.value) {
 		showError('No link to copy');
@@ -130,7 +142,7 @@ function copyShareLink() {
 	}, 2000);
 }
 
-function confirmShare() {
+window.confirmShare = function() {
 	const fileId = document.getElementById('shareFileId').value;
 	const username = document.getElementById('shareUsername').value.trim();
 
