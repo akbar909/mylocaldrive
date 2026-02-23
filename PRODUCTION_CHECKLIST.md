@@ -1,6 +1,6 @@
 
 
-## Security & Auth
+
 - ✅ OTP 5-minute expiration (models/otp.model.js)
 - ✅ 6-character alphanumeric OTP (secure random generation)
 - ✅ Rate limiting on auth endpoints (5 attempts/15 min)
