@@ -1,5 +1,4 @@
 
-- ✅ Rate limiting on auth endpoints (5 attempts/15 min)
 - ✅ Password strength enforcement (8+ chars, uppercase, lowercase, number)
 - ✅ JWT 30-day expiration (middleware/auth.js)
 - ✅ Bcrypt password hashing (10 salt rounds)
