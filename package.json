@@ -2,15 +2,23 @@
   "name": "mydrive",
   "version": "1.0.0",
   "description": "Generated using **IMEER.ai **",
+  "keywords": [],
+  "homepage": "https://github.com/imeerai/mylocaldrive#readme",
+  "bugs": {
+    "url": "https://github.com/imeerai/mylocaldrive/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imeerai/mylocaldrive.git"
+  },
+  "license": "ISC",
+  "author": "imeer.ai",
+  "type": "commonjs",
   "main": "app.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.970.0",
     "bcrypt": "^6.0.0",
@@ -20,7 +28,7 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
-    "ejs-mate": "^4.0.0",
+    "ejs-mate": "^3.0.0",
     "express": "^5.2.1",
     "express-ejs-layouts": "^2.5.1",
     "express-rate-limit": "^7.1.5",
