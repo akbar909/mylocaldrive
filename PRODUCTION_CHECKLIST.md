@@ -1,8 +1,5 @@
 
-
-
-- ✅ OTP 5-minute expiration (models/otp.model.js)
-- ✅ 6-character alphanumeric OTP (secure random generation)
+- ✅ OTP 5-minute expiration (models/otp.model.js)- ✅ 6-character alphanumeric OTP (secure random generation)
 - ✅ Rate limiting on auth endpoints (5 attempts/15 min)
 - ✅ Password strength enforcement (8+ chars, uppercase, lowercase, number)
 - ✅ JWT 30-day expiration (middleware/auth.js)
