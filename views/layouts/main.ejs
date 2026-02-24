@@ -46,6 +46,36 @@
   <!-- Auto-dismiss flash messages after 2 seconds -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const authSyncKey = 'mydrive-auth-state';
+      const isLoggedIn = <%= typeof isLoggedIn !== 'undefined' && isLoggedIn ? 'true' : 'false' %>;
+
+      try {
+        const previousStateRaw = localStorage.getItem(authSyncKey);
+        const previousState = previousStateRaw ? JSON.parse(previousStateRaw) : null;
+        if (!previousState || previousState.loggedIn !== isLoggedIn) {
+          localStorage.setItem(authSyncKey, JSON.stringify({ loggedIn: isLoggedIn, ts: Date.now() }));
+        }
+      } catch (err) {}
+
+      window.addEventListener('storage', (event) => {
+        if (event.key !== authSyncKey || !event.newValue) return;
+        try {
+          const nextState = JSON.parse(event.newValue);
+          if (typeof nextState.loggedIn === 'boolean' && nextState.loggedIn !== isLoggedIn) {
+            window.location.reload();
+          }
+        } catch (err) {}
+      });
+
+      const logoutLink = document.getElementById('logoutLink');
+      if (logoutLink) {
+        logoutLink.addEventListener('click', () => {
+          try {
+            localStorage.setItem(authSyncKey, JSON.stringify({ loggedIn: false, ts: Date.now() }));
+          } catch (err) {}
+        });
+      }
+
       const flashMessage = document.getElementById('flashMessage');
       if (flashMessage) {
         setTimeout(() => {
