@@ -1,0 +1,224 @@
+<!-- Shared modals for file operations (Dashboard & Files page) -->
+
+<!-- Rename Modal -->
+<div id="renameModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1001; align-items: center; justify-content: center;">
+	<div style="background: #111827; padding: 2rem; border-radius: 12px; max-width: 400px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+		<h2 style="margin-top: 0; margin-bottom: 1.5rem;"><i class="fas fa-edit"></i> Rename File</h2>
+		<input type="hidden" id="renameFileId">
+		<input type="hidden" id="renameOriginalExt">
+		<input type="text" id="newFileName" placeholder="New file name" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-600); border-radius: 8px; background: #1f2937; color: white; box-sizing: border-box; margin-bottom: 1.5rem;">
+		<div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap;">
+			<button class="btn modal-close-btn" data-modal="renameModal" style="padding: 0.75rem 1.5rem; background: var(--gray-700); border: none; color: white; border-radius: 8px; cursor: pointer;">Cancel</button>
+			<button class="btn btn-primary modal-action-btn" data-action="confirmRename" style="padding: 0.75rem 1.5rem;"><i class="fas fa-check"></i> Rename</button>
+		</div>
+	</div>
+</div>
+
+<!-- File Details Modal -->
+<div id="fileDetailsModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1001; align-items: center; justify-content: center;">
+	<div style="background: #111827; padding: 2rem; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+		<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+			<h2 style="margin: 0;"><i class="fas fa-info-circle"></i> File Details</h2>
+			<button class="modal-close-btn" data-modal="fileDetailsModal" style="background: none; border: none; color: var(--text-light); font-size: 1.5rem; cursor: pointer;"><i class="fas fa-times"></i></button>
+		</div>
+		
+		<div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px;">
+			<div style="margin-bottom: 1rem;">
+				<span style="color: var(--text-light); font-size: 0.875rem; display: block; margin-bottom: 0.25rem;">File Name</span>
+				<p id="detailFileName" style="margin: 0; color: var(--text-dark); font-weight: 600; word-break: break-all;"></p>
+			</div>
+			
+			<div style="margin-bottom: 1rem;">
+				<span style="color: var(--text-light); font-size: 0.875rem; display: block; margin-bottom: 0.25rem;">File Size</span>
+				<p id="detailFileSize" style="margin: 0; color: var(--text-dark);"></p>
+			</div>
+			
+			<div style="margin-bottom: 1rem;">
+				<span style="color: var(--text-light); font-size: 0.875rem; display: block; margin-bottom: 0.25rem;">Upload Date</span>
+				<p id="detailUploadDate" style="margin: 0; color: var(--text-dark);"></p>
+			</div>
+			
+			<div>
+				<span style="color: var(--text-light); font-size: 0.875rem; display: block; margin-bottom: 0.25rem;">Tags</span>
+				<div id="detailTags" style="display: flex; gap: 0.5rem; flex-wrap: wrap; min-height: 1.5rem;">
+					<span style="color: var(--text-light); font-size: 0.875rem;">No tags yet</span>
+				</div>
+			</div>
+		</div>
+		
+		<div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; flex-wrap: wrap;">
+			<button class="btn modal-close-btn" data-modal="fileDetailsModal" style="padding: 0.75rem 1.5rem; background: var(--gray-700); border: none; color: white; border-radius: 8px; cursor: pointer;">Close</button>
+		</div>
+	</div>
+</div>
+
+<!-- Share Modal -->
+<div id="shareModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1001; align-items: center; justify-content: center;">
+	<div style="background: #111827; padding: 2rem; border-radius: 12px; max-width: 480px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+		<h2 style="margin-top: 0; margin-bottom: 1.5rem;"><i class="fas fa-share-alt"></i> Share File</h2>
+		<input type="hidden" id="shareFileId">
+		
+		<!-- Share with Username -->
+		<div style="margin-bottom: 1.5rem;">
+			<label style="display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.5rem; text-transform: uppercase; font-weight: 600;">Share with User</label>
+			<input type="text" id="shareUsername" placeholder="Enter username" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-600); border-radius: 8px; background: #1f2937; color: white; box-sizing: border-box;">
+		</div>
+
+		<!-- Share Link Section -->
+		<div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(129, 140, 248, 0.05); border-radius: 8px; border: 1px solid rgba(129, 140, 248, 0.2);">
+			<label style="display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.75rem; text-transform: uppercase; font-weight: 600;"><i class="fas fa-link" aria-hidden="true"></i> Share Link</label>
+			<div style="display: flex; gap: 0.5rem;">
+				<input type="text" id="shareLink" placeholder="Share link will appear here" readonly style="flex: 1; padding: 0.75rem; border: 1px solid var(--gray-600); border-radius: 6px; background: #0f172a; color: var(--text-light); font-size: 0.85rem; word-break: break-all;">
+				<button class="modal-action-btn" data-action="copyShareLink" id="copyLinkBtn" style="padding: 0.75rem 1rem; background: #06b6d4; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-copy"></i> Copy</button>
+			</div>
+			<p style="margin: 0.75rem 0 0 0; font-size: 0.8rem; color: var(--text-light);">Anyone with this link can view the file</p>
+		</div>
+
+		<!-- Buttons -->
+		<div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap;">
+			<button class="btn modal-close-btn" data-modal="shareModal" style="padding: 0.75rem 1.5rem; background: var(--gray-700); border: none; color: white; border-radius: 8px; cursor: pointer;">Cancel</button>
+			<button class="btn btn-primary modal-action-btn" data-action="confirmShare" style="padding: 0.75rem 1.5rem;"><i class="fas fa-paper-plane"></i> Share</button>
+		</div>
+	</div>
+</div>
+
+<!-- Upload Modal -->
+<div id="uploadModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
+	<div style="background: #111827; padding: 2rem; border-radius: 12px; max-width: 550px; width: 90%; max-height: 90vh; box-shadow: 0 10px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column;">
+		<!-- Modal Header -->
+		<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+			<h2 style="margin: 0; font-size: 1.5rem;"><i class="fas fa-cloud-upload-alt"></i> Upload Files</h2>
+			<button id="uploadModalCloseBtn" style="background: none; border: none; color: var(--text-light); font-size: 1.5rem; cursor: pointer; padding: 0;"><i class="fas fa-times"></i></button>
+		</div>
+
+		<!-- Scrollable Content -->
+		<div style="overflow-y: auto; overflow-x: hidden; max-height: calc(90vh - 150px); padding-right: 0.5rem; scrollbar-width: thin; scrollbar-color: rgba(129, 140, 248, 0.5) transparent;">
+			<!-- Drag & Drop Area -->
+			<div id="dropZone" style="border: 2px dashed var(--primary-color); border-radius: 10px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; margin-bottom: 1.25rem; background: rgba(129, 140, 248, 0.07);">
+				<div style="font-size: 2rem; margin-bottom: 0.5rem;"><i class="fas fa-cloud-upload-alt"></i></div>
+				<p style="margin: 0 0 0.5rem 0; color: var(--text-dark); font-weight: 600;">Drag files here or click to select</p>
+				<p style="margin: 0; color: var(--text-light); font-size: 0.875rem;">Max 10 items | 500 MB per file</p>
+				<input type="file" id="fileInput" multiple style="display: none;">
+				<div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: center;">
+					<button type="button" id="selectFilesBtn" style="padding: 0.75rem 1.5rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;"><i class="fas fa-folder-plus"></i> Select Files</button>
+				</div>
+			</div>
+
+			<!-- File List -->
+			<div id="fileListContainer" style="display: none; margin-bottom: 1.25rem;">
+				<p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 0.5rem;">Ready to upload (<span id="fileCount">0</span> files):</p>
+				<div id="fileList" style="background: rgba(0,0,0,0.2); padding: 0; border-radius: 8px; max-height: 250px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(129, 140, 248, 0.5) transparent;"></div>
+			</div>
+		</div>
+
+		<!-- Modal Buttons (Fixed at bottom) -->
+		<div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+			<button id="cancelUploadBtn" class="btn" style="padding: 0.75rem 1.5rem; background: none; border: 1px solid #4b5563; color: white; border-radius: 8px; cursor: pointer; font-weight: 600;">Cancel</button>
+			<button id="uploadBtn" class="btn btn-primary" style="padding: 0.75rem 1.5rem; display: none;"><i class="fas fa-upload"></i> Upload</button>
+		</div>
+	</div>
+</div>
+
+<!-- Upload Progress Popup (Google Drive Style) -->
+<div id="uploadProgressPopup" style="display: none; position: fixed; right: 16px; bottom: 16px; background: #111827; box-shadow: 0 10px 28px rgba(0,0,0,0.45); z-index: 2000; width: 380px; max-width: calc(100vw - 20px); border-radius: 12px; overflow: hidden; transition: transform 0.25s ease, opacity 0.25s ease; transform: translateY(120%); opacity: 0;">
+	<!-- Header -->
+	<div style="padding: 0.9rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, rgba(99, 102, 241, 0.13), rgba(6, 182, 212, 0.1));">
+		<div style="display: flex; align-items: center; gap: 0.75rem;">
+			<i class="fas fa-cloud-upload-alt" style="color: var(--primary-color); font-size: 1.15rem;"></i>
+			<div id="progressTitleBlock">
+				<h3 style="margin: 0; font-size: 1rem; color: var(--text-dark); font-weight: 700; line-height: 1.1;">Uploading Files</h3>
+				<p id="progressPopupSummary" style="margin: 0; font-size: 0.78rem; color: var(--text-light);">0 of 0 files</p>
+			</div>
+		</div>
+		<div style="display: flex; align-items: center; gap: 0.5rem;">
+			<button id="toggleCollapseBtn" class="modal-action-btn" data-action="toggleProgressCollapse" style="background: none; border: none; color: var(--text-light); cursor: pointer; padding: 0.35rem; font-size: 0.95rem; transition: color 0.2s;" title="Collapse Panel">
+				<i class="fas fa-chevron-down"></i>
+			</button>
+			<button id="hideProgressBtn" class="modal-action-btn" data-action="toggleProgressVisibility" style="background: none; border: none; color: var(--text-light); cursor: pointer; padding: 0.35rem; font-size: 0.95rem; transition: color 0.2s;" title="Hide Panel">
+				<i class="fas fa-eye-slash"></i>
+			</button>
+			<button id="closeProgressBtn" class="modal-action-btn" data-action="toggleProgressVisibility" style="background: none; border: none; color: var(--text-light); cursor: pointer; padding: 0.35rem; font-size: 1.15rem; transition: color 0.2s;" title="Hide Panel">
+				<i class="fas fa-times"></i>
+			</button>
+		</div>
+	</div>
+	
+	<!-- Content (scrollable) -->
+	<div id="progressPopupContent" style="max-height: min(58vh, 420px); overflow-y: auto; padding: 0.35rem 0; scrollbar-width: thin; scrollbar-color: rgba(129, 140, 248, 0.5) transparent;">
+		<div style="padding: 0.35rem 1rem 0.5rem 1rem; display: flex; justify-content: flex-end;">
+			<button id="cancelAllUploadsBtn" class="modal-action-btn" data-action="cancelAllUploads" style="padding: 0.35rem 0.55rem; background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.35); border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;">
+				<i class="fas fa-ban"></i> Cancel All
+			</button>
+		</div>
+		<div id="uploadFilesList" style="padding: 0;"></div>
+	</div>
+</div>
+
+<style>
+	#uploadProgressPopup {
+		will-change: transform;
+	}
+
+	#progressPopupContent {
+		scrollbar-width: thin;
+	}
+
+	#reopenUploadPanelBtn {
+		display: none;
+		align-items: center;
+		justify-content: center;
+	}
+
+	@media (max-width: 768px) {
+		#uploadProgressPopup {
+			left: 8px !important;
+			right: 8px !important;
+			bottom: 8px !important;
+			width: 100% !important;
+			max-width: calc(100vw - 16px) !important;
+			height: auto !important;
+			max-height: 54vh !important;
+			border-radius: 12px;
+			box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+			transform: translateY(100%) !important;
+		}
+
+		#progressPopupContent {
+			max-height: calc(54vh - 86px) !important;
+		}
+
+		#toggleCollapseBtn {
+			display: none !important;
+		}
+
+		#cancelAllUploadsBtn {
+			padding: 0.45rem 0.6rem !important;
+			font-size: 0.75rem !important;
+		}
+
+		#reopenUploadPanelBtn {
+			right: 12px !important;
+			left: auto !important;
+			bottom: 12px !important;
+			width: 40px !important;
+			height: 40px !important;
+		}
+	}
+</style>
+
+<!-- Reopen Upload Panel Button -->
+<button id="reopenUploadPanelBtn" class="modal-action-btn" data-action="showProgressPanel" style="display: none; position: fixed; right: 16px; bottom: 16px; z-index: 2100; height: 36px; border: none; border-radius: 999px; background: var(--primary-color); color: white; box-shadow: 0 8px 20px rgba(0,0,0,0.35); cursor: pointer; font-size: 0.8rem; padding: 0 0.75rem; font-weight: 600; gap: 0.4rem; align-items: center; justify-content: center;">
+	<i class="fas fa-cloud-upload-alt"></i> Uploads
+</button>
+
+<!-- Confirm Modal -->
+<div id="confirmModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1100; align-items: center; justify-content: center;">
+	<div style="background: #111827; padding: 2rem; border-radius: 12px; max-width: 420px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+		<h3 style="margin: 0 0 1rem 0; color: var(--text-dark);">Please Confirm</h3>
+		<p id="confirmMessage" style="margin: 0 0 1.5rem 0; color: var(--text-light); line-height: 1.5;"></p>
+		<div style="display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap;">
+			<button id="confirmCancel" class="btn" style="padding: 0.75rem 1.5rem; background: var(--gray-700); border: none; color: white; border-radius: 8px; cursor: pointer;">Cancel</button>
+			<button id="confirmOk" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">Yes, proceed</button>
+		</div>
+	</div>
+</div>
