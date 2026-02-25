@@ -1,5 +1,5 @@
 
-- ✅ Bcrypt password hashing (10 salt rounds)
+- ✅ Bcrypt password hashing 
 - ✅ HTML escaping on contact emails (escapeHtml helper)
 - ✅ HTTPS-only cookies in production (secure flag)
 - ✅ SameSite=strict CSRF protection
