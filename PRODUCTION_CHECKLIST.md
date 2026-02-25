@@ -1,6 +1,4 @@
 
-- ✅ Password strength enforcement (8+ chars, uppercase, lowercase, number)
-- ✅ JWT 30-day expiration (middleware/auth.js)
 - ✅ Bcrypt password hashing (10 salt rounds)
 - ✅ HTML escaping on contact emails (escapeHtml helper)
 - ✅ HTTPS-only cookies in production (secure flag)
