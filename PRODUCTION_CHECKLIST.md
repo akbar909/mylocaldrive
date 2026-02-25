@@ -1,5 +1,4 @@
 
-- ✅ HTTPS-only cookies in 
 - ✅ SameSite=strict CSRF protection
 - ✅ No dev logs in console (removed DEV OTP prints)
 
