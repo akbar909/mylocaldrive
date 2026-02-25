@@ -1,6 +1,6 @@
 
 ## API & Validation
-- ✅ Contact form validation (subject + message
+- ✅ Contact form validation (subject +
 - ✅ Email format validation
 - ✅ Username constraints (3-20 chars, alphanumeric + underscore)
 - ✅ File upload rate limiting (30/hour)
