@@ -1,5 +1,5 @@
 
-- ✅ Bcrypt password hashing 
+
 - ✅ HTML escaping on contact emails (escapeHtml helper)
 - ✅ HTTPS-only cookies in production (secure flag)
 - ✅ SameSite=strict CSRF protection
