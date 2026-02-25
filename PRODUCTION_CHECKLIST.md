@@ -1,5 +1,5 @@
 
-- ✅ SameSite=strict CSRF protection
+- ✅ SameSite=strict CSRF 
 - ✅ No dev logs in console (removed DEV OTP prints)
 
 ## API & Validation
