@@ -1,6 +1,6 @@
 
 
-- ✅ HTML escaping on contact emails (escapeHtml helper)
+- ✅ HTML escaping on contact emails
 - ✅ HTTPS-only cookies in production (secure flag)
 - ✅ SameSite=strict CSRF protection
 - ✅ No dev logs in console (removed DEV OTP prints)
