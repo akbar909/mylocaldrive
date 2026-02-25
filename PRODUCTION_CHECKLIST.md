@@ -1,5 +1,5 @@
 
-- ✅ SameSite=stric
+- ✅ ]
 - ✅ No dev logs in console (removed DEV OTP prints)
 
 ## API & Validation
