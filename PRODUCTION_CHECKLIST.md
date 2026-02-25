@@ -1,6 +1,5 @@
 
-- ✅ ]
-- ✅ No dev logs in console (removed DEV OTP prints)
+
 
 ## API & Validation
 - ✅ Contact form validation (subject + message required)
