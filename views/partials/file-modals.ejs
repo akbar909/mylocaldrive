@@ -6,7 +6,7 @@
 		<h2 style="margin-top: 0; margin-bottom: 1.5rem;"><i class="fas fa-edit"></i> Rename File</h2>
 		<input type="hidden" id="renameFileId">
 		<input type="hidden" id="renameOriginalExt">
-		<input type="text" id="newFileName" placeholder="New file name" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-600); border-radius: 8px; background: #1f2937; color: white; box-sizing: border-box; margin-bottom: 1.5rem;">
+		<input type="text" id="newFileName" placeholder="Enter updated file name" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-600); border-radius: 8px; background: #1f2937; color: white; box-sizing: border-box; margin-bottom: 1.5rem;">
 		<div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap;">
 			<button class="btn modal-close-btn" data-modal="renameModal" style="padding: 0.75rem 1.5rem; background: var(--gray-700); border: none; color: white; border-radius: 8px; cursor: pointer;">Cancel</button>
 			<button class="btn btn-primary modal-action-btn" data-action="confirmRename" style="padding: 0.75rem 1.5rem;"><i class="fas fa-check"></i> Rename</button>
@@ -61,14 +61,14 @@
 		<!-- Share with Username -->
 		<div style="margin-bottom: 1.5rem;">
 			<label style="display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.5rem; text-transform: uppercase; font-weight: 600;">Share with User</label>
-			<input type="text" id="shareUsername" placeholder="Enter username" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-600); border-radius: 8px; background: #1f2937; color: white; box-sizing: border-box;">
+			<input type="text" id="shareUsername" placeholder="Enter recipient username" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-600); border-radius: 8px; background: #1f2937; color: white; box-sizing: border-box;">
 		</div>
 
 		<!-- Share Link Section -->
 		<div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(129, 140, 248, 0.05); border-radius: 8px; border: 1px solid rgba(129, 140, 248, 0.2);">
 			<label style="display: block; font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.75rem; text-transform: uppercase; font-weight: 600;"><i class="fas fa-link" aria-hidden="true"></i> Share Link</label>
 			<div style="display: flex; gap: 0.5rem;">
-				<input type="text" id="shareLink" placeholder="Share link will appear here" readonly style="flex: 1; padding: 0.75rem; border: 1px solid var(--gray-600); border-radius: 6px; background: #0f172a; color: var(--text-light); font-size: 0.85rem; word-break: break-all;">
+				<input type="text" id="shareLink" placeholder="Generated share link" readonly style="flex: 1; padding: 0.75rem; border: 1px solid var(--gray-600); border-radius: 6px; background: #0f172a; color: var(--text-light); font-size: 0.85rem; word-break: break-all;">
 				<button class="modal-action-btn" data-action="copyShareLink" id="copyLinkBtn" style="padding: 0.75rem 1rem; background: #06b6d4; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-copy"></i> Copy</button>
 			</div>
 			<p style="margin: 0.75rem 0 0 0; font-size: 0.8rem; color: var(--text-light);">Anyone with this link can view the file</p>
