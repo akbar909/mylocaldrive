@@ -208,7 +208,6 @@
 	}
 
 	function showSuccess(msg) {
-		console.log('Success:', msg);
 		alert('Success: ' + msg);
 	}
 
@@ -216,7 +215,6 @@
 	window.showError = showError;
 	window.showSuccess = showSuccess;
 	
-	console.log('[Dashboard] Helper functions initialized');
 </script>
 
 <!-- Load shared file operations AFTER helper functions -->
@@ -225,8 +223,6 @@
 <script>
 	// Dashboard-specific button handlers
 	function bindDashboardButtons() {
-		console.log('[Dashboard] Binding buttons...');
-		
 		const profileBtn = document.getElementById('dashboardProfileBtn');
 		const uploadBtn = document.getElementById('dashboardUploadBtn');
 		const quickUploadBtn = document.getElementById('quickUploadBtn');
@@ -239,9 +235,7 @@
 		// All upload buttons use the shared modal
 		[uploadBtn, quickUploadBtn, uploadFloatBtn].forEach(btn => {
 			if (btn) {
-				console.log('[Dashboard] Found upload button:', btn.id);
 				btn.addEventListener('click', () => {
-					console.log('[Dashboard] Upload button clicked');
 					if (window.openUploadModal) {
 						window.openUploadModal();
 					} else {
@@ -262,8 +256,6 @@
 				const fileName = actionBtn.dataset.fileName;
 				const fileSize = actionBtn.dataset.fileSize;
 				const uploadDate = actionBtn.dataset.uploadDate;
-				
-				console.log('[Dashboard] Action button clicked:', action, fileId);
 				
 				switch(action) {
 					case 'details':
@@ -297,7 +289,6 @@
 				const modalId = closeBtn.dataset.modal;
 				if (modalId) {
 					document.getElementById(modalId).style.display = 'none';
-					console.log('[Dashboard] Closed modal:', modalId);
 				}
 				return;
 			}
@@ -307,7 +298,6 @@
 			if (modalActionBtn) {
 				e.preventDefault();
 				const action = modalActionBtn.dataset.action;
-				console.log('[Dashboard] Modal action:', action);
 				
 				if (action === 'confirmRename' && window.confirmRename) {
 					window.confirmRename();
@@ -335,17 +325,13 @@
 		requiredFunctions.forEach(fn => {
 			if (typeof window[fn] !== 'function') {
 				console.error(`[Dashboard] Missing function: ${fn}`);
-			} else {
-				console.log(`[Dashboard] ✓ ${fn} loaded`);
 			}
 		});
 	}
 
 	if (document.readyState === 'loading') {
-		console.log('[Dashboard] Waiting for DOMContentLoaded...');
 		document.addEventListener('DOMContentLoaded', bindDashboardButtons);
 	} else {
-		console.log('[Dashboard] DOM already loaded, binding now');
 		bindDashboardButtons();
 	}
 </script>
