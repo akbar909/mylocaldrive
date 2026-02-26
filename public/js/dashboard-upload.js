@@ -157,8 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			return;
 		}
 
-		console.log('Starting upload of', selectedFiles.length, 'files');
-
 		// Calculate total upload size
 		const totalSize = selectedFiles.reduce((sum, file) => sum + (file.fileSize || file.size), 0);
 		const totalSizeGB = totalSize / (1024 * 1024 * 1024);
