@@ -146,8 +146,6 @@
 			return;
 		}
 
-		console.log('[Upload] Starting upload with', selectedFiles.length, 'files');
-
 		// Close upload modal WITHOUT clearing files
 		closeUploadModal(false);
 		showProgressPopup();
@@ -163,8 +161,6 @@
 		
 		// Create file list in progress popup
 		const uploadFilesList = document.getElementById('uploadFilesList');
-		console.log('[Upload] Upload files list element:', !!uploadFilesList);
-		console.log('[Upload] Selected files:', selectedFiles.map(f => f.name));
 		
 		if (uploadFilesList) {
 			uploadFilesList.innerHTML = selectedFiles.map((file, index) => `
@@ -191,8 +187,6 @@
 					</div>
 				</div>
 			`).join('');
-			console.log('[Upload] File list HTML created for', selectedFiles.length, 'files');
-			
 			// Add event listeners to cancel buttons
 			document.querySelectorAll('.cancel-file-btn').forEach(btn => {
 				btn.addEventListener('click', (e) => {
@@ -311,7 +305,6 @@
 	const showProgressPopup = () => {
 		const popup = document.getElementById('uploadProgressPopup');
 		const reopenBtn = document.getElementById('reopenUploadPanelBtn');
-		console.log('[Upload] Showing progress popup, element found:', !!popup);
 		if (popup) {
 			popup.style.display = 'block';
 			popup.style.width = isMobileProgressView() ? 'calc(100vw - 16px)' : '380px';
@@ -323,7 +316,6 @@
 			setTimeout(() => {
 				popup.style.transform = getVisibleTransform();
 			}, 10);
-			console.log('[Upload] Progress popup displayed');
 		} else {
 			console.error('[Upload] Progress popup element not found!');
 		}
@@ -431,8 +423,6 @@
 		if (index === currentUploadingIndex && currentUploadController) {
 			currentUploadController.abort();
 		}
-		
-		console.log('[Upload] Cancelled file:', index);
 		
 		// Update summary
 		const summaryEl = document.getElementById('progressPopupSummary');
