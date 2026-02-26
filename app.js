@@ -47,7 +47,10 @@ app.use(sanitizeRequest);
 
 // ========== STATIC FILES & MIDDLEWARE ==========
 app.use(express.static(path.join(__dirname, "public"), { maxAge: '1d' }));
-app.use('/uploads', express.static(path.join(__dirname, "uploads"), { maxAge: '7d' }));
+// Only serve local uploads in non-Vercel environments (files are served from R2 on Vercel)
+if (!process.env.VERCEL) {
+  app.use('/uploads', express.static(path.join(__dirname, "uploads"), { maxAge: '7d' }));
+}
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
