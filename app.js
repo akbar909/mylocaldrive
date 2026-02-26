@@ -62,10 +62,17 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: false,
-    maxAge: 10 * 60 * 1000 // 10 minutes
-  }
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 10 * 60 * 1000, // 10 minutes
+    sameSite: 'lax'
+  },
+  // Disable session store warning in production/serverless
+  ...(process.env.VERCEL ? { store: new session.MemoryStore() } : {})
 }));
+// Suppress MemoryStore warning on Vercel (sessions are cookie-based via JWT anyway)
+if (process.env.VERCEL) {
+  process.env.DISABLE_MEMORY_STORE_WARNING = 'true';
+}
 
 // ========== CACHING MIDDLEWARE ==========
 // Set cache headers for different content types
