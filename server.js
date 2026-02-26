@@ -15,6 +15,31 @@ if (process.env.VERCEL) {
   // Export a handler that connects to DB before passing to Express
   module.exports = async (req, res) => {
     await ensureDb();
+
+    // Vercel's runtime consumes the request body stream before Express sees it.
+    // The pre-read body sits on req.body as a string, Buffer, or object.
+    // Parse it into a proper object and set req._body = true so Express's
+    // built-in body parsers don't try to re-read the (now-empty) stream.
+    if (req.body !== undefined && req.body !== null && !req._body) {
+      const ct = (req.headers['content-type'] || '').toLowerCase();
+      let parsed = req.body;
+
+      if (typeof parsed === 'string' || Buffer.isBuffer(parsed)) {
+        const raw = Buffer.isBuffer(parsed) ? parsed.toString('utf8') : parsed;
+        if (raw.length > 0) {
+          if (ct.includes('application/json')) {
+            try { parsed = JSON.parse(raw); } catch (_) { /* keep as-is */ }
+          } else if (ct.includes('urlencoded')) {
+            parsed = Object.fromEntries(new URLSearchParams(raw));
+          }
+        }
+      }
+      // If already an object (auto-parsed by Vercel), keep it as-is
+
+      req.body = parsed;
+      req._body = true; // tells Express body-parser to skip
+    }
+
     return app(req, res);
   };
 } else {

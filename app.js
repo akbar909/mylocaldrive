@@ -54,26 +54,8 @@ if (!process.env.VERCEL) {
   app.use('/uploads', express.static(path.join(__dirname, "uploads"), { maxAge: '7d' }));
 }
 
-// ========== BODY PARSING ==========
-// On Vercel, the runtime pre-parses the body and consumes the stream before
-// Express sees it.  Preserve any already-parsed body so Express's own parsers
-// (which read from the now-empty stream) don't overwrite it with {}.
-app.use((req, res, next) => {
-  if (req.body && typeof req.body === 'object' && Object.keys(req.body).length > 0) {
-    req._vercelBody = req.body;  // stash the pre-parsed body
-  }
-  next();
-});
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-// Restore pre-parsed body if Express parsers produced an empty result
-app.use((req, res, next) => {
-  if (req._vercelBody && (!req.body || Object.keys(req.body).length === 0)) {
-    req.body = req._vercelBody;
-  }
-  delete req._vercelBody;
-  next();
-});
 app.use(cookieParser());
 
 // Data Sanitization: Against NoSQL injection + XSS (must run AFTER body parsers)
