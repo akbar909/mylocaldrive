@@ -16,28 +16,54 @@ if (process.env.VERCEL) {
   module.exports = async (req, res) => {
     await ensureDb();
 
-    // Vercel's runtime consumes the request body stream before Express sees it.
-    // The pre-read body sits on req.body as a string, Buffer, or object.
-    // Parse it into a proper object and set req._body = true so Express's
-    // built-in body parsers don't try to re-read the (now-empty) stream.
+    // Vercel consumes the raw body stream before Express ever sees it.
+    // We must fully read & parse the body here and stamp req._body = true
+    // so Express's built-in body-parsers skip re-reading the empty stream.
+
+    const ct = (req.headers['content-type'] || '').toLowerCase();
+
+    // Case 1: Vercel already populated req.body (string, Buffer, or object)
     if (req.body !== undefined && req.body !== null && !req._body) {
-      const ct = (req.headers['content-type'] || '').toLowerCase();
       let parsed = req.body;
 
       if (typeof parsed === 'string' || Buffer.isBuffer(parsed)) {
         const raw = Buffer.isBuffer(parsed) ? parsed.toString('utf8') : parsed;
         if (raw.length > 0) {
           if (ct.includes('application/json')) {
-            try { parsed = JSON.parse(raw); } catch (_) { /* keep as-is */ }
+            try { parsed = JSON.parse(raw); } catch (_) { /* keep as string */ }
           } else if (ct.includes('urlencoded')) {
             parsed = Object.fromEntries(new URLSearchParams(raw));
           }
         }
       }
-      // If already an object (auto-parsed by Vercel), keep it as-is
+      // If it's already a plain object Vercel auto-parsed, keep it
 
       req.body = parsed;
-      req._body = true; // tells Express body-parser to skip
+      req._body = true;
+
+    // Case 2: req.body is undefined – Vercel didn't pre-parse; read the stream
+    } else if (req.body === undefined && !req._body) {
+      await new Promise((resolve) => {
+        const chunks = [];
+        req.on('data', (chunk) => chunks.push(chunk));
+        req.on('end', () => {
+          const raw = Buffer.concat(chunks).toString('utf8');
+          if (raw.length > 0) {
+            if (ct.includes('application/json')) {
+              try { req.body = JSON.parse(raw); } catch (_) { req.body = {}; }
+            } else if (ct.includes('urlencoded')) {
+              req.body = Object.fromEntries(new URLSearchParams(raw));
+            } else {
+              req.body = {};
+            }
+          } else {
+            req.body = {};
+          }
+          req._body = true;
+          resolve();
+        });
+        req.on('error', () => { req.body = {}; req._body = true; resolve(); });
+      });
     }
 
     return app(req, res);
