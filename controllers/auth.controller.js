@@ -283,8 +283,8 @@ const postVerifyOTP = async (req, res) => {
       }
 
       const pendingUser = result.pendingUser || req.session?.pendingUser;
-      if (!pendingUser) {
-        return res.redirect('/user/register?error=Registration data missing. Please register again.');
+      if (!pendingUser || !pendingUser.username || !pendingUser.email) {
+        return res.redirect('/user/register?error=Registration data expired. Please register again.');
       }
 
       const newUser = new User({
@@ -347,8 +347,8 @@ const verifyOtpLink = async (req, res) => {
       }
 
       const pendingUser = result.pendingUser || req.session?.pendingUser;
-      if (!pendingUser) {
-        return res.redirect('/user/register?error=Registration data missing. Please register again.');
+      if (!pendingUser || !pendingUser.username || !pendingUser.email) {
+        return res.redirect('/user/register?error=Registration data expired. Please register again.');
       }
 
       const newUser = new User({
