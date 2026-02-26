@@ -6,7 +6,48 @@ const jwt = require('jsonwebtoken');
 const { signAccessToken, signRefreshToken } = require('../middleware/auth');
 const { sendOTPEmail } = require('../config/email');
 
-const normalizeOtpType = (type) => (type === 'verification' ? 'registration' : type);
+const normalizeOtpType = (type) => {
+  if (typeof type === 'undefined' || type === null) {
+    return null;
+  }
+
+  const value = String(type).trim().toLowerCase();
+
+  if (!value || value === 'undefined' || value === 'null') {
+    return null;
+  }
+
+  if (value === 'verification' || value === 'verify' || value === 'register') {
+    return 'registration';
+  }
+
+  if (value === 'registration') {
+    return 'registration';
+  }
+
+  if (value === 'password-reset' || value === 'password_reset' || value === 'reset') {
+    return 'password-reset';
+  }
+
+  return null;
+};
+
+const resolveOtpType = async (email, rawType) => {
+  const normalized = normalizeOtpType(rawType);
+  if (normalized) {
+    return normalized;
+  }
+
+  if (!email) {
+    return null;
+  }
+
+  const existingOtp = await OTP.findOne({ email: String(email).toLowerCase() })
+    .sort({ expiresAt: -1 })
+    .select('type');
+
+  return existingOtp?.type || null;
+};
 const AUTH_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
@@ -238,14 +279,15 @@ const postForgotPassword = async (req, res) => {
 const getVerifyOTP = async (req, res) => {
   const { email, type } = req.query;
 
-  // Also reject the literal string "undefined" which can appear when a redirect
-  // was built with an undefined JS variable (e.g. type=${type} where type is undefined)
-  if (!email || !type || type === 'undefined') {
+  if (!email) {
     return res.redirect('/user/login');
   }
 
   try {
-    const normalizedType = normalizeOtpType(type);
+    const normalizedType = await resolveOtpType(email, type);
+    if (!normalizedType) {
+      return res.redirect('/user/login');
+    }
     const initialCountdown = await OTP.getRemainingSeconds(email, normalizedType);
     const otpExpiresAtMs = await OTP.getExpiryTimestamp(email, normalizedType);
 
@@ -267,9 +309,15 @@ const getVerifyOTP = async (req, res) => {
 // Handle OTP verification
 const postVerifyOTP = async (req, res) => {
   const { email, otp, type } = req.body;
+  let normalizedType;
 
   try {
-    const normalizedType = normalizeOtpType(type);
+    normalizedType = await resolveOtpType(email, type);
+
+    if (!normalizedType) {
+      return res.redirect('/user/login?error=Invalid OTP request');
+    }
+
     const result = await OTP.verifyOTP(email, otp, normalizedType);
 
     if (!result.success) {
@@ -313,7 +361,8 @@ const postVerifyOTP = async (req, res) => {
     return res.redirect('/user/login');
   } catch (err) {
     console.error('Error verifying OTP:', err);
-    return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${normalizeOtpType(type)}&error=Verification failed`);
+    const fallbackType = normalizedType || await resolveOtpType(email, type) || 'registration';
+    return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${fallbackType}&error=Verification failed`);
   }
 };
 
@@ -321,13 +370,18 @@ const postVerifyOTP = async (req, res) => {
 const verifyOtpLink = async (req, res) => {
   const { email, token, type } = req.query;
 
-  if (!email || !token || !type) {
+  if (!email || !token) {
     return res.redirect('/user/login');
   }
 
-  const normalizedType = normalizeOtpType(type);
+  let normalizedType;
 
   try {
+    normalizedType = await resolveOtpType(email, type);
+    if (!normalizedType) {
+      return res.redirect('/user/login');
+    }
+
     const result = await OTP.verifyOTPByToken(email, token, normalizedType);
 
     if (!result.success) {
@@ -389,7 +443,8 @@ const verifyOtpLink = async (req, res) => {
       }
     }
 
-    return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${normalizeOtpType(type)}&error=Verification failed`);
+    const fallbackType = normalizedType || await resolveOtpType(email, type) || 'registration';
+    return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${fallbackType}&error=Verification failed`);
   }
 };
 
@@ -398,7 +453,7 @@ const resendOTP = async (req, res) => {
   const { email, type } = req.body;
 
   try {
-    const normalizedType = normalizeOtpType(type);
+    const normalizedType = await resolveOtpType(email, type) || 'registration';
     const { otp, verificationToken } = await OTP.createOTP(email, normalizedType);
     await sendOTPEmail(
       email,
