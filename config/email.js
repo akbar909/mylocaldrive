@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const FROM_EMAIL = process.env.SMTP_USER || 'noreply@example.com';
+const FROM_EMAIL = process.env.FROM_EMAIL || process.env.SMTP_USER;
 const CONTACT_TO = process.env.CONTACT_TO || 'abbaszameer234@gmail.com';
 const APP_URL = process.env.APP_URL || 'http://localhost:3000';
 
