@@ -16,6 +16,11 @@ const cookieParser = require('cookie-parser');
 const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
 const { sanitizeRequest } = require('./middleware/sanitize');
 
+// ========== TRUST PROXY (required for Vercel / reverse-proxy deployments) ==========
+// Without this, req.protocol is 'http' behind Vercel's HTTPS proxy, causing
+// res.redirect() to emit http:// URLs → Vercel forces HTTPS → infinite redirect loop.
+app.set('trust proxy', 1);
+
 // ========== VIEW ENGINE CONFIGURATION ==========
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');

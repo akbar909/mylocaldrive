@@ -237,8 +237,10 @@ const postForgotPassword = async (req, res) => {
 // Get OTP verification page
 const getVerifyOTP = async (req, res) => {
   const { email, type } = req.query;
-  
-  if (!email || !type) {
+
+  // Also reject the literal string "undefined" which can appear when a redirect
+  // was built with an undefined JS variable (e.g. type=${type} where type is undefined)
+  if (!email || !type || type === 'undefined') {
     return res.redirect('/user/login');
   }
 
@@ -271,7 +273,7 @@ const postVerifyOTP = async (req, res) => {
     const result = await OTP.verifyOTP(email, otp, normalizedType);
 
     if (!result.success) {
-      return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${type}&error=${encodeURIComponent(result.message)}`);
+      return res.redirect(`/user/verify-otp?email=${encodeURIComponent(email)}&type=${normalizedType}&error=${encodeURIComponent(result.message)}`);
     }
 
     // If registration OTP, create user and log in
