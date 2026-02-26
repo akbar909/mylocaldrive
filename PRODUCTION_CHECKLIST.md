@@ -1,8 +1,6 @@
 
 ## API & Validation
-
-
-- ✅ Username constraints (3-20 chars, alphanumeric + underscore)
+- ✅ Username constraints (3-20 chars, alphanumeric +
 - ✅ File upload rate limiting (30/hour)
 - ✅ General API rate limiting (100 req/15 min)
 - ✅ Error responses sanitized (no stack traces to client)
