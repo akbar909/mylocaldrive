@@ -198,7 +198,6 @@ async function downloadFile(req, res, next) {
 		}
 
 		const bucket = file.bucket || BUCKET;
-		console.log(`[DOWNLOAD] Starting download - File: ${file.originalName}, Size: ${file.fileSize}`);
 
 		try {
 			const result = await r2.send(new GetObjectCommand({ Bucket: bucket, Key: file.r2Key }));
