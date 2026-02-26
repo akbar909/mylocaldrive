@@ -9,7 +9,7 @@ const { sendOTPEmail } = require('../config/email');
 const normalizeOtpType = (type) => (type === 'verification' ? 'registration' : type);
 const AUTH_COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: false,
+  secure: process.env.NODE_ENV === 'production',
   sameSite: 'lax'
 };
 
