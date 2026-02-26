@@ -205,7 +205,6 @@
 	}
 
 	function showSuccess(msg) {
-		console.log('Success:', msg);
 		alert('Success: ' + msg);
 	}
 
@@ -213,7 +212,6 @@
 	window.showError = showError;
 	window.showSuccess = showSuccess;
 	
-	console.log('[Files Page] Helper functions initialized');
 </script>
 
 <!-- Load shared file operations AFTER helper functions -->
@@ -231,8 +229,6 @@
 			const fileName = actionBtn.dataset.fileName;
 			const fileSize = actionBtn.dataset.fileSize;
 			const uploadDate = actionBtn.dataset.uploadDate;
-			
-			console.log('[Files Page] Action button clicked:', action, fileId);
 			
 			switch(action) {
 				case 'details':
@@ -266,7 +262,6 @@
 			const modalId = closeBtn.dataset.modal;
 			if (modalId) {
 				document.getElementById(modalId).style.display = 'none';
-				console.log('[Files Page] Closed modal:', modalId);
 			}
 			return;
 		}
@@ -276,7 +271,6 @@
 		if (modalActionBtn) {
 			e.preventDefault();
 			const action = modalActionBtn.dataset.action;
-			console.log('[Files Page] Modal action:', action);
 			
 			if (action === 'confirmRename' && window.confirmRename) {
 				window.confirmRename();
@@ -304,8 +298,6 @@
 			e.preventDefault();
 			const action = trashBtn.dataset.trashAction;
 			const fileId = trashBtn.dataset.fileId;
-			
-			console.log('[Files Page] Trash action:', action, fileId);
 			
 			if (action === 'restore' && window.restoreFile) {
 				window.restoreFile(fileId);
@@ -342,18 +334,13 @@
 	// Verify all functions loaded
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', () => {
-			console.log('[Files Page] DOM loaded, verifying functions...');
 			const requiredFunctions = ['showFileDetails', 'deleteFile', 'showRenameModal', 'showShareModal', 'uploadFiles', 'restoreFile', 'deleteForever', 'bulkDeleteTrash', 'bulkRestoreTrash', 'toggleSelectAllTrash', 'updateTrashSelection'];
 			requiredFunctions.forEach(fn => {
 				if (typeof window[fn] !== 'function') {
 					console.error(`[Files Page] Missing function: ${fn}`);
-				} else {
-					console.log(`[Files Page] ✓ ${fn} loaded`);
 				}
 			});
 		});
-	} else {
-		console.log('[Files Page] DOM already loaded');
 	}
 </script>
 
